@@ -1,0 +1,31 @@
+- prompter
+ - directory manager @martiper
+
+- history @martiper
+
+- env variables registry @diogpere
+ - parse env vars after $ (ONLY INSIDE STRINGS)
+
+- parser @diogpere
+ - argument parser (handle ' and ")
+ - piping
+  - parse < , > , << , >> , |
+
+TODO: - find more info about $? impl @diogpere
+
+- signal handling @diogpere
+ - ctrl-c -> SIGINT
+ - ctrl-d -> SIGQUIT
+ - ctrl-\ -> TBD
+
+- commands override
+ - echo with -n (without new line) @diogpere
+ - cd applying directory manager (supports only relative or absolute paths) @martiper
+ - pwd -> directory manager @diogpere
+ - export -> inject variable into the execve env param & add to env var registry @martiper
+ - unset -> remove var from env var registry @martiper
+ - env -> cat environment from the registry @diogpere
+ - exit -> kill the console & cleanup all the contexts @diogpere
+
+- wildcard support @martiper
+- inject all the initial env vars into the registry @diogpere
