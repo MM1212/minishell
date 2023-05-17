@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 02:27:03 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/17 13:35:30 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/17 13:36:57 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,5 +15,7 @@
 
 int	main(int ac, char **av)
 {
+	(void)ac;
+	(void)av;
 	return (0);
 }
