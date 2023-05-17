@@ -20,7 +20,7 @@ LIBFT_ARCH = $(addprefix $(LIBFT_BIN)/,libft.a)
 
 INCLUDES = -O3 -Iinclude -I$(LIBFT_INCLUDES)
 
-OBJ_FLAGS = -I$(INCLUDES)
+OBJ_FLAGS = $(INCLUDES)
 PROGRAM_FLAGS = $(OBJ_FLAGS) -L$(LIBFT_BIN) -lft
 
 CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
@@ -56,7 +56,7 @@ $(NAME): $(LIBFT_ARCH) $(OBJS)
 $(OBJ_DIR)/%.o: %.c
 	@echo "$(TAG) compiling $(YELLOW)$<$(RESET).."
 	@mkdir -p $(OBJ_DIR)/$(dir $<)
-	@$(CC) $(CFLAGS) $(OBJ_INCLUDES) -c $< -o $@
+	@$(CC) $(CFLAGS) $(OBJ_FLAGS) -c $< -o $@
 
 clean:
 	@rm -rf $(OBJS) $(OBJ_DIR)

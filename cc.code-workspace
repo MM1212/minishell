@@ -65,7 +65,9 @@
 		"random": "c",
 		"limits": "c",
 		"semaphore": "c",
-		"algorithm": "c"
+		"algorithm": "c",
+		"shared.h": "c",
+		"types.h": "c"
 	},
 	"files.exclude": {
 		"**/*.o": true,
