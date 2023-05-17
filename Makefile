@@ -2,7 +2,14 @@ PROJECT_NAME = Minishell
 
 SRC_PATH = srcs
 
-SRC_FILES = minishell.c
+## MODULES ##
+
+CTX_SRC_FILES =		context/context.c
+EVENTS_SRC_FILES =	events/events.c
+LOGGER_SRC_FILES =	logger/functions.c logger/logger.c logger/ctx.c
+
+SRC_FILES =	$(CTX_SRC_FILES) $(EVENTS_SRC_FILES) \
+			$(LOGGER_SRC_FILES) minishell.c
 
 SRCS = $(addprefix $(SRC_PATH)/, $(SRC_FILES))
 
@@ -50,7 +57,7 @@ $(LIBFT_ARCH):
 
 $(NAME): $(LIBFT_ARCH) $(OBJS)
 	@echo "$(TAG) compiling $(YELLOW)$(NAME)$(RESET).."
-	@$(CC) $(OBJS) $(CFLAGS) $(PROGRAM_INCLUDES) -o $(NAME)
+	@$(CC) $(OBJS) $(CFLAGS) $(PROGRAM_FLAGS) -o $(NAME)
 	@echo "$(CYAN)Done!$(RESET)"
 
 $(OBJ_DIR)/%.o: %.c

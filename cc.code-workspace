@@ -67,7 +67,11 @@
 		"semaphore": "c",
 		"algorithm": "c",
 		"shared.h": "c",
-		"types.h": "c"
+		"types.h": "c",
+		"log_fns.h": "c",
+		"ft_printf.h": "c",
+		"ft_printf_internal.h": "c",
+		"cmath": "c"
 	},
 	"files.exclude": {
 		"**/*.o": true,
