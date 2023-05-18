@@ -3,7 +3,7 @@
 
 - history @martiper
 
-- env variables registry @diogpere
+- env variables registry @martiper
  - parse env vars after $ (ONLY INSIDE STRINGS)
 
 - parser @diogpere
@@ -13,7 +13,7 @@
 
 TODO: - find more info about $? impl @diogpere
 
-- signal handling @diogpere
+- signal handling @martiper
  - ctrl-c -> SIGINT
  - ctrl-d -> SIGQUIT
  - ctrl-\ -> TBD

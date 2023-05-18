@@ -4,12 +4,16 @@ SRC_PATH = srcs
 
 ## MODULES ##
 
-CTX_SRC_FILES =		context/context.c
-EVENTS_SRC_FILES =	events/events.c
-LOGGER_SRC_FILES =	logger/functions.c logger/logger.c logger/ctx.c
+CTX_SRC_FILES =			context/context.c
+EVENTS_SRC_FILES =		events/events.c
+LOGGER_SRC_FILES =		logger/functions.c logger/logger.c logger/ctx.c
+PROMPTER_SRC_FILES =	prompter/prompter.c
+ENVP_SRC_FILES =		env/fns.c env/fns2.c \
+						env/var.c env/registry.c
 
 SRC_FILES =	$(CTX_SRC_FILES) $(EVENTS_SRC_FILES) \
-			$(LOGGER_SRC_FILES) minishell.c
+			$(LOGGER_SRC_FILES) $(PROMPTER_SRC_FILES) \
+			$(ENVP_SRC_FILES) minishell.c
 
 SRCS = $(addprefix $(SRC_PATH)/, $(SRC_FILES))
 
@@ -28,7 +32,7 @@ LIBFT_ARCH = $(addprefix $(LIBFT_BIN)/,libft.a)
 INCLUDES = -O3 -Iinclude -I$(LIBFT_INCLUDES)
 
 OBJ_FLAGS = $(INCLUDES)
-PROGRAM_FLAGS = $(OBJ_FLAGS) -L$(LIBFT_BIN) -lft
+PROGRAM_FLAGS = $(OBJ_FLAGS) -L$(LIBFT_BIN) -lft -lreadline
 
 CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 

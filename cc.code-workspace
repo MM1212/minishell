@@ -71,7 +71,9 @@
 		"log_fns.h": "c",
 		"ft_printf.h": "c",
 		"ft_printf_internal.h": "c",
-		"cmath": "c"
+		"cmath": "c",
+		"prompter.h": "c",
+		"var.h": "c"
 	},
 	"files.exclude": {
 		"**/*.o": true,
