@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 02:27:03 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/18 13:21:08 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/19 14:52:40 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,14 @@
 #include <prompter/prompter.h>
 #include <context/context.h>
 #include <env/registry.h>
+#include <cmd/storage.h>
 
 int	main(int ac, char **av, char **env)
 {
 	t_prompter	*prompter;
 	t_envp		*envp;
+	t_cmds		*cmds;
+	int			exit_code;
 
 	(void)ac;
 	(void)av;
@@ -27,12 +30,14 @@ int	main(int ac, char **av, char **env)
 	logger()->info("Minishell starting..\n");
 	envp = get_envp();
 	prompter = get_prompter();
-	if (!prompter || !envp)
+	cmds = get_cmds();
+	if (!prompter || !envp || !cmds)
 		return (EXIT_FAILURE);
-	if (!envp->init(env))
+	if (!envp->init(env) || !cmds->store())
 		prompter->keep_prompting = false;
 	while (prompter->keep_prompting)
 		prompter->prompt();
+	exit_code = ft_atoi(envp->get_value("?"));
 	destroy_all_contexts();
-	return (0);
+	return (exit_code);
 }

@@ -1,17 +1,17 @@
-- prompter
- - directory manager @martiper
+- [x] prompter
+ - [x] directory manager @martiper
 
-- history @martiper
+- [x] history @martiper
 
-- env variables registry @martiper
- - parse env vars after $ (ONLY INSIDE STRINGS)
+- [x] env variables registry @martiper
 
 - parser @diogpere
+ - parse env vars after $ (ONLY INSIDE STRINGS)
  - argument parser (handle ' and ")
  - piping
   - parse < , > , << , >> , |
 
-TODO: - find more info about $? impl @diogpere
+TODO: - [x] find more info about $? impl @diogpere
 
 - signal handling @martiper
  - ctrl-c -> SIGINT
@@ -19,13 +19,13 @@ TODO: - find more info about $? impl @diogpere
  - ctrl-\ -> TBD
 
 - commands override
- - echo with -n (without new line) @diogpere
- - cd applying directory manager (supports only relative or absolute paths) @martiper
- - pwd -> directory manager @diogpere
- - export -> inject variable into the execve env param & add to env var registry @martiper
- - unset -> remove var from env var registry @martiper
- - env -> cat environment from the registry @diogpere
- - exit -> kill the console & cleanup all the contexts @diogpere
+ - [x] cmd storage @martiper
+ - [x] cd applying directory manager (supports only relative or absolute paths) @martiper
+ - [x] pwd -> directory manager @martiper
+ - [x] env -> cat environment from the registry @martiper
+ - [x] exit -> kill the console & cleanup all the contexts @martiper
+ - [ ] echo with -n (without new line) @diogpere
+ - [ ] export -> add to env var registry @diogpere
+ - [ ] unset -> remove var from env var registry @diogpere
 
-- wildcard support @martiper
-- inject all the initial env vars into the registry @diogpere
+- [x] inject all the initial env vars into the registry @martiper

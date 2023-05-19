@@ -1,31 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/19 11:22:54 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/19 14:41:04 by martiper         ###   ########.fr       */
+/*   Created: 2023/05/19 13:58:38 by martiper          #+#    #+#             */
+/*   Updated: 2023/05/19 14:01:09 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils/error.h"
-#include <env/registry.h>
+#include <shared.h>
+#include "cmd/cmd.h"
 
-int	display_error(char *msg)
+t_cmd	*cmds_create_cmd(char *cmd, t_cmd_handler handler)
 {
-	t_envp	*envp;
-	char	*err_code;
-	char	err_msg[1024];
+	t_cmd	*new;
 
-	envp = get_envp();
-	if (!envp)
-		return (1);
-	ft_sprintf(err_msg, 1024, "minishell: %s", msg);
-	perror(err_msg);
-	err_code = ft_itoa(errno);
-	envp->set("?", err_code);
-	free(err_code);
-	return (errno);
+	new = ft_calloc(1, sizeof(t_cmd));
+	if (!new)
+		return (NULL);
+	new->name = ft_strdup(cmd);
+	new->handler = handler;
+	return (new);
+}
+
+void	cmds_clear_cmd(t_cmd *cmd)
+{
+	if (!cmd)
+		return ;
+	if (cmd->name)
+		free(cmd->name);
+	free(cmd);
 }

@@ -76,7 +76,19 @@
 		"var.h": "c",
 		"dir.h": "c",
 		"dir_fns.h": "c",
-		"colors.h": "c"
+		"colors.h": "c",
+		"path.h": "c",
+		"*.tcc": "c",
+		"system_error": "c",
+		"new": "c",
+		"ostream": "c",
+		"ratio": "c",
+		"stdexcept": "c",
+		"streambuf": "c",
+		"functional": "c",
+		"cmd.h": "c",
+		"overrides.h": "c",
+		"cmd_fns.h": "c"
 	},
 	"files.exclude": {
 		"**/*.o": true,

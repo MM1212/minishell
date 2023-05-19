@@ -1,31 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   overrides.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/19 11:22:54 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/19 14:41:04 by martiper         ###   ########.fr       */
+/*   Created: 2023/05/19 14:11:19 by martiper          #+#    #+#             */
+/*   Updated: 2023/05/19 14:46:39 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils/error.h"
-#include <env/registry.h>
+#ifndef OVERRIDES_H
+# define OVERRIDES_H
 
-int	display_error(char *msg)
-{
-	t_envp	*envp;
-	char	*err_code;
-	char	err_msg[1024];
+int	cmds_overrides_cd_cmd(int ac, char **av);
+int	cmds_overrides_env_cmd(int ac, char **av);
+int	cmds_overrides_exit_cmd(int ac, char **av);
+int	cmds_overrides_pwd_cmd(int ac, char **av);
 
-	envp = get_envp();
-	if (!envp)
-		return (1);
-	ft_sprintf(err_msg, 1024, "minishell: %s", msg);
-	perror(err_msg);
-	err_code = ft_itoa(errno);
-	envp->set("?", err_code);
-	free(err_code);
-	return (errno);
-}
+#endif

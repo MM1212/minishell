@@ -9,14 +9,22 @@ EVENTS_SRC_FILES =		events/events.c
 LOGGER_SRC_FILES =		logger/functions.c logger/logger.c logger/ctx.c
 PROMPTER_SRC_FILES =	prompter/prompter.c
 ENVP_SRC_FILES =		env/fns.c env/fns2.c \
-						env/var.c env/registry.c
+						env/var.c env/registry.c \
+						env/path/ctx.c env/path/path.c
+CMDS_SRC_FILES = 		cmd/cmd.c cmd/ctx.c cmd/fns.c \
+						cmd/overrides.c \
+						cmd/overrides/cd.c \
+						cmd/overrides/env.c \
+						cmd/overrides/exit.c \
+						cmd/overrides/pwd.c
 DIR_SRC_FILES =			dir/fns.c dir/fns2.c \
 						dir/ctx.c
 UTILS_SRC_FILES = 		utils/error.c
 SRC_FILES =	$(CTX_SRC_FILES) $(EVENTS_SRC_FILES) \
 			$(LOGGER_SRC_FILES) $(PROMPTER_SRC_FILES) \
 			$(ENVP_SRC_FILES) $(DIR_SRC_FILES) \
-			$(UTILS_SRC_FILES) minishell.c
+			$(UTILS_SRC_FILES) $(CMDS_SRC_FILES) \
+			minishell.c
 
 SRCS = $(addprefix $(SRC_PATH)/, $(SRC_FILES))
 

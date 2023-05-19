@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 12:11:19 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/18 13:29:01 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/19 12:49:10 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <shared.h>
 # include "var.h"
+# include "path/path.h"
 
 typedef bool			(*t_env_registry_add_env_fn)(char *name, char *value);
 
@@ -31,6 +32,7 @@ typedef struct s_env_registry
 	bool						(*is_set)(char *name);
 	void						(*print)(void);
 	bool						(*init)(char **envp);
+	t_env_path					*path;
 }						t_env_registry;
 
 typedef t_env_registry	t_envp;

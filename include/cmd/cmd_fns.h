@@ -1,31 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   cmd_fns.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/19 11:22:54 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/19 14:41:04 by martiper         ###   ########.fr       */
+/*   Created: 2023/05/19 13:52:19 by martiper          #+#    #+#             */
+/*   Updated: 2023/05/19 14:14:15 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils/error.h"
-#include <env/registry.h>
+#ifndef CMD_FNS_H
+# define CMD_FNS_H
 
-int	display_error(char *msg)
-{
-	t_envp	*envp;
-	char	*err_code;
-	char	err_msg[1024];
+# include "cmd.h"
+# include <shared.h>
 
-	envp = get_envp();
-	if (!envp)
-		return (1);
-	ft_sprintf(err_msg, 1024, "minishell: %s", msg);
-	perror(err_msg);
-	err_code = ft_itoa(errno);
-	envp->set("?", err_code);
-	free(err_code);
-	return (errno);
-}
+bool	cmds_add_cmd(char *cmd, t_cmd_handler handler);
+bool	cmds_remove_cmd(char *cmd);
+bool	cmds_cmd_exists(char *cmd);
+int		cmds_exec_cmd(char *cmd, int ac, char **av);
+t_cmd	*cmds_get_cmd(char *cmd);
+bool	cmds_register_cmds(void);
+
+#endif

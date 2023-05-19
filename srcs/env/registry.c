@@ -6,12 +6,13 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 12:32:55 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/18 13:58:48 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/19 12:51:30 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env/registry.h"
 #include "env/registry_fns.h"
+#include "env/path/path_fns.h"
 #include <context/context.h>
 
 static size_t	env_registry_get_size(void)
@@ -51,6 +52,12 @@ static t_env_registry	*env_registry_create(void)
 	envp->is_set = env_registry_is_var_set;
 	envp->print = env_registry_print;
 	envp->init = env_registry_init;
+	envp->path = env_path_create();
+	if (!envp->path)
+	{
+		free(envp);
+		return (NULL);
+	}
 	return (envp);
 }
 
@@ -62,6 +69,7 @@ static void	env_registry_destroy(t_env_registry *registry)
 		&registry->vars, \
 		(void (*)(void *))env_delete_var \
 	);
+	free(registry->path);
 	free(registry);
 }
 

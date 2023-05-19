@@ -1,31 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   path_fns.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/19 11:22:54 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/19 14:41:04 by martiper         ###   ########.fr       */
+/*   Created: 2023/05/19 12:47:10 by martiper          #+#    #+#             */
+/*   Updated: 2023/05/19 12:51:05 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils/error.h"
-#include <env/registry.h>
+#ifndef PATH_FNS_H
+# define PATH_FNS_H
 
-int	display_error(char *msg)
-{
-	t_envp	*envp;
-	char	*err_code;
-	char	err_msg[1024];
+# include "path.h"
 
-	envp = get_envp();
-	if (!envp)
-		return (1);
-	ft_sprintf(err_msg, 1024, "minishell: %s", msg);
-	perror(err_msg);
-	err_code = ft_itoa(errno);
-	envp->set("?", err_code);
-	free(err_code);
-	return (errno);
-}
+char		**env_path_get_paths(void);
+char		*env_path_find_path(char *exec);
+t_env_path	*env_path_create(void);
+
+#endif

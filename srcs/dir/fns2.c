@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 11:08:09 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/19 11:33:41 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/19 14:40:17 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ bool	dir_go_to_path(char *path)
 {
 	t_envp	*envp;
 	char	*new_pwd;
-	char	error_msg[512];
 
 	envp = get_envp();
 	if (!envp)
@@ -37,11 +36,7 @@ bool	dir_go_to_path(char *path)
 	if (!path)
 		path = envp->get_value("HOME");
 	if (chdir(path) < 0)
-	{
-		ft_sprintf(error_msg, 512, "minishell: cd: %s: ", path);
-		display_error(error_msg);
 		return (false);
-	}
 	envp->set("OLDPWD", envp->get_value("PWD"));
 	new_pwd = getcwd(NULL, 0);
 	envp->set("PWD", new_pwd);

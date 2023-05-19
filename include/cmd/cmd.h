@@ -1,31 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   cmd.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/19 11:22:54 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/19 14:41:04 by martiper         ###   ########.fr       */
+/*   Created: 2023/05/19 13:50:59 by martiper          #+#    #+#             */
+/*   Updated: 2023/05/19 14:00:56 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils/error.h"
-#include <env/registry.h>
+#ifndef CMD_H
+# define CMD_H
 
-int	display_error(char *msg)
+typedef int	(*t_cmd_handler)(int ac, char **av);
+
+typedef struct s_cmd
 {
-	t_envp	*envp;
-	char	*err_code;
-	char	err_msg[1024];
+	char			*name;
+	t_cmd_handler	handler;
+}	t_cmd;
 
-	envp = get_envp();
-	if (!envp)
-		return (1);
-	ft_sprintf(err_msg, 1024, "minishell: %s", msg);
-	perror(err_msg);
-	err_code = ft_itoa(errno);
-	envp->set("?", err_code);
-	free(err_code);
-	return (errno);
-}
+t_cmd	*cmds_create_cmd(char *cmd, t_cmd_handler handler);
+void	cmds_clear_cmd(t_cmd *cmd);
+#endif

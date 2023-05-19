@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 12:44:04 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/19 10:49:05 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/19 13:55:22 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ typedef enum e_context_ids
 {
 	CONTEXT_ID_EVENT_MANAGER,
 	CONTEXT_ID_LOGGER,
+	CONTEXT_ID_CMD_STORAGE,
 	CONTEXT_ID_PROMPTER,
 	CONTEXT_ID_DIRECTORY_MANAGER,
 	CONTEXT_ID_ENV_REGISTRY
