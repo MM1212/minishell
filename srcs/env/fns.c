@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 12:43:20 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/18 13:21:59 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/19 11:29:38 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,10 @@ void	env_registry_set_var(char *name, char *value)
 	if (var)
 	{
 		free(var->value);
-		var->value = value;
+		var->value = ft_strdup(value);
 	}
 	else
-		registry->add(name, value);
+		registry->add(ft_strdup(name), ft_strdup(value));
 }
 
 bool	env_registry_unset_var(char *name)

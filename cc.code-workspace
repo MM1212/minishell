@@ -73,7 +73,10 @@
 		"ft_printf_internal.h": "c",
 		"cmath": "c",
 		"prompter.h": "c",
-		"var.h": "c"
+		"var.h": "c",
+		"dir.h": "c",
+		"dir_fns.h": "c",
+		"colors.h": "c"
 	},
 	"files.exclude": {
 		"**/*.o": true,

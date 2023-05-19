@@ -1,35 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   shared.h                                           :+:      :+:    :+:   */
+/*   dir.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/17 09:58:58 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/19 11:01:01 by martiper         ###   ########.fr       */
+/*   Created: 2023/05/19 10:42:12 by martiper          #+#    #+#             */
+/*   Updated: 2023/05/19 11:09:37 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*
-	Groups all system files that we might need.
-*/
+#ifndef DIR_H
+# define DIR_H
 
-#ifndef SHARED_H
-# define SHARED_H
+# include <env/registry.h>
+# include <shared.h>
 
-# include <signal.h>
-# include <sys/types.h>
-# include <sys/wait.h>
-# include <sys/ioctl.h>
-# include <sys/stat.h>
-# include <unistd.h>
-# include <stdlib.h>
-# include <libft.h>
-# include <stdio.h>
-# include <stdbool.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <dirent.h>
-# include <termios.h>
+typedef struct s_dir
+{
+	char	*(*get_relative)(char *buffer, size_t size);
+	char	*(*get_full)(void);
+	char	*(*get_home)(void);
+	bool	(*is_dir)(char *path);
+	bool	(*is_file)(char *path);
+	bool	(*is_executable)(char *path);
+	bool	(*go_to)(char *path);
+}	t_dir;
+
+t_dir	*get_dir(void);
 
 #endif

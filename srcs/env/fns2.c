@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 13:15:54 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/18 13:52:12 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/19 11:29:00 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ bool	env_registry_init(char **envp)
 			logger()->error("Failed to build env var %s!\n", envp[idx]);
 			return (false);
 		}
-		registry->set(var.name, var.value);
+		registry->add(var.name, var.value);
 		idx++;
 	}
 	return (true);

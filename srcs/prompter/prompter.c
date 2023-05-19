@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 10:49:14 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/18 13:55:52 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/19 11:31:51 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <utils/colors.h>
 #include <log/log.h>
 #include <env/registry.h>
+#include <dir/dir.h>
 
 static void prompter_get_prefix(char *prefix)
 {
@@ -59,12 +60,19 @@ static void	prompter_prompt(void)
 		get_prompter()->keep_prompting = false;
 	else if (ft_str_startswith(line, "clear"))
 	{
-
 		int abc = system("clear");
 		(void)abc;
 	}
 	else if (ft_str_startswith(line, "env"))
 		get_envp()->print();
+	else if (ft_str_startswith(line, "cd"))
+	{
+		char **args = ft_split(line, " ");
+		get_dir()->go_to(args[1]);
+		ft_split_free(args);
+	}
+	else if (ft_str_startswith(line, "$"))
+		ft_printf("%s\n", get_envp()->get_value(line + 1));
 	else
 	{
 		logger()->debug(\

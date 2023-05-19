@@ -1,35 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   shared.h                                           :+:      :+:    :+:   */
+/*   dir_fns.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/17 09:58:58 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/19 11:01:01 by martiper         ###   ########.fr       */
+/*   Created: 2023/05/19 10:45:05 by martiper          #+#    #+#             */
+/*   Updated: 2023/05/19 11:08:51 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*
-	Groups all system files that we might need.
-*/
+#ifndef DIR_FNS_H
+# define DIR_FNS_H
 
-#ifndef SHARED_H
-# define SHARED_H
+# include "dir/dir.h"
 
-# include <signal.h>
-# include <sys/types.h>
-# include <sys/wait.h>
-# include <sys/ioctl.h>
-# include <sys/stat.h>
-# include <unistd.h>
-# include <stdlib.h>
-# include <libft.h>
-# include <stdio.h>
-# include <stdbool.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <dirent.h>
-# include <termios.h>
+char	*dir_get_relative_path(char *buffer, size_t size);
+char	*dir_get_full_path(void);
+char	*dir_get_home_path(void);
+bool	dir_is_path_a_dir(char *path);
+bool	dir_is_path_a_file(char *path);
+bool	dir_is_path_an_executable(char *path);
+bool	dir_go_to_path(char *path);
 
 #endif
