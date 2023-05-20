@@ -18,115 +18,91 @@ t_simple_cmds	*cmds_lstlast(t_simple_cmds *lst)
 	return (lst);
 }
 
+void    create_lexer_node(t_lexer_builder* b, char *str, int token)
+{
+    if (token == 0)
+    {
+        b->j = b->i;
+        while (b->str[b->j] && b->str[b->j] != ' ')
+            b->j++;
+        b->node->str = ft_substr(b->str, b->i, b->j - b->i);
+    }
+    else
+        b->node->str = ft_strdup(str);
+    b->node->token = token;
+    b->node->next = NULL;
+    if (!b->start)
+        b->start = b->node;
+    else
+    {
+        lexer_lstlast(b->start)->next = b->node;
+        b->node->prev = lexer_lstlast(b->start);
+    }
+    if (token == PIPE)
+        b->str[b->i] = 2;
+    else if (token == LESS_LESS || token == GREAT_GREAT)
+        b->i++;
+    else if (token == 0)
+        b->i += b->j - b->i - 1;
+}
+
+void    handle_quotes(t_lexer_builder *b)
+{
+    b->str[b->i] = 3;
+    b->j = b->i;
+    while (b->str[b->j] && b->str[b->j] != '\"')
+        b->j++;
+    b->str[b->j] = 3;
+    if (!b->str[b->j])
+        printf("error\n"); // PROGRAM EXITS WITH NO MATCHING QUOTE
+    b->node->str = ft_substr(b->str, b->i + 1, b->j - b->i - 1);
+    b->node->token = 0;
+    b->node->next = NULL;
+    b->i += b->j - b->i; 
+    if (!b->start)
+        b->start = b->node;
+    else
+    {
+        lexer_lstlast(b->start)->next = b->node;
+        b->node->prev = lexer_lstlast(b->start);
+    }   
+}
+
+void    lexer_constructor(t_lexer_builder *b, char *str)
+{
+    b->i = -1;
+    b->str = str;
+    b->start = NULL;
+}
+
 t_lexer *build_lexer(char *str)
 {
-    t_lexer *start;
-    t_lexer *node;
-    int i;
-    int j;
+    t_lexer_builder b;
 
-    i = 0;
-    start = NULL;
-    while (str[i])
+    lexer_constructor(&b, str);
+    while (str[++b.i])
     {
-        if (str[i] == ' ')
-        {
-            str[i] = 3;
-            i++;
-        }
-        node = (t_lexer *)malloc(sizeof(t_lexer));
-        if (!node)
+        if (str[b.i] == ' ' || str[b.i] == 3)
+            str[b.i++] = 3;
+        b.node = (t_lexer *)malloc(sizeof(t_lexer));
+        if (!b.node)
             return (0);
-        if (str[i] == '|')
-        {
-            str[i] = 2;
-            node->str = ft_strdup("|");
-            node->token = PIPE;
-            node->next = NULL;
-            if (!start)
-                start = node;
-            else
-            {
-                lexer_lstlast(start)->next = node;
-                node->prev = lexer_lstlast(start);
-            }
-        }
-        else if (str[i] == '<' && str[i + 1] == '<' && str[i + 2] == ' ')
-        {
-            node->str = ft_strdup("<<");
-            node->token = LESS_LESS;
-            node->next = NULL;
-            i += 1;
-            if (!start)
-                start = node;
-            else
-            {
-                lexer_lstlast(start)->next = node;
-                node->prev = lexer_lstlast(start);
-            }
-        }
-        else if (str[i] == '>' && str[i + 1] == '>' && (str[i + 2] == ' ' || !str[i + 2]))
-        {
-            node->str = ft_strdup(">>");
-            node->token = GREAT_GREAT;
-            node->next = NULL;
-            i += 1;
-            if (!start)
-                start = node;
-            else
-            {
-                lexer_lstlast(start)->next = node;
-                node->prev = lexer_lstlast(start);
-            }
-        }
-        else if (str[i] == '<' && str[i + 1] == ' ')
-        {
-            node->str = ft_strdup("<");
-            node->token = LESS;
-            node->next = NULL;
-            if (!start)
-                start = node;
-            else
-            {
-                lexer_lstlast(start)->next = node;
-                node->prev = lexer_lstlast(start);
-            }
-        }
-        else if (str[i] == '>' && str[i + 1] == ' ')
-        {
-            node->str = ft_strdup(">");
-            node->token = GREAT;
-            node->next = NULL;
-            if (!start)
-                start = node;
-            else
-            {
-                lexer_lstlast(start)->next = node;
-                node->prev = lexer_lstlast(start);
-            }
-        }
+        if (str[b.i] == '\"')
+            handle_quotes(&b);
+        else if (str[b.i] == '|')
+            create_lexer_node(&b, "|", PIPE);
+        else if (str[b.i] == '<' && str[b.i + 1] == '<' && str[b.i + 2] == ' ')
+            create_lexer_node(&b, "<<", LESS_LESS);
+        else if (str[b.i] == '>' && str[b.i + 1] == '>' && (str[b.i + 2] == ' ' || !str[b.i + 2]))
+            create_lexer_node(&b, ">>", GREAT_GREAT);
+        else if (str[b.i] == '<' && str[b.i + 1] == ' ')
+            create_lexer_node(&b, "<", LESS);
+        else if (str[b.i] == '>' && str[b.i + 1] == ' ')
+            create_lexer_node(&b, ">", GREAT);
         else
-        {
-            j = i;
-            while (str[j] && str[j] != ' ')
-            {
-                j++;
-            }   
-            node->str = ft_substr(str, i, j - i);
-            node->token = 0;
-            node->next = NULL;
-            i += j - i - 1;
-            if (!start)
-                start = node;
-            else
-            {
-                lexer_lstlast(start)->next = node;
-                node->prev = lexer_lstlast(start);
-            }
-        }
-        i++;
+            create_lexer_node(&b, 0, 0);
     }
-    return (start);
+    return (b.start);
 }
 
 t_simple_cmds   *build_commands(t_lexer *guide)
@@ -180,7 +156,7 @@ int main()
     t_lexer         *node;
     char             *str;
 
-    str = ft_strdup("ls -l | cat -e | wc -l");
+    str = ft_strdup("ls -l | \"junk here and all AHCS\" | wc -l | > cat");
     start = build_lexer(str);
     node = start;
     while (node)
