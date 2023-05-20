@@ -140,11 +140,8 @@ t_simple_cmds   *build_commands(t_lexer *guide)
             start = node;
         else
             cmds_lstlast(start)->next = node;
-        if (guide != NULL)
-        {
-            if (guide && guide->token == PIPE)
-                guide = guide->next;
-        }
+        if (guide && guide->token == PIPE)
+            guide = guide->next;
     }
     return (start);
 }
