@@ -13,6 +13,7 @@ typedef enum s_tokens
 	LESS_LESS,
 }	t_tokens;
 
+
 typedef struct s_lexer
 {
 	char			*str;
@@ -21,6 +22,15 @@ typedef struct s_lexer
 	struct s_lexer	*next;
 	struct s_lexer	*prev;
 }	t_lexer;
+
+typedef struct s_lexer_builder
+{
+    int     i;
+    int     j;
+    char    *str;
+    t_lexer *start;
+    t_lexer *node;
+}               t_lexer_builder;
 
 typedef struct s_simple_cmds
 {
