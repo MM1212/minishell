@@ -67,7 +67,7 @@ all: $(NAME)
 ### LIBS ###
 
 $(LIBFT_ARCH):
-	@make -C $(LIBFT_PATH) --no-print-directory
+	@make -C $(LIBFT_PATH) --no-print-directory --silent
 
 ### END OF LIBS ###
 
@@ -78,19 +78,21 @@ $(NAME): $(LIBFT_ARCH) $(OBJS)
 
 $(OBJ_DIR)/%.o: %.c
 	@echo "$(TAG) compiling $(YELLOW)$<$(RESET).."
-	@mkdir -p $(OBJ_DIR)/$(dir $<)
+	@mkdir -p $(OBJ_DIR)/$(<D)
 	@$(CC) $(CFLAGS) $(OBJ_FLAGS) -c $< -o $@
 
 clean:
 	@rm -rf $(OBJS) $(OBJ_DIR)
 	@make -C $(LIBFT_PATH) clean --no-print-directory
-
+	@echo "$(TAG) cleaned $(YELLOW)objects!$(RESET)"
 fclean: clean
 	@rm -rf $(NAME)
 	@make -C $(LIBFT_PATH) fclean --no-print-directory
-
+	@echo "$(TAG) cleaned $(YELLOW)archive!$(RESET)"
 watch:
 	@echo "$(TAG) watching for changes.."
 	@while true; do ($(MAKE) -q --no-print-directory || $(MAKE) --no-print-directory); sleep 1; done;
 
 re: fclean all
+
+.PHONY: all clean fclean re watch
