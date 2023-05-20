@@ -17,14 +17,15 @@ CMDS_SRC_FILES = 		cmd/cmd.c cmd/ctx.c cmd/fns.c \
 						cmd/overrides/env.c \
 						cmd/overrides/exit.c \
 						cmd/overrides/pwd.c
+SIGNAL_SRC_FILES =		signals/signals.c
 DIR_SRC_FILES =			dir/fns.c dir/fns2.c \
 						dir/ctx.c
-UTILS_SRC_FILES = 		utils/error.c
+UTILS_SRC_FILES = 		utils/error.c utils/quit.c
 SRC_FILES =	$(CTX_SRC_FILES) $(EVENTS_SRC_FILES) \
 			$(LOGGER_SRC_FILES) $(PROMPTER_SRC_FILES) \
 			$(ENVP_SRC_FILES) $(DIR_SRC_FILES) \
 			$(UTILS_SRC_FILES) $(CMDS_SRC_FILES) \
-			minishell.c
+			$(SIGNAL_SRC_FILES) minishell.c
 
 SRCS = $(addprefix $(SRC_PATH)/, $(SRC_FILES))
 

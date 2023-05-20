@@ -1,34 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   quit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/19 14:16:37 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/20 12:19:13 by martiper         ###   ########.fr       */
+/*   Created: 2023/05/20 12:19:21 by martiper          #+#    #+#             */
+/*   Updated: 2023/05/20 12:23:41 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cmd/overrides.h"
-#include <prompter/prompter.h>
 #include <env/registry.h>
-#include <errno.h>
+#include <prompter/prompter.h>
+#include <context/context.h>
+#include "utils/quit.h"
 
-int	cmds_overrides_exit_cmd(int ac, char **av)
+void	quit(int exit_code)
 {
-	if (ac > 1)
-	{
-		errno = EINVAL;
-		return (errno);
-	}
-	if (av[0] && ft_atoi(av[0]) == 0 && av[0][0] != '0')
-	{
-		errno = EINVAL;
-		return (errno);
-	}
-	if (av[0])
-		get_envp()->set("?", av[0]);
-	get_prompter()->keep_prompting = false;
-	return (0);
+	if (exit_code == -1)
+		exit_code = ft_atoi(get_envp()->get_value("?"));
+	destroy_all_contexts();
+	exit(exit_code);
 }

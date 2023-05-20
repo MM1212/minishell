@@ -1,34 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   quit.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/19 14:16:37 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/20 12:19:13 by martiper         ###   ########.fr       */
+/*   Created: 2023/05/20 12:23:23 by martiper          #+#    #+#             */
+/*   Updated: 2023/05/20 12:24:36 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cmd/overrides.h"
-#include <prompter/prompter.h>
-#include <env/registry.h>
-#include <errno.h>
+#ifndef QUIT_H
+# define QUIT_H
 
-int	cmds_overrides_exit_cmd(int ac, char **av)
-{
-	if (ac > 1)
-	{
-		errno = EINVAL;
-		return (errno);
-	}
-	if (av[0] && ft_atoi(av[0]) == 0 && av[0][0] != '0')
-	{
-		errno = EINVAL;
-		return (errno);
-	}
-	if (av[0])
-		get_envp()->set("?", av[0]);
-	get_prompter()->keep_prompting = false;
-	return (0);
-}
+/*
+**	Quit the program with the given exit code.
+**
+**	@param exit_code The exit code. If `-1` is given,
+**the exit code will be the value of the $? env variable.
+ */
+void	quit(int exit_code);
+
+#endif

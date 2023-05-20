@@ -1,34 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   signals.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/19 14:16:37 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/20 12:19:13 by martiper         ###   ########.fr       */
+/*   Created: 2023/05/20 12:09:56 by martiper          #+#    #+#             */
+/*   Updated: 2023/05/20 12:10:30 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cmd/overrides.h"
-#include <prompter/prompter.h>
-#include <env/registry.h>
-#include <errno.h>
+#ifndef SIGNALS_H
+# define SIGNALS_H
 
-int	cmds_overrides_exit_cmd(int ac, char **av)
-{
-	if (ac > 1)
-	{
-		errno = EINVAL;
-		return (errno);
-	}
-	if (av[0] && ft_atoi(av[0]) == 0 && av[0][0] != '0')
-	{
-		errno = EINVAL;
-		return (errno);
-	}
-	if (av[0])
-		get_envp()->set("?", av[0]);
-	get_prompter()->keep_prompting = false;
-	return (0);
-}
+# include <shared.h>
+
+void	signals_hook(void);
+
+#endif

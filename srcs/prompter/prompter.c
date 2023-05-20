@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 10:49:14 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/19 14:28:51 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/20 13:08:31 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <dir/dir.h>
 #include <cmd/storage.h>
 #include <utils/error.h>
+#include <utils/quit.h>
 
 static void prompter_get_prefix(char *prefix)
 {
@@ -54,28 +55,16 @@ static void	prompter_prompt(void)
 	char	prefix[1024];
 
 	prompter_get_prefix(prefix);
+	get_prompter()->prompting = true;
 	line = readline(prefix);
+	get_prompter()->prompting = false;
 	if (!line || line[0] == '\n' || line[0] == '\0')
+	{
+		if (!line)
+			quit(0);
 		return ;
+	}
 	add_history(line);
-	// if (ft_str_startswith(line, "exit"))
-	// 	get_prompter()->keep_prompting = false;
-	// else if (ft_str_startswith(line, "clear"))
-	// {
-	// 	int abc = system("clear");
-	// 	(void)abc;
-	// }
-	// else if (ft_str_startswith(line, "env"))
-	// 	get_envp()->print();
-	// else if (ft_str_startswith(line, "cd"))
-	// {
-	// 	char **args = ft_split(line, " ");
-	// 	get_dir()->go_to(args[1]);
-	// 	ft_split_free(args);
-	// }
-	// else if (ft_str_startswith(line, "$"))
-	// 	ft_printf("%s\n", get_envp()->get_value(line + 1));
-	// else
 	{
 		char **args = ft_split(line, " ");
 		if (args)
@@ -93,8 +82,8 @@ static void	prompter_prompt(void)
 			{
 				logger()->debug(\
 					"got line: %s at: %s\n", \
-					line,
-					get_envp()->get_value("PWD")
+					line, \
+					get_envp()->get_value("PWD") \
 				);
 				char *exec_path = get_envp()->path->find_path(args[0]);
 				if (exec_path)
@@ -109,6 +98,18 @@ static void	prompter_prompt(void)
 	free(line);
 }
 
+static void prompter_skip_current_line(void)
+{
+	size_t	wrote;
+
+	(void)wrote;
+	wrote = write(1, "^C", 2);
+	rl_replace_line("", 1);
+	wrote = write(0, "\r\n", 2);
+	rl_on_new_line();
+	rl_redisplay();
+}
+
 static t_prompter	*prompter_create(void)
 {
 	t_prompter	*prompter;
@@ -116,8 +117,10 @@ static t_prompter	*prompter_create(void)
 	prompter = ft_calloc(1, sizeof(t_prompter));
 	if (!prompter)
 		return (NULL);
-	prompter->prompt = prompter_prompt;
 	prompter->keep_prompting = true;
+	prompter->prompt = prompter_prompt;
+	prompter->skip_current_line = prompter_skip_current_line;
+	rl_catch_signals = 0;
 	return (prompter);
 }
 
