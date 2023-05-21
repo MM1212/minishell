@@ -1,22 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   overrides.h                                        :+:      :+:    :+:   */
+/*   int_expand.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/19 14:11:19 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/21 04:28:21 by martiper         ###   ########.fr       */
+/*   Created: 2023/05/21 04:28:59 by martiper          #+#    #+#             */
+/*   Updated: 2023/05/21 04:43:22 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef OVERRIDES_H
-# define OVERRIDES_H
+// TODO: DONT FORGET TO REMOVE!!!!!!!!!
 
-int	cmds_overrides_cd_cmd(int ac, char **av);
-int	cmds_overrides_env_cmd(int ac, char **av);
-int	cmds_overrides_exit_cmd(int ac, char **av);
-int	cmds_overrides_pwd_cmd(int ac, char **av);
-int	cmds_overrides_internal_expand_cmd(int ac, char **av);
+#include "cmd/overrides.h"
+#include <env/registry.h>
+#include <errno.h>
 
-#endif
+int	cmds_overrides_internal_expand_cmd(int ac, char **av)
+{
+	char	*expanded;
+
+	if (ac != 1)
+	{
+		errno = 1;
+		return (errno);
+	}
+	expanded = get_envp()->expand_arg(av[0]);
+	ft_printf("Got: '%s' and expanded to '%s'\n", av[0], expanded);
+	free(expanded);
+	return (0);
+}

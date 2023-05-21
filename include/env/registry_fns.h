@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 12:27:06 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/18 13:30:24 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/21 04:20:50 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,6 @@ bool		env_registry_is_var_set(char *name);
 bool		env_registry_init(char **envp);
 char		**env_registry_get_env(void);
 void		env_registry_print(void);
+char		*env_registry_expand_arg(char *arg);
 
 #endif

@@ -16,7 +16,8 @@ CMDS_SRC_FILES = 		cmd/cmd.c cmd/ctx.c cmd/fns.c \
 						cmd/overrides/cd.c \
 						cmd/overrides/env.c \
 						cmd/overrides/exit.c \
-						cmd/overrides/pwd.c
+						cmd/overrides/pwd.c \
+						cmd/overrides/int_expand.c
 SIGNAL_SRC_FILES =		signals/signals.c
 DIR_SRC_FILES =			dir/fns.c dir/fns2.c \
 						dir/ctx.c

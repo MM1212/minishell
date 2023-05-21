@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 14:10:15 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/19 14:54:34 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/21 04:28:52 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ bool	cmds_register_cmds(void)
 	if (!cmds->add("exit", cmds_overrides_exit_cmd))
 		return (false);
 	if (!cmds->add("pwd", cmds_overrides_pwd_cmd))
+		return (false);
+	if (!cmds->add("int_expand", cmds_overrides_internal_expand_cmd))
 		return (false);
 	return (true);
 }
