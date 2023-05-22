@@ -56,32 +56,54 @@ void    create_lexer_node(t_lexer_builder* b, char *str, int token)
         b->i += b->j - b->i - 1;
 }
 
-void    handle_quotes(t_lexer_builder *b)
+void    handle_double_quotes(t_lexer_builder *b)
 {
-    b->str[b->i] = 3;
-    b->j = b->i;
+    b->j = b->i + 1;
     while (b->str[b->j] && b->str[b->j] != '\"')
         b->j++;
-    if (b->str[b->j] == '\"')
-        b->str[b->j] = 3;
-    if (!b->str[b->j])
+    if (b->j - b->i > 1 && b->str[b->j] == '\"')
     {
-        printf("error quotes\n"); // PROGRAM EXITS WITH NO MATCHING QUOTE
-        exit (1);
+        b->node->str = ft_substr(b->str, b->i + 1, b->j - b->i - 1);
+        if (b->node->str[0])
+            b->node->str = ft_strjoin("\"", b->node->str);
+        b->node->token = 0;
+        b->node->next = NULL;
+        b->i += b->j - b->i; 
+        if (!b->start)
+            b->start = b->node;
+        else
+        {
+            lexer_lstlast(b->start)->next = b->node;
+            b->node->prev = lexer_lstlast(b->start);
+        } 
+        b->node->i = b->index;
+        b->index++;
     }
-    b->node->str = ft_substr(b->str, b->i + 1, b->j - b->i - 1);
-    b->node->token = 0;
-    b->node->next = NULL;
-    b->i += b->j - b->i; 
-    if (!b->start)
-        b->start = b->node;
-    else
+}
+
+void    handle_quotes(t_lexer_builder *b)
+{
+    b->j = b->i + 1;
+    while (b->str[b->j] && b->str[b->j] != '\'')
+        b->j++;
+    if (b->j - b->i > 1 && b->str[b->j] == '\'')
     {
-        lexer_lstlast(b->start)->next = b->node;
-        b->node->prev = lexer_lstlast(b->start);
-    } 
-    b->node->i = b->index;
-    b->index++;
+        b->node->str = ft_substr(b->str, b->i + 1, b->j - b->i - 1);
+        if (b->node->str[0])
+            b->node->str = ft_strjoin("'", b->node->str);
+        b->node->token = 0;
+        b->node->next = NULL;
+        b->i += b->j - b->i; 
+        if (!b->start)
+            b->start = b->node;
+        else
+        {
+            lexer_lstlast(b->start)->next = b->node;
+            b->node->prev = lexer_lstlast(b->start);
+        } 
+        b->node->i = b->index;
+        b->index++;
+    }
 }
 
 void    lexer_constructor(t_lexer_builder *b, char *str)
@@ -90,6 +112,27 @@ void    lexer_constructor(t_lexer_builder *b, char *str)
     b->i = -1;
     b->str = str;
     b->start = NULL;
+}
+
+void    handle_tokens(t_lexer_builder *b, char *str)
+{
+    if (str[b->i] == '\'')
+            handle_quotes(b);
+    else if (str[b->i] == '\"')
+        handle_double_quotes(b);
+    else if (str[b->i] == '|')
+            create_lexer_node(b, "|", PIPE);
+    else if (str[b->i] == '<' && str[b->i + 1] == '<' && str[b->i + 2] == ' ')
+        create_lexer_node(b, "<<", LESS_LESS);
+    else if (str[b->i] == '>' && str[b->i + 1] == '>' && (str[b->i + 2] == ' ' \
+        || !str[b->i + 2]))
+        create_lexer_node(b, ">>", GREAT_GREAT);
+    else if (str[b->i] == '<' && str[b->i + 1] == ' ')
+        create_lexer_node(b, "<", LESS);
+    else if (str[b->i] == '>' && str[b->i + 1] == ' ')
+        create_lexer_node(b, ">", GREAT);
+    else
+        create_lexer_node(b, 0, 0);
 }
 
 t_lexer *build_lexer(char *str)
@@ -103,22 +146,10 @@ t_lexer *build_lexer(char *str)
             str[b.i++] = 3;
         b.node = (t_lexer *)malloc(sizeof(t_lexer));
         if (!b.node)
-            return (0);
-        if (str[b.i] == '\"')
-            handle_quotes(&b);
-        else if (str[b.i] == '|')
-            create_lexer_node(&b, "|", PIPE);
-        else if (str[b.i] == '<' && str[b.i + 1] == '<' && str[b.i + 2] == ' ')
-            create_lexer_node(&b, "<<", LESS_LESS);
-        else if (str[b.i] == '>' && str[b.i + 1] == '>' && (str[b.i + 2] == ' ' \
-            || !str[b.i + 2]))
-            create_lexer_node(&b, ">>", GREAT_GREAT);
-        else if (str[b.i] == '<' && str[b.i + 1] == ' ')
-            create_lexer_node(&b, "<", LESS);
-        else if (str[b.i] == '>' && str[b.i + 1] == ' ')
-            create_lexer_node(&b, ">", GREAT);
-        else
-            create_lexer_node(&b, 0, 0);
+            return (0); // ERROR
+        handle_tokens(&b, str);
+        if (!str[b.i])
+            break;
     }
     return (b.start);
 }
@@ -198,27 +229,31 @@ t_simple_cmds   *build_commands(t_lexer *guide)
     return (b.start);
 }
 
-int     check_errors(t_lexer *guide)
+int     check_errors(t_lexer *guide, char *str)
 {
     int     i;
-    int     count;
+    int     count_double;
+    int     count_single;
 
-    count = 0;
-    if (!guide->str)
-        return (1);
+    count_double = 0;
+    count_single = 0;
     while (guide)
     {
-        i = -1;
         if (guide->token > 0 && !guide->next)
             return (1); // ERROR
         if (guide->token != 0 && guide->token == guide->next->token)
             return (1); // ERROR 
-        while (guide->str[++i])
-            if (guide->str[i] == '\'')
-                count++;
         guide = guide->next;
     }
-    if (count % 2 != 0)
+    i = -1;
+    while (str[++i])
+    {
+        if (str[i] == '\"')
+            count_double++;
+        else if (str[i] == '\'')
+            count_single++;
+    }
+    if (count_double % 2 != 0 || count_single % 2 != 0)
         return (1); // ERROR
     return (0);
 }
@@ -230,7 +265,7 @@ int main()
     t_lexer         *node;
     char             *str;
 
-    str = ft_strdup("ls | rev > file");
+    str = ft_strdup("ls | rev > file >> file2 | wc -l | echo \"file3file4\" | cat > file5 >> file6");
     // str = ft_strdup("ls -l | \"junk here and all AHCS\" | wc -l | cat >> \" \"");
     start = build_lexer(str);
     if (!start)
@@ -243,7 +278,7 @@ int main()
         printf("\n");
         node = node->next;
     }
-    if (check_errors(start))
+    if (check_errors(start, str))
     {
         printf("check_errors\n");
         return (1); // ERROR
@@ -256,10 +291,14 @@ int main()
     {
         printf("argument: %s\n", cmds->str[0]);
         printf("option: %s\n", cmds->str[1]);
+        if (ft_strncmp(cmds->str[0], "echo", 4) == 0)
+         printf("option2: %s\n", cmds->str[2]);
         if (cmds->redirections)
         {
             printf("redirections: %s\n", cmds->redirections->str);
             printf("token: %u\n", cmds->redirections->token);
+            // printf("redirections2: %s\n", cmds->redirections->next->str);
+            // printf("token2: %u\n", cmds->redirections->next->token);
         }
         printf("\n");
         cmds = cmds->next;
