@@ -6,13 +6,13 @@
 /*   By: diogpere <diogpere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 09:02:43 by diogpere          #+#    #+#             */
-/*   Updated: 2023/05/01 21:46:45 by diogpere         ###   ########.fr       */
+/*   Updated: 2023/05/02 17:51:59 by diogpere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/pipex_bonus.h"
 
-void	args_prep(t_info *info, char **argv)
+int	args_prep(t_info *info, char **argv)
 {
 	int	j;
 
@@ -20,10 +20,11 @@ void	args_prep(t_info *info, char **argv)
 		info->i += 1;
 	info->args = ft_split(argv[info->i], ' ');
 	j = -1;
-	while (info->envp_paths[++j])
+	while (info->envp_paths && info->envp_paths[++j])
 		if (path_check(info, j))
-			return ;
+			return (1);
 	info->arg_path = 0;
+	return (0);
 }
 
 int	path_check(t_info *data, int j)
@@ -52,6 +53,8 @@ int	check_char(t_info *info)
 	int		j;
 
 	j = -1;
+	if (!info->args)
+		return (0);
 	while (info->args[0] && info->args[0][++j])
 	{
 		if (info->args[0][j] == '/')

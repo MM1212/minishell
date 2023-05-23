@@ -6,7 +6,7 @@
 /*   By: diogpere <diogpere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 17:41:55 by diogpere          #+#    #+#             */
-/*   Updated: 2023/05/01 21:25:09 by diogpere         ###   ########.fr       */
+/*   Updated: 2023/05/02 18:05:26 by diogpere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,20 +75,24 @@ char	*line_join(char *s1, char *s2)
 	return (new_str);
 }
 
-int	get_line(int fd, char *delim)
+void	clean_buffer(char *buffer)
+{
+	int	i;
+
+	i = 0;
+	while (buffer[i])
+		buffer[i++] = '\0';
+	exit (0);
+}
+
+int	get_line(t_info *info, char *delim)
 {
 	static char	buffer[BUFFER_SIZE + 1];
 	char		*line;
-	int			i;
 
 	line = 0;
 	if (read(0, 0, 0) < 0 || BUFFER_SIZE <= 0)
-	{
-		i = 0;
-		while (buffer[i])
-			buffer[i++] = '\0';
-		return (0);
-	}
+		clean_buffer(buffer);
 	if (*buffer || read(0, buffer, BUFFER_SIZE) > 0)
 		line = line_join(line, buffer);
 	(ft_tidy(buffer));
@@ -100,7 +104,7 @@ int	get_line(int fd, char *delim)
 	}
 	if (!line)
 		return (0);
-	write(fd, line, ft_strlen(line));
+	write(info->pipe[1], line, ft_strlen(line));
 	free(line);
 	return (1);
 }
