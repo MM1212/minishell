@@ -18,18 +18,6 @@ t_simple_cmds	*cmds_lstlast(t_simple_cmds *lst)
 	return (lst);
 }
 
-t_lexer	*ft_lexerclear_one(t_lexer **lst)
-{
-	if ((*lst)->str)
-	{
-		free((*lst)->str);
-		(*lst)->str = NULL;
-	}
-	free(*lst);
-	*lst = NULL;
-	return (NULL);
-}
-
 void	ft_lexerdel_first(t_lexer **lst)
 {
 	t_lexer	*node;
@@ -55,4 +43,32 @@ void	ft_lexeradd_back(t_lexer **lst, t_lexer *new)
 		tmp = tmp->next;
 	tmp->next = new;
 	new->prev = tmp;
+}
+
+void    ft_lexerdelone(t_lexer **lst, int key)
+{
+    t_lexer *node;
+    t_lexer *prev;
+     t_lexer *start;
+
+    start = *lst;
+    node = start;
+    if ((*lst)->i == key)
+    {
+        ft_lexerdel_first(lst);
+        return;
+    }
+    while (node && node->i != key)
+    {
+        prev = node;
+        node = node->next;
+    }
+    if (node)
+        prev->next = node->next;
+    else
+        prev->next = NULL;
+    if (prev->next)
+        prev->next->prev = prev;
+    ft_lexerclear_one(&node);
+    *lst = start;
 }
