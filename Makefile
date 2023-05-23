@@ -18,6 +18,9 @@ CMDS_SRC_FILES = 		cmd/cmd.c cmd/ctx.c cmd/fns.c \
 						cmd/overrides/exit.c \
 						cmd/overrides/pwd.c \
 						cmd/overrides/int_expand.c
+RUNNER_SRC_FILES = 		runner/runner.c
+PARSER_SRC_FILES = 		parser/parsing_errors.c parser/parsing_lexer.c \
+						parser/parsing_utils.c parser/parsing.c
 SIGNAL_SRC_FILES =		signals/signals.c
 DIR_SRC_FILES =			dir/fns.c dir/fns2.c \
 						dir/ctx.c
@@ -26,7 +29,8 @@ SRC_FILES =	$(CTX_SRC_FILES) $(EVENTS_SRC_FILES) \
 			$(LOGGER_SRC_FILES) $(PROMPTER_SRC_FILES) \
 			$(ENVP_SRC_FILES) $(DIR_SRC_FILES) \
 			$(UTILS_SRC_FILES) $(CMDS_SRC_FILES) \
-			$(SIGNAL_SRC_FILES) minishell.c
+			$(SIGNAL_SRC_FILES) $(PARSER_SRC_FILES) \
+			$(RUNNER_SRC_FILES) minishell.c
 
 SRCS = $(addprefix $(SRC_PATH)/, $(SRC_FILES))
 

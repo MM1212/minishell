@@ -1,6 +1,6 @@
-#include "parsing.h"
+#include "parser/parsing.h"
 
-t_lexer	*build_lexer(char *str)
+t_lexer	*parse_build_lexer(char *str)
 {
 	t_lexer_builder	b;
 

@@ -1,8 +1,7 @@
 #ifndef PARSING_H
 # define PARSING_H
 
-# include <stdlib.h>
-# include "../libft/libft.h"
+# include <shared.h>
 
 struct	s_simple_cmds;
 
@@ -61,7 +60,7 @@ typedef struct s_simple_cmds
 	struct s_simple_cmds	*prev;
 }	t_simple_cmds;
 
-t_lexer			*build_lexer(char *str);
+t_lexer			*parse_build_lexer(char *str);
 t_lexer			*lexer_lstlast(t_lexer *lst);
 void			ft_lexerdel_first(t_lexer **lst);
 void			handle_quotes(t_lexer_builder *b);
@@ -79,5 +78,7 @@ t_lexer			*handle_redirections(t_lexer *saver, t_simple_cmds *node, \
 				t_simple_cmds *start);
 int				parser_error_printer(t_lexer *start, t_lexer *guide, char *str, \
 				t_simple_cmds *cmds);
+t_simple_cmds	*ft_simple_cmds_clear_one(t_simple_cmds **lst);
+t_simple_cmds	*parser(char *str);
 
 #endif

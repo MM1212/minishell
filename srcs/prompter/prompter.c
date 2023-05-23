@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 10:49:14 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/20 13:08:31 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/23 14:34:33 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include <cmd/storage.h>
 #include <utils/error.h>
 #include <utils/quit.h>
+#include <runner/runner.h>
 
 static void prompter_get_prefix(char *prefix)
 {
@@ -66,34 +67,7 @@ static void	prompter_prompt(void)
 	}
 	add_history(line);
 	{
-		char **args = ft_split(line, " ");
-		if (args)
-		{
-			if (get_cmds()->exists(args[0]))
-			{
-				char *cmd = args[0];
-				int ac = 0;
-				while ((args + 1)[ac])
-					ac++;
-				if (get_cmds()->exec(cmd, ac, args + 1) != EXIT_SUCCESS)
-					display_error(cmd);
-			}
-			else
-			{
-				logger()->debug(\
-					"got line: %s at: %s\n", \
-					line, \
-					get_envp()->get_value("PWD") \
-				);
-				char *exec_path = get_envp()->path->find_path(args[0]);
-				if (exec_path)
-					logger()->debug("Found executable path at: %s\n", exec_path);
-				else
-					logger()->error("Command %s not found.\n", args[0]);
-				free(exec_path);
-			}
-			ft_split_free(args);
-		}
+		get_runner()->run(line);
 	}
 	free(line);
 }

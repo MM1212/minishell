@@ -1,4 +1,4 @@
-#include "parsing.h"
+#include "parser/parsing.h"
 
 t_lexer *handle_redirections(t_lexer *saver, t_simple_cmds *node, t_simple_cmds *start)
 {
@@ -7,7 +7,7 @@ t_lexer *handle_redirections(t_lexer *saver, t_simple_cmds *node, t_simple_cmds 
     b.returner = saver;
     if (saver->token > 1 && saver->token <= 5)
     {
-        b.redirec = (t_lexer *)malloc(sizeof(t_lexer));
+        b.redirec = (t_lexer *)ft_calloc(1, sizeof(t_lexer));
         b.redirec->str = ft_strdup(saver->next->str);
         if (!b.redirec->str || !b.redirec)
             (parser_error_printer(saver, 0, 0, start));
@@ -30,7 +30,7 @@ t_lexer *handle_redirections(t_lexer *saver, t_simple_cmds *node, t_simple_cmds 
 
 int	allocate_and_fill(t_cmds_builder *b, t_lexer **guide, t_lexer *saver)
 {
-	b->node->str = (char **)malloc(sizeof(char *) * (b->amount + 1));
+	b->node->str = (char **)ft_calloc(b->amount + 1, sizeof(char *));
 	if (!b->node->str)
 		return (parser_error_printer(saver, 0, 0, b->start)); // HERE
 	b->amount = 0;
@@ -68,7 +68,7 @@ t_simple_cmds *build_commands(t_lexer *guide)
     while (guide)
     {
         b.saver = guide;
-        b.node = (t_simple_cmds *)malloc(sizeof(t_simple_cmds));
+        b.node = ft_calloc(1, sizeof(t_simple_cmds));
         if (!b.node)
             (parser_error_printer(saver, 0, 0, b.start)); // ERROR
         while (guide && guide->token != PIPE)
@@ -87,7 +87,7 @@ t_simple_cmds	*parser(char *str)
 	t_lexer			*start;
 	t_simple_cmds	*cmds;
 
-	start = build_lexer(str);
+	start = parse_build_lexer(str);
 	if (!start)
 		return (NULL); // ERROR
 	if (check_errors(start, start, str))
@@ -96,12 +96,13 @@ t_simple_cmds	*parser(char *str)
 	return cmds;
 }
 
+#ifdef PARSER_TEST
 int	main(int argc, char **argv)
 {
 	char	        *str;
     t_simple_cmds	*cmds;
 
-	str = ft_strdup("echo Hello, World! |       fha  |  ");
+	str = ft_strdup("echo \"Hello World\" | wc -l");
 	cmds = parser(str);
     if (!cmds)
         return(0);
@@ -132,3 +133,4 @@ int	main(int argc, char **argv)
     // }
 	return (0);
 }
+#endif
