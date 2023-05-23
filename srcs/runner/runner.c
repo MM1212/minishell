@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 13:07:32 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/23 15:26:16 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/23 15:47:24 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,14 @@ static void runner_cleanup(void)
 	idx = 0;
 	while (runner->cmds[idx])
 	{
-		close(runner->cmds[idx]->std.in);
-		close(runner->cmds[idx]->std.out);
-		close(runner->cmds[idx]->std.err);
-		ft_split_free(runner->cmds[idx]->args);
+		if (runner->cmds[idx]->std.in != STDIN_FILENO)
+			close(runner->cmds[idx]->std.in);
+		if (runner->cmds[idx]->std.out != STDOUT_FILENO)
+			close(runner->cmds[idx]->std.out);
+		if (runner->cmds[idx]->std.err != STDERR_FILENO)
+			close(runner->cmds[idx]->std.err);
+		if (runner->cmds[idx]->path)
+			free(runner->cmds[idx]->path);
 		free(runner->cmds[idx++]);
 	}
 	free(runner->cmds);
@@ -60,25 +64,30 @@ static size_t runner_sanitize_args(char **args)
 	t_envp	*envp;
 	size_t	idx;
 	char	*arg;
-	char	*tmp;
 
 	idx = 1;
 	envp = get_envp();
 	while (args[idx])
 	{
-		if (args[idx][0] == '"' || args[idx][0] == '\'')
+		if (args[idx][0] != '\'')
 		{
-			arg = ft_strdup(args[idx + 1]);
+			if (args[idx][0] == '"')
+				arg = ft_strdup(args[idx] + 1);
+			else
+				arg = ft_strdup(args[idx]);
 			if (!arg)
 				return (0);
-			tmp = arg;
-			if (args[idx][0] == '"')
-			{
-				arg = envp->expand_arg(arg);
-				free(tmp);
-			}
 			free(args[idx]);
-			args[idx++] = arg;
+			args[idx] = envp->expand_arg(arg);
+			free(arg);
+		}
+		else
+		{
+			arg = ft_strdup(args[idx] + 1);
+			if (!arg)
+				return (0);
+			free(args[idx]);
+			args[idx] = arg;
 		}
 		idx++;
 	}
@@ -138,6 +147,7 @@ static void runner_run(const char *str)
 	runner->cmds = ft_calloc(count + 1, sizeof(t_runner_cmd *));
 	if (!runner->cmds)
 		return ;
+	runner->running = true;
 	runner_init_cmds(init_cmds, runner->cmds, count);
 	size_t	idx = 0;
 	envp = get_envp()->get_env();
@@ -154,7 +164,6 @@ static void runner_run(const char *str)
 			cmd->std.out = STDOUT_FILENO;
 		else
 			cmd->std.out = cmd->stream[1];
-		ft_printf("Is %s a builtin? %d\n", cmd->cmd, get_cmds()->exists(cmd->cmd));
 		cmd->pid = fork();
 		// TODO: ERROR HANDLING AND CLEAN EXIT
 		if (cmd->pid < 0)
@@ -196,9 +205,9 @@ static void runner_run(const char *str)
 		free(status_code);
 		idx++;
 	}
+	runner_cleanup();
 	ft_simple_cmds_clear_one(&init_cmds);
 	ft_split_free(envp);
-	runner_cleanup();
 }
 
 static t_runner *runner_create(void)
