@@ -28,7 +28,7 @@ t_lexer *handle_redirections(t_lexer *saver, t_simple_cmds *node, t_simple_cmds 
     return (b.returner);
 }
 
-void	allocate_and_fill(t_cmds_builder *b)
+int	allocate_and_fill(t_cmds_builder *b, t_lexer **guide, t_lexer *saver)
 {
 	b->node->str = (char **)malloc(sizeof(char *) * (b->amount + 1));
 	if (!b->node->str)
@@ -52,8 +52,9 @@ void	allocate_and_fill(t_cmds_builder *b)
 		b->start = b->node;
 	else
 		cmds_lstlast(b->start)->next = b->node;
-	if (guide && guide->token == PIPE)
-		guide = guide->next;
+	if (*guide && (*guide)->token == PIPE)
+		*guide = (*guide)->next;
+    return (0);
 }
 
 t_simple_cmds *build_commands(t_lexer *guide)
@@ -75,7 +76,8 @@ t_simple_cmds *build_commands(t_lexer *guide)
             guide = guide->next;
             b.amount++;
         }
-        allocate_and_fill(&b);
+        if (allocate_and_fill(&b, &guide, saver))
+            return (NULL); // ERROR
 	}
 	return (b.start);
 }
@@ -91,9 +93,19 @@ t_simple_cmds	*parser(char *str)
 	if (check_errors(start, start, str))
 		return (NULL); // ERROR
 	cmds = build_commands(start);
-	if (!cmds)
-		return (NULL); // ERROR
-	while (cmds)
+	return cmds;
+}
+
+int	main(int argc, char **argv)
+{
+	char	        *str;
+    t_simple_cmds	*cmds;
+
+	str = ft_strdup("echo Hello, World! |       fha  |  ");
+	cmds = parser(str);
+    if (!cmds)
+        return(0);
+    while (cmds)
 	{
 		printf("argument: %s\n", cmds->str[0]);
 		printf("option: %s\n", cmds->str[1]);
@@ -110,15 +122,6 @@ t_simple_cmds	*parser(char *str)
 		cmds = cmds->next;
 	}
 	printf("%s, len: %d\n", str, ft_strlen(str));
-	return cmds;
-}
-
-int	main(int argc, char **argv)
-{
-	char	*str;
-
-	str = ft_strdup("| echo | Hello, World!");
-	parser(str);
     // str = ft_strdup("ls -l | \"junk here and all AHCS\" | wc -l | cat >> \" \"");
     // while (node)
     // {

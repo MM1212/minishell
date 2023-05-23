@@ -47,6 +47,29 @@ void	lexer_constructor(t_lexer_builder *b, char *str)
 	b->node = NULL;
 }
 
+int	check_quotes(t_lexer *start, t_lexer *guide, char *str)
+{
+	int	i;
+	int	count_double;
+	int	count_single;
+
+	i = -1;
+	count_double = 0;
+	count_single = 0;
+	while (str[++i])
+	{
+		if (str[i] == '\"')
+			count_double++;
+		else if (str[i] == '\'')
+			count_single++;
+	}
+	if (count_double % 2 != 0)
+		return (parser_error_printer(start, guide, "\"", 0)); // ERROR
+	else if (count_single % 2 != 0)
+		return (parser_error_printer(start, guide, "\'", 0)); // ERROR
+	return (0);
+}
+
 int	parser_error_printer(t_lexer *start, t_lexer *guide, char *str, \
 	t_simple_cmds *cmds)
 {
@@ -74,39 +97,16 @@ int	parser_error_printer(t_lexer *start, t_lexer *guide, char *str, \
 			ft_simple_cmds_clear_one(&cleanup_cmds);
 		}
 	}
-	return (0);
-}
-
-int	check_quotes(t_lexer *start, t_lexer *guide, char *str)
-{
-	int	i;
-	int	count_double;
-	int	count_single;
-
-	i = -1;
-	count_double = 0;
-	count_single = 0;
-	while (str[++i])
-	{
-		if (str[i] == '\"')
-			count_double++;
-		else if (str[i] == '\'')
-			count_single++;
-	}
-	if (count_double % 2 != 0)
-		return (parser_error_printer(start, guide, "\"", 0)); // ERROR
-	else if (count_single % 2 != 0)
-		return (parser_error_printer(start, guide, "\'", 0)); // ERROR
-	return (0);
+	return (1);
 }
 
 int	check_errors(t_lexer *start, t_lexer *guide, char *str)
 {
 	while (guide)
 	{
-		if (guide->token > 0 && !guide->next)
+		if (guide->token > 0 && (!guide->next || (guide->next && !guide->next->str[0])))
 			return (parser_error_printer(start, guide, 0, 0)); // ERROR
-		if (guide->token != 0 && guide->token == guide->next->token)
+		if (guide->token != 0 && (guide->token == guide->next->token))
 			return (parser_error_printer(start, guide, 0, 0)); // ERROR
 		guide = guide->next;
 	}
