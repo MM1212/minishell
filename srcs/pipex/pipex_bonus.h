@@ -6,7 +6,7 @@
 /*   By: diogpere <diogpere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 11:22:54 by diogpere          #+#    #+#             */
-/*   Updated: 2023/05/01 20:45:18 by diogpere         ###   ########.fr       */
+/*   Updated: 2023/05/02 18:05:37 by diogpere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,16 @@ int		sort_arg(t_info *info);
 void	shut_pipe(t_info *info);
 int		check_char(t_info *info);
 int		check_char(t_info *info);
+void	final_free(t_info *info);
 void	err_msg_exit(char *error);
-void	free_split(char **strings);
 int		custm_err_msg(char *error);
-int		get_line(int fd, char *delim);
 int		path_check(t_info *data, int j);
-void	args_prep(t_info *info, char **argv);
+int		get_line(t_info *info, char *delim);
+int		args_prep(t_info *info, char **argv);
+void	free_split(t_info *info, char **strings);
 void	handle_pipes(t_info *info, int argc, char **argv);
+void	check_file_error(t_info *info, int argc, char *argv[]);
 void	child_process(t_info *info, int argc, char **argv, char **envp);
+void	one_command_doc(t_info *info, int argc, char *argv[], char **envp);
 
 #endif
