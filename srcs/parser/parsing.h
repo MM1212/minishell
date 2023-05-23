@@ -68,14 +68,16 @@ void			handle_quotes(t_lexer_builder *b);
 t_lexer			*ft_lexerclear_one(t_lexer **lst);
 t_lexer			*ft_lexerclear_one(t_lexer **lst);
 t_simple_cmds	*cmds_lstlast(t_simple_cmds *lst);
-void    		ft_lexerdelone(t_lexer **lst, int key);
+void			ft_lexerdelone(t_lexer **lst, int key);
 void			handle_double_quotes(t_lexer_builder *b);
 void			handle_tokens(t_lexer_builder *b, char *str);
 void			ft_lexeradd_back(t_lexer **lst, t_lexer *new);
 void			lexer_constructor(t_lexer_builder *b, char *str);
 int				check_errors(t_lexer *start, t_lexer *guide, char *str);
 void			create_lexer_node(t_lexer_builder *b, char *str, int token);
-t_lexer			*handle_redirections(t_lexer *saver, t_simple_cmds *node, t_simple_cmds *start);
-int				parser_error_printer(t_lexer *start, t_lexer *guide, char *str, t_simple_cmds *cmds);
+t_lexer			*handle_redirections(t_lexer *saver, t_simple_cmds *node, \
+				t_simple_cmds *start);
+int				parser_error_printer(t_lexer *start, t_lexer *guide, char *str, \
+				t_simple_cmds *cmds);
 
 #endif

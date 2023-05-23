@@ -12,9 +12,9 @@ t_lexer	*ft_lexerclear_one(t_lexer **lst)
 	return (NULL);
 }
 
-t_simple_cmds *ft_simple_cmds_clear_one(t_simple_cmds **lst)
+t_simple_cmds	*ft_simple_cmds_clear_one(t_simple_cmds **lst)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if ((*lst)->str)
@@ -38,31 +38,33 @@ t_simple_cmds *ft_simple_cmds_clear_one(t_simple_cmds **lst)
 	return (NULL);
 }
 
-void lexer_constructor(t_lexer_builder *b, char *str)
+void	lexer_constructor(t_lexer_builder *b, char *str)
 {
-    b->index = 0;
-    b->i = -1;
-    b->str = str;
-    b->start = NULL;
-    b->node = NULL;
+	b->index = 0;
+	b->i = -1;
+	b->str = str;
+	b->start = NULL;
+	b->node = NULL;
 }
 
-int	parser_error_printer(t_lexer *start, t_lexer *guide, char *str, t_simple_cmds *cmds)
+int	parser_error_printer(t_lexer *start, t_lexer *guide, char *str, \
+	t_simple_cmds *cmds)
 {
-	t_simple_cmds *cleanup_cmds;
-    t_lexer *cleanup;
-    if (!str)
-        printf("syntax error near unexpected token '%s'\n", guide->str);
+	t_simple_cmds	*cleanup_cmds;
+	t_lexer			*cleanup;
+
+	if (!str)
+		printf("syntax error near unexpected token '%s'\n", guide->str);
 	else if (!str && !guide)
 		printf("memory allocation error\n");
-    else
-        printf("syntax error near unexpected token %s\n", str);
-    while (start)
-    {
-        cleanup = start;
-        start = start->next;
-        ft_lexerclear_one(&cleanup);
-    }
+	else
+		printf("syntax error near unexpected token %s\n", str);
+	while (start)
+	{
+		cleanup = start;
+		start = start->next;
+		ft_lexerclear_one(&cleanup);
+	}
 	if (cmds)
 	{
 		while (cmds)
@@ -72,36 +74,41 @@ int	parser_error_printer(t_lexer *start, t_lexer *guide, char *str, t_simple_cmd
 			ft_simple_cmds_clear_one(&cleanup_cmds);
 		}
 	}
-    return (0);
+	return (0);
 }
 
-int check_errors(t_lexer *start, t_lexer *guide, char *str)
+int	check_quotes(t_lexer *start, t_lexer *guide, char *str)
 {
-    int i;
-    int count_double;
-    int count_single;
+	int	i;
+	int	count_double;
+	int	count_single;
 
-    count_double = 0;
-    count_single = 0;
-    while (guide)
-    {
-        if (guide->token > 0 && !guide->next)
-            return (parser_error_printer(start, guide, 0, 0)); // ERROR
-        if (guide->token != 0 && guide->token == guide->next->token)
-            return (parser_error_printer(start, guide, 0, 0)); // ERROR
-        guide = guide->next;
-    }
-    i = -1;
-    while (str[++i])
-    {
-        if (str[i] == '\"')
-            count_double++;
-        else if (str[i] == '\'')
-            count_single++;
-    }
-    if (count_double % 2 != 0)
-        return (parser_error_printer(start, guide, "\"", 0)); // ERROR
-    else if (count_single % 2 != 0)
-        return (parser_error_printer(start, guide, "\'", 0)); // ERROR
-    return (0);
+	i = -1;
+	count_double = 0;
+	count_single = 0;
+	while (str[++i])
+	{
+		if (str[i] == '\"')
+			count_double++;
+		else if (str[i] == '\'')
+			count_single++;
+	}
+	if (count_double % 2 != 0)
+		return (parser_error_printer(start, guide, "\"", 0)); // ERROR
+	else if (count_single % 2 != 0)
+		return (parser_error_printer(start, guide, "\'", 0)); // ERROR
+	return (0);
+}
+
+int	check_errors(t_lexer *start, t_lexer *guide, char *str)
+{
+	while (guide)
+	{
+		if (guide->token > 0 && !guide->next)
+			return (parser_error_printer(start, guide, 0, 0)); // ERROR
+		if (guide->token != 0 && guide->token == guide->next->token)
+			return (parser_error_printer(start, guide, 0, 0)); // ERROR
+		guide = guide->next;
+	}
+	return (check_quotes(start, guide, str));
 }
