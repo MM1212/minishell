@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 14:16:37 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/19 14:55:15 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/23 15:20:26 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 
 int	cmds_overrides_env_cmd(int ac, char **av)
 {
+	ac--;
 	(void)av;
 	if (ac > 0)
 	{
