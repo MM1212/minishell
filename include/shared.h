@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 09:58:58 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/19 11:01:01 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/24 13:34:58 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 # include <sys/wait.h>
 # include <sys/ioctl.h>
 # include <sys/stat.h>
+# include <sys/file.h>
+# include <fcntl.h>
 # include <unistd.h>
 # include <stdlib.h>
 # include <libft.h>

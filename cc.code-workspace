@@ -91,7 +91,8 @@
 		"cmd_fns.h": "c",
 		"quit.h": "c",
 		"parsing.h": "c",
-		"pipex_bonus.h": "c"
+		"pipex_bonus.h": "c",
+		"runner.h": "c"
 	},
 	"files.exclude": {
 		"**/*.o": true,

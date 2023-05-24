@@ -6,13 +6,12 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 13:07:32 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/24 13:06:14 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/24 15:32:16 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "runner/runner.h"
 #include <context/context.h>
-#include <parser/parsing.h>
 #include <utils/quit.h>
 #include <env/registry.h>
 #include <cmd/storage.h>
@@ -113,6 +112,7 @@ static void	runner_init_cmds(\
 		cmds[idx]->args = init_cmds->str;
 		cmds[idx]->std = (t_runner_cmd_std){STDIN_FILENO, STDOUT_FILENO, STDERR_FILENO};
 		cmds[idx]->status = -1;
+		cmds[idx]->redirections = init_cmds->redirections;
 		cmds[idx]->args_count = runner_sanitize_args(cmds[idx]->args);
 		if (!get_cmds()->exists(init_cmds->str[0]))
 			cmds[idx]->path = get_envp()->path->find_path(init_cmds->str[0]);
@@ -121,11 +121,94 @@ static void	runner_init_cmds(\
 	}
 }
 
-static bool dup2_safe(int fd1, int fd2)
+static bool	dup2_safe(int fd1, int fd2)
 {
 	if (fd1 == fd2)
 		return (false);
 	return (dup2(fd1, fd2) != -1);
+}
+
+static bool	runner_handle_redirections(t_runner_cmd *cmd)
+{
+	t_parser_lexer	*redir;
+	int				fd;
+	int				flags;
+
+	if (!cmd || !cmd->redirections)
+		return (true);
+
+	redir = cmd->redirections;
+	flags = 0;
+	while (redir)
+	{
+		if (redir->token == GREAT || redir->token == GREAT_GREAT)
+		{
+			if (cmd->std.out != STDOUT_FILENO)
+				close(cmd->std.out);
+			flags = O_WRONLY | O_CREAT | O_TRUNC;
+			if (redir->token == GREAT_GREAT)
+				flags = O_WRONLY | O_CREAT | O_APPEND;
+			fd = open(redir->str, flags, 0644);
+			if (fd == -1)
+				return (false);
+			cmd->std.out = fd;
+		}
+		else if (redir->token == LESS)
+		{
+			if (cmd->std.in != STDIN_FILENO)
+				close(cmd->std.in);
+			fd = open(redir->str, O_RDONLY);
+			if (fd == -1)
+				return (false);
+			cmd->std.in = fd;
+		}
+		else if (redir->token == LESS_LESS)
+		{
+			char *delimiter;
+			int	fd[2];
+
+			delimiter = redir->str;
+			if (pipe(fd) == -1)
+				return (false);
+			if (cmd->std.in != STDIN_FILENO)
+				close(cmd->std.in);
+			dup2(STDIN_FILENO, STDIN_FILENO);
+			if (*redir->str == '"' || *redir->str == '\'')
+				delimiter++;
+			while (1)
+			{
+				ft_printf("> ");
+				char *line = get_next_line(STDIN_FILENO);
+				if (!line)
+					break ;
+				if (ft_strcmp(line, delimiter) == 0)
+				{
+					free(line);
+					break ;
+				}
+				ft_putendl_fd(line, fd[1]);
+				free(line);
+			}
+			close(fd[1]);
+			dup2(fd[0], STDIN_FILENO);
+			close(fd[0]);
+		}
+
+		redir = redir->next;
+	}
+	return (true);
+}
+
+static void	runner_close_redirections(t_runner_cmd *cmd)
+{
+	if (!cmd || !cmd->redirections)
+		return ;
+	if (cmd->std.in != STDIN_FILENO)
+		close(cmd->std.in);
+	if (cmd->std.out != STDOUT_FILENO)
+		close(cmd->std.out);
+	if (cmd->std.err != STDERR_FILENO)
+		close(cmd->std.err);
 }
 
 static void runner_run(const char *str)
@@ -135,9 +218,11 @@ static void runner_run(const char *str)
 	size_t			count;
 	char			**envp;
 	char			*status_code;
+	t_envp	*env;
 
+	env = get_envp();
 	runner = get_runner();
-	if (!runner)
+	if (!runner || !env)
 		return ;
 	init_cmds = parser((char *)str);
 	if (!init_cmds)
@@ -171,6 +256,11 @@ static void runner_run(const char *str)
 			quit(127);
 		else if (cmd->pid == 0)
 		{
+			if (!runner_handle_redirections(cmd))
+			{
+				runner_close_redirections(cmd);
+				exit(errno);
+			}
 			if (dup2_safe(cmd->std.in, STDIN_FILENO))
 				close(cmd->std.in);
 			if (dup2_safe(cmd->std.out, STDOUT_FILENO))
@@ -210,10 +300,10 @@ static void runner_run(const char *str)
 		{
 			t_cmd *cmd = get_cmds()->get(runner->cmds[idx]->cmd);
 			if (cmd->on_execute)
-				cmd->on_execute(runner->cmds[idx]->status);
+				cmd->on_execute(runner->cmds[idx]->args_count, runner->cmds[idx]->args, runner->cmds[idx]->status);
 		}
 		status_code = ft_itoa(runner->cmds[idx]->status);
-		get_envp()->set("?", status_code);
+		env->set("?", status_code);
 		free(status_code);
 		idx++;
 	}

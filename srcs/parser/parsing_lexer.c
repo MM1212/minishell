@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_lexer.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: diogpere <diogpere@student.42.fr>          +#+  +:+       +#+        */
+/*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:03:09 by diogpere          #+#    #+#             */
-/*   Updated: 2023/05/24 13:04:58 by diogpere         ###   ########.fr       */
+/*   Updated: 2023/05/24 13:51:01 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ void	parser_create_lexer_node(t_parser_lexer_builder *b, \
 
 void	parser_handle_double_quotes(t_parser_lexer_builder *b)
 {
+	char	*tmp;
+
 	b->j = b->i + 1;
 	while (b->str[b->j] && b->str[b->j] != '\"')
 		b->j++;
@@ -79,7 +81,11 @@ void	parser_handle_double_quotes(t_parser_lexer_builder *b)
 	{
 		b->node->str = ft_substr(b->str, b->i + 1, b->j - b->i - 1);
 		if (b->node->str[0])
+		{
+			tmp = b->node->str;
 			b->node->str = ft_strjoin("\"", b->node->str);
+			free(tmp);
+		}
 		b->node->token = 0;
 		b->node->next = NULL;
 		b->i += b->j - b->i;

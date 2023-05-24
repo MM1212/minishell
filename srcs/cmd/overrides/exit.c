@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 14:16:37 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/23 15:22:58 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/24 14:53:47 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 
 int	cmds_overrides_exit_cmd(int ac, char **av)
 {
-	ft_printf("executing exit..\n");
 	ac--;
 	av++;
 	if (ac > 1)
@@ -35,11 +34,12 @@ int	cmds_overrides_exit_cmd(int ac, char **av)
 	return (ft_atoi(av[0]));
 }
 
-void	cmds_overrides_exit_cmd_on_execute(int exit_code)
+void	cmds_overrides_exit_cmd_on_execute(int ac, char **av, int exit_code)
 {
 	char	*exit_str;
 
-	ft_printf("executed exit with status of %d\n", exit_code);
+	(void)ac;
+	(void)av;
 	if (exit_code == -1)
 	{
 		errno = EINVAL;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_errors.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: diogpere <diogpere@student.42.fr>          +#+  +:+       +#+        */
+/*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:03:16 by diogpere          #+#    #+#             */
-/*   Updated: 2023/05/24 12:42:54 by diogpere         ###   ########.fr       */
+/*   Updated: 2023/05/24 13:43:14 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ t_parser_simple_cmds	*parser_ft_simple_cmds_clear_one(\
 	t_parser_simple_cmds **lst)
 {
 	int				i;
-	t_parser_lexer	*redirections;
 
 	i = 0;
 	if ((*lst)->str)
@@ -44,8 +43,7 @@ t_parser_simple_cmds	*parser_ft_simple_cmds_clear_one(\
 		free((*lst)->str);
 		(*lst)->str = NULL;
 	}
-	redirections = (*lst)->redirections;
-	parser_ft_lexerclear_one(&redirections);
+	parser_clear_lexer((*lst)->redirections);
 	free(*lst);
 	*lst = NULL;
 	return (NULL);

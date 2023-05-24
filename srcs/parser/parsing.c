@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: diogpere <diogpere@student.42.fr>          +#+  +:+       +#+        */
+/*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:03:40 by diogpere          #+#    #+#             */
-/*   Updated: 2023/05/24 13:01:43 by diogpere         ###   ########.fr       */
+/*   Updated: 2023/05/24 13:49:08 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@ t_parser_lexer	*parser_handle_redirections(t_parser_lexer *saver, \
 		b.i1 = saver->i;
 		b.i2 = saver->next->i;
 		b.returner = saver->next->next;
-		parser_ft_lexerdelone(&saver, b.i1);
-		parser_ft_lexerdelone(&saver, b.i2);
 		node->num_redirections++;
 	}
 	return (b.returner);

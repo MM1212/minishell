@@ -17,7 +17,8 @@ CMDS_SRC_FILES = 		cmd/cmd.c cmd/ctx.c cmd/fns.c \
 						cmd/overrides/env.c \
 						cmd/overrides/exit.c \
 						cmd/overrides/pwd.c \
-						cmd/overrides/int_expand.c
+						cmd/overrides/int_expand.c \
+						cmd/overrides/echo.c
 RUNNER_SRC_FILES = 		runner/runner.c
 PARSER_SRC_FILES = 		parser/parsing_errors.c parser/parsing_lexer.c \
 						parser/parsing_utils.c parser/parsing_utils2.c parser/parsing.c
@@ -97,6 +98,11 @@ fclean: clean
 watch:
 	@echo "$(TAG) watching for changes.."
 	@while true; do ($(MAKE) -q --no-print-directory || $(MAKE) --no-print-directory); sleep 1; done;
+
+parser_test: $(LIBFT_ARCH)
+	@$(CC) -D PARSER_TEST= srcs/parser/*.c $(PROGRAM_FLAGS) -o parser_test
+	./parser_test
+	rm parser_test
 
 re: fclean all
 
