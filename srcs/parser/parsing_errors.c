@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_errors.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: diogpere <diogpere@student.42.fr>          +#+  +:+       +#+        */
+/*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:03:16 by diogpere          #+#    #+#             */
-/*   Updated: 2023/05/24 17:10:57 by diogpere         ###   ########.fr       */
+/*   Updated: 2023/05/24 16:21:00 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/parser/parsing.h"
+#include "parser/parsing.h"
 
 t_parser_simple_cmds	*parser_ft_simple_cmds_clear_one(\
 	t_parser_simple_cmds **lst)

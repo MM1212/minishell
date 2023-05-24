@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:03:31 by diogpere          #+#    #+#             */
-/*   Updated: 2023/05/24 13:41:20 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/24 16:21:07 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,4 +43,18 @@ void	parser_clear_cmds(t_parser_simple_cmds *cmds)
 		cmds = cmds->next;
 		parser_ft_simple_cmds_clear_one(&cleanup);
 	}
+}
+
+t_parser_lexer	*parser_ft_lexerclear_one(t_parser_lexer **lst)
+{
+	if (!lst || !(*lst))
+		return (NULL);
+	if ((*lst)->str)
+	{
+		free((*lst)->str);
+		(*lst)->str = NULL;
+	}
+	free(*lst);
+	*lst = NULL;
+	return (NULL);
 }
