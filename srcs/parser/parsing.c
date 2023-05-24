@@ -1,4 +1,4 @@
-#include "parser/parsing.h"
+#include "../../include/parser/parsing.h"
 
 t_lexer *handle_redirections(t_lexer *saver, t_simple_cmds *node, t_simple_cmds *start)
 {
@@ -87,22 +87,35 @@ t_simple_cmds	*parser(char *str)
 	t_lexer			*start;
 	t_simple_cmds	*cmds;
 
+    if (!str || !str[0])
+    {
+        printf("no command provided.\n");
+        free(str);
+        return (NULL);
+    }
 	start = parse_build_lexer(str);
 	if (!start)
-		return (NULL); // ERROR
+    {
+        free(str);
+        return (NULL); // ERROR
+    }
 	if (check_errors(start, start, str))
-		return (NULL); // ERROR
+    {
+        free(str);
+        return (NULL); // ERROR
+    }
 	cmds = build_commands(start);
+    free(str);
 	return cmds;
 }
 
-#ifdef PARSER_TEST
+// #ifdef PARSER_TEST
 int	main(int argc, char **argv)
 {
 	char	        *str;
     t_simple_cmds	*cmds;
 
-	str = ft_strdup("echo \"Hello World\" | wc -l");
+	str = ft_strdup("");
 	cmds = parser(str);
     if (!cmds)
         return(0);
@@ -122,7 +135,7 @@ int	main(int argc, char **argv)
 		printf("\n");
 		cmds = cmds->next;
 	}
-	printf("%s, len: %d\n", str, ft_strlen(str));
+	printf("%s, len: %zu\n", str, ft_strlen(str));
     // str = ft_strdup("ls -l | \"junk here and all AHCS\" | wc -l | cat >> \" \"");
     // while (node)
     // {
@@ -133,4 +146,4 @@ int	main(int argc, char **argv)
     // }
 	return (0);
 }
-#endif
+// #endif

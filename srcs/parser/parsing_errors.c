@@ -1,4 +1,4 @@
-#include "parser/parsing.h"
+#include "../../include/parser/parsing.h"
 
 t_lexer	*ft_lexerclear_one(t_lexer **lst)
 {
@@ -30,11 +30,6 @@ t_simple_cmds	*ft_simple_cmds_clear_one(t_simple_cmds **lst)
 		}
 		free((*lst)->str);
 		(*lst)->str = NULL;
-	}
-	if ((*lst)->hd_file_name)
-	{
-		free((*lst)->hd_file_name);
-		(*lst)->hd_file_name = NULL;
 	}
 	redirections = (*lst)->redirections;
 	ft_lexerclear_one(&redirections);

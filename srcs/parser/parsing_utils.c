@@ -1,4 +1,4 @@
-#include "parser/parsing.h"
+#include "../../include/parser/parsing.h"
 
 t_lexer	*lexer_lstlast(t_lexer *lst)
 {

@@ -1,4 +1,4 @@
-#include "parser/parsing.h"
+#include "../../include/parser/parsing.h"
 
 t_lexer	*parse_build_lexer(char *str)
 {
