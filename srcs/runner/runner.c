@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 13:07:32 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/23 15:47:24 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/24 12:40:35 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,7 +181,12 @@ static void runner_run(const char *str)
 			if (get_cmds()->exists(cmd->cmd))
 				exit(get_cmds()->exec(cmd->cmd, (int)cmd->args_count, cmd->args));
 			else
-				execve(cmd->path, cmd->args, envp);
+			{
+				if (!cmd->path)
+					exit(127);
+				exit(execve(cmd->path, cmd->args, envp));
+			}
+
 		}
 		if (idx > 0)
 			close(cmd->std.in);
