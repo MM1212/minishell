@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 12:53:11 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/24 12:40:12 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/24 16:48:39 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ static char	*env_path_parse_exec_at_path(char *path)
 	{
 		return (ft_strdup(final_path));
 	}
+	display_error(path, "command not found");
 	return (NULL);
 }
 
@@ -56,7 +57,10 @@ char	*env_path_find_path(char *exec)
 		return (env_path_parse_exec_at_path(exec));
 	paths = get_envp()->path->get_paths();
 	if (!paths)
+	{
+		display_error(exec, "command not found");
 		return (NULL);
+	}
 	idx = 0;
 	found = false;
 	while (paths[idx])

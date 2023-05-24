@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 13:07:32 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/24 15:32:16 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/24 16:51:18 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -259,6 +259,7 @@ static void runner_run(const char *str)
 			if (!runner_handle_redirections(cmd))
 			{
 				runner_close_redirections(cmd);
+				display_error(cmd->cmd, NULL);
 				exit(errno);
 			}
 			if (dup2_safe(cmd->std.in, STDIN_FILENO))

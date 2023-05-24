@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 10:49:32 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/19 11:17:18 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/24 16:43:14 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,15 @@ char	*dir_get_relative_path(char *buffer, size_t size)
 char	*dir_get_full_path(void)
 {
 	t_envp	*envp;
+	char	*pwd;
 
 	envp = get_envp();
 	if (!envp)
 		return (NULL);
-	return (envp->get_value("PWD"));
+	pwd = envp->get_value("PWD");
+	if (!pwd)
+		return (getcwd(NULL, 0));
+	return (ft_strdup(pwd));
 }
 
 char	*dir_get_home_path(void)
