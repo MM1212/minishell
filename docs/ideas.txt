@@ -5,15 +5,19 @@
 
 - [x] env variables registry @martiper
 
-- parser @diogpere
+- [x] parser @diogpere
  - parse env vars after $ (ONLY INSIDE STRINGS)
  - argument parser (handle ' and ")
  - piping
   - parse < , > , << , >> , |
+ - runner @martiper
+  - [x] handle piping (multiple processes)
+  - [x] handle redirections
+
 
 TODO: - [x] find more info about $? impl @diogpere
 
-- signal handling @martiper
+- [x] signal handling @martiper
  - ctrl-c -> SIGINT
  - ctrl-d -> SIGQUIT
  - ctrl-\ -> TBD

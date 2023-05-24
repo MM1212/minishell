@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 13:07:32 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/24 12:46:36 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/24 13:06:14 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <env/registry.h>
 #include <cmd/storage.h>
 #include <env/path/path.h>
+#include <utils/error.h>
 
 
 static void runner_cleanup(void)
@@ -184,7 +185,11 @@ static void runner_run(const char *str)
 			{
 				if (!cmd->path)
 					exit(127);
-				exit(execve(cmd->path, cmd->args, envp));
+				if (execve(cmd->path, cmd->args, envp) == -1)
+				{
+					display_error("execve", NULL);
+					exit(1);
+				}
 			}
 
 		}
@@ -199,6 +204,8 @@ static void runner_run(const char *str)
 	while (runner->cmds[idx])
 	{
 		waitpid(runner->cmds[idx]->pid, &runner->cmds[idx]->status, 0);
+		if (WIFEXITED(runner->cmds[idx]->status))
+			runner->cmds[idx]->status = WEXITSTATUS(runner->cmds[idx]->status);
 		if (get_cmds()->exists(runner->cmds[idx]->cmd))
 		{
 			t_cmd *cmd = get_cmds()->get(runner->cmds[idx]->cmd);
