@@ -28,7 +28,7 @@ TODO: - [x] find more info about $? impl @diogpere
  - [x] pwd -> directory manager @martiper
  - [x] env -> cat environment from the registry @martiper
  - [x] exit -> kill the console & cleanup all the contexts @martiper
- - [ ] echo with -n (without new line) @diogpere
+ - [x] echo with -n (without new line) @diogpere
  - [ ] export -> add to env var registry @diogpere
  - [ ] unset -> remove var from env var registry @diogpere
 
