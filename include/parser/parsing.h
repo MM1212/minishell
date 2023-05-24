@@ -1,84 +1,84 @@
 #ifndef PARSING_H
 # define PARSING_H
 
-# include <shared.h>
+# include "shared.h"
 
-struct	s_simple_cmds;
+struct	s_parser_simple_cmds;
 
-typedef enum s_tokens
+typedef enum s_parser_tokens
 {
 	PIPE = 1,
 	GREAT,
 	GREAT_GREAT,
 	LESS,
 	LESS_LESS,
-}	t_tokens;
+}	t_parser_tokens;
 
-typedef struct s_lexer
+typedef struct s_parser_lexer
 {
 	char			*str;
-	t_tokens		token;
+	t_parser_tokens		token;
 	int				i;
-	struct s_lexer	*next;
-	struct s_lexer	*prev;
-}	t_lexer;
+	struct s_parser_lexer	*next;
+	struct s_parser_lexer	*prev;
+}	t_parser_lexer;
 
-typedef struct s_redirect_builder
+typedef struct s_parser_redirect_builder
 {
 	int		i1;
 	int		i2;
-	t_lexer	*redirec;
-	t_lexer	*returner;
-}				t_redirect_builder;
+	t_parser_lexer	*redirec;
+	t_parser_lexer	*returner;
+}				t_parser_redirect_builder;
 
-typedef struct s_lexer_builder
+typedef struct s_parser_lexer_builder
 {
 	int		index;
 	int		i;
 	int		j;
 	char	*str;
-	t_lexer	*start;
-	t_lexer	*node;
-}				t_lexer_builder;
+	t_parser_lexer	*start;
+	t_parser_lexer	*node;
+}				t_parser_lexer_builder;
 
-typedef struct s_cmds_builder
+typedef struct s_parser_cmds_builder
 {
 	int						amount;
-	t_lexer					*saver;
-	struct s_simple_cmds	*start;
-	struct s_simple_cmds	*node;
-}				t_cmds_builder;
+	t_parser_lexer					*saver;
+	struct s_parser_simple_cmds	*start;
+	struct s_parser_simple_cmds	*node;
+}				t_parser_cmds_builder;
 
-typedef struct s_simple_cmds
+typedef struct s_parser_simple_cmds
 {
-	char					**str;
-	// int                   (*builtin)(t_tools *, struct s_simple_cmds *);
-	int						num_redirections;
-	char					*hd_file_name;
-	t_lexer					*redirections;
-	struct s_simple_cmds	*next;
-	struct s_simple_cmds	*prev;
-}	t_simple_cmds;
+	char						**str;
+	int							num_redirections;
+	t_parser_lexer				*redirections;
+	struct s_parser_simple_cmds	*next;
+	struct s_parser_simple_cmds	*prev;
+}	t_parser_simple_cmds;
 
-t_lexer			*parse_build_lexer(char *str);
-t_lexer			*lexer_lstlast(t_lexer *lst);
-void			ft_lexerdel_first(t_lexer **lst);
-void			handle_quotes(t_lexer_builder *b);
-t_lexer			*ft_lexerclear_one(t_lexer **lst);
-t_lexer			*ft_lexerclear_one(t_lexer **lst);
-t_simple_cmds	*cmds_lstlast(t_simple_cmds *lst);
-void			ft_lexerdelone(t_lexer **lst, int key);
-void			handle_double_quotes(t_lexer_builder *b);
-void			handle_tokens(t_lexer_builder *b, char *str);
-void			ft_lexeradd_back(t_lexer **lst, t_lexer *new);
-void			lexer_constructor(t_lexer_builder *b, char *str);
-int				check_errors(t_lexer *start, t_lexer *guide, char *str);
-void			create_lexer_node(t_lexer_builder *b, char *str, int token);
-t_lexer			*handle_redirections(t_lexer *saver, t_simple_cmds *node, \
-				t_simple_cmds *start);
-int				parser_error_printer(t_lexer *start, t_lexer *guide, char *str, \
-				t_simple_cmds *cmds);
-t_simple_cmds	*ft_simple_cmds_clear_one(t_simple_cmds **lst);
-t_simple_cmds	*parser(char *str);
+t_parser_lexer			*parser_build_lexer(char *str);
+void					parser_clear_lexer(t_parser_lexer *start);
+t_parser_lexer			*parser_lexer_lstlast(t_parser_lexer *lst);
+void					parser_clear_cmds(t_parser_simple_cmds *cmds);
+void					parser_ft_lexerdel_first(t_parser_lexer **lst);
+void					parser_handle_quotes(t_parser_lexer_builder *b);
+t_parser_lexer			*parser_ft_lexerclear_one(t_parser_lexer **lst);
+t_parser_lexer			*parser_ft_lexerclear_one(t_parser_lexer **lst);
+t_parser_simple_cmds	*parser_cmds_lstlast(t_parser_simple_cmds *lst);
+void					parser_ft_lexerdelone(t_parser_lexer **lst, int key);
+void					parser_handle_double_quotes(t_parser_lexer_builder *b);
+void					parser_handle_tokens(t_parser_lexer_builder *b, char *str);
+void					parser_ft_lexeradd_back(t_parser_lexer **lst, t_parser_lexer *new);
+void					parser_lexer_constructor(t_parser_lexer_builder *b, char *str);
+int						parser_check_errors(t_parser_lexer *start, t_parser_lexer *guide, char *str);
+void					parser_create_lexer_node(t_parser_lexer_builder *b, char *str, int token);
+t_parser_lexer			*parser_handle_redirections(t_parser_lexer *saver, t_parser_simple_cmds *node, \
+						t_parser_simple_cmds *start);
+int						parser_error_printer(t_parser_lexer *start, t_parser_lexer *guide, char *str, \
+						t_parser_simple_cmds *cmds);
+t_parser_simple_cmds	*parser_ft_simple_cmds_clear_one(t_parser_simple_cmds **lst);
+t_parser_simple_cmds	*parser(char *str);
 
 #endif
