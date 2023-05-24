@@ -1,22 +1,39 @@
-#include "../../include/parser/parsing.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing_lexer.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: diogpere <diogpere@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/24 12:03:09 by diogpere          #+#    #+#             */
+/*   Updated: 2023/05/24 13:04:58 by diogpere         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-t_lexer	*parse_build_lexer(char *str)
+#include "parser/parsing.h"
+
+t_parser_lexer	*parser_build_lexer(char *str)
 {
-	t_lexer_builder	b;
+	t_parser_lexer_builder	b;
 
-	lexer_constructor(&b, str);
+	parser_lexer_constructor(&b, str);
 	while (str[++b.i])
 	{
-		while (str[b.i] == ' ' || str[b.i] == 3)
+		while (str[b.i] == ' ')
 			str[b.i++] = 3;
-		b.node = (t_lexer *)malloc(sizeof(t_lexer));
+		if (!str[b.i])
+			break ;
+		b.node = (t_parser_lexer *)ft_calloc(1, sizeof(t_parser_lexer));
 		if (!b.node)
-			return (0); // ERROR
-		handle_tokens(&b, str);
+		{
+			(parser_error_printer(b.start, 0, 0, 0));
+			return (NULL);
+		}
+		parser_handle_tokens(&b, str);
 		if (!b.start->next && b.start->token == 1)
 		{
-			(parser_error_printer(b.start, b.start, "|", 0)); // ERROR
-			return (0);
+			(parser_error_printer(b.start, b.start, "|", 0));
+			return (NULL);
 		}
 		if (!str[b.i])
 			break ;
@@ -24,7 +41,8 @@ t_lexer	*parse_build_lexer(char *str)
 	return (b.start);
 }
 
-void	create_lexer_node(t_lexer_builder *b, char *str, int token)
+void	parser_create_lexer_node(t_parser_lexer_builder *b, \
+	char *str, int token)
 {
 	if (token == 0)
 	{
@@ -41,8 +59,8 @@ void	create_lexer_node(t_lexer_builder *b, char *str, int token)
 		b->start = b->node;
 	else
 	{
-		lexer_lstlast(b->start)->next = b->node;
-		b->node->prev = lexer_lstlast(b->start);
+		parser_lexer_lstlast(b->start)->next = b->node;
+		b->node->prev = parser_lexer_lstlast(b->start);
 	}
 	if (token == PIPE)
 		b->str[b->i] = 2;
@@ -52,7 +70,7 @@ void	create_lexer_node(t_lexer_builder *b, char *str, int token)
 		b->i += b->j - b->i - 1;
 }
 
-void	handle_double_quotes(t_lexer_builder *b)
+void	parser_handle_double_quotes(t_parser_lexer_builder *b)
 {
 	b->j = b->i + 1;
 	while (b->str[b->j] && b->str[b->j] != '\"')
@@ -69,16 +87,18 @@ void	handle_double_quotes(t_lexer_builder *b)
 			b->start = b->node;
 		else
 		{
-			lexer_lstlast(b->start)->next = b->node;
-			b->node->prev = lexer_lstlast(b->start);
+			parser_lexer_lstlast(b->start)->next = b->node;
+			b->node->prev = parser_lexer_lstlast(b->start);
 		}
 		b->node->i = b->index;
 		b->index++;
 	}
 }
 
-void	handle_quotes(t_lexer_builder *b)
+void	parser_handle_quotes(t_parser_lexer_builder *b)
 {
+	char	*tmp;
+
 	b->j = b->i + 1;
 	while (b->str[b->j] && b->str[b->j] != '\'')
 		b->j++;
@@ -86,39 +106,37 @@ void	handle_quotes(t_lexer_builder *b)
 	{
 		b->node->str = ft_substr(b->str, b->i + 1, b->j - b->i - 1);
 		if (b->node->str[0])
+		{
+			tmp = b->node->str;
 			b->node->str = ft_strjoin("'", b->node->str);
+			free(tmp);
+		}
 		b->node->token = 0;
 		b->node->next = NULL;
 		b->i += b->j - b->i;
-		if (!b->start)
-			b->start = b->node;
-		else
-		{
-			lexer_lstlast(b->start)->next = b->node;
-			b->node->prev = lexer_lstlast(b->start);
-		}
+		parser_ft_lexeradd_back(&b->start, b->node);
 		b->node->i = b->index;
 		b->index++;
 	}
 }
 
-void	handle_tokens(t_lexer_builder *b, char *str)
+void	parser_handle_tokens(t_parser_lexer_builder *b, char *str)
 {
 	if (str[b->i] == '\'')
-		handle_quotes(b);
+		parser_handle_quotes(b);
 	else if (str[b->i] == '\"')
-		handle_double_quotes(b);
+		parser_handle_double_quotes(b);
 	else if (str[b->i] == '|')
-		create_lexer_node(b, "|", PIPE);
+		parser_create_lexer_node(b, "|", PIPE);
 	else if (str[b->i] == '<' && str[b->i + 1] == '<' && str[b->i + 2] == ' ')
-		create_lexer_node(b, "<<", LESS_LESS);
+		parser_create_lexer_node(b, "<<", LESS_LESS);
 	else if (str[b->i] == '>' && str[b->i + 1] == '>' && (str[b->i + 2] == ' ' \
 		|| !str[b->i + 2]))
-		create_lexer_node(b, ">>", GREAT_GREAT);
+		parser_create_lexer_node(b, ">>", GREAT_GREAT);
 	else if (str[b->i] == '<' && str[b->i + 1] == ' ')
-		create_lexer_node(b, "<", LESS);
+		parser_create_lexer_node(b, "<", LESS);
 	else if (str[b->i] == '>' && str[b->i + 1] == ' ')
-		create_lexer_node(b, ">", GREAT);
+		parser_create_lexer_node(b, ">", GREAT);
 	else
-		create_lexer_node(b, 0, 0);
+		parser_create_lexer_node(b, 0, 0);
 }

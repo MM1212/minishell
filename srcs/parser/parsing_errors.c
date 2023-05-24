@@ -1,6 +1,18 @@
-#include "../../include/parser/parsing.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing_errors.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: diogpere <diogpere@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/24 12:03:16 by diogpere          #+#    #+#             */
+/*   Updated: 2023/05/24 12:42:54 by diogpere         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-t_lexer	*ft_lexerclear_one(t_lexer **lst)
+#include "parser/parsing.h"
+
+t_parser_lexer	*parser_ft_lexerclear_one(t_parser_lexer **lst)
 {
 	if (!lst || !(*lst))
 		return (NULL);
@@ -14,10 +26,11 @@ t_lexer	*ft_lexerclear_one(t_lexer **lst)
 	return (NULL);
 }
 
-t_simple_cmds	*ft_simple_cmds_clear_one(t_simple_cmds **lst)
+t_parser_simple_cmds	*parser_ft_simple_cmds_clear_one(\
+	t_parser_simple_cmds **lst)
 {
-	int	i;
-	t_lexer	*redirections;
+	int				i;
+	t_parser_lexer	*redirections;
 
 	i = 0;
 	if ((*lst)->str)
@@ -32,22 +45,13 @@ t_simple_cmds	*ft_simple_cmds_clear_one(t_simple_cmds **lst)
 		(*lst)->str = NULL;
 	}
 	redirections = (*lst)->redirections;
-	ft_lexerclear_one(&redirections);
+	parser_ft_lexerclear_one(&redirections);
 	free(*lst);
 	*lst = NULL;
 	return (NULL);
 }
 
-void	lexer_constructor(t_lexer_builder *b, char *str)
-{
-	b->index = 0;
-	b->i = -1;
-	b->str = str;
-	b->start = NULL;
-	b->node = NULL;
-}
-
-int	check_quotes(t_lexer *start, t_lexer *guide, char *str)
+int	parser_check_quotes(t_parser_lexer *start, t_parser_lexer *guide, char *str)
 {
 	int	i;
 	int	count_double;
@@ -64,51 +68,36 @@ int	check_quotes(t_lexer *start, t_lexer *guide, char *str)
 			count_single++;
 	}
 	if (count_double % 2 != 0)
-		return (parser_error_printer(start, guide, "\"", 0)); // ERROR
+		return (parser_error_printer(start, guide, "\"", 0));
 	else if (count_single % 2 != 0)
-		return (parser_error_printer(start, guide, "\'", 0)); // ERROR
+		return (parser_error_printer(start, guide, "\'", 0));
 	return (0);
 }
 
-int	parser_error_printer(t_lexer *start, t_lexer *guide, char *str, \
-	t_simple_cmds *cmds)
+int	parser_error_printer(t_parser_lexer *start, t_parser_lexer \
+	*guide, char *str, t_parser_simple_cmds *cmds)
 {
-	t_simple_cmds	*cleanup_cmds;
-	t_lexer			*cleanup;
-
 	if (!str)
 		printf("syntax error near unexpected token '%s'\n", guide->str);
 	else if (!str && !guide)
 		printf("memory allocation error\n");
 	else
 		printf("syntax error near unexpected token %s\n", str);
-	while (start)
-	{
-		cleanup = start;
-		start = start->next;
-		ft_lexerclear_one(&cleanup);
-	}
-	if (cmds)
-	{
-		while (cmds)
-		{
-			cleanup_cmds = cmds;
-			cmds = cmds->next;
-			ft_simple_cmds_clear_one(&cleanup_cmds);
-		}
-	}
+	parser_clear_lexer(start);
+	parser_clear_cmds(cmds);
 	return (1);
 }
 
-int	check_errors(t_lexer *start, t_lexer *guide, char *str)
+int	parser_check_errors(t_parser_lexer *start, t_parser_lexer *guide, char *str)
 {
 	while (guide)
 	{
-		if (guide->token > 0 && (!guide->next || (guide->next && !guide->next->str[0])))
-			return (parser_error_printer(start, guide, 0, 0)); // ERROR
+		if (guide->token > 0 && (!guide->next || (guide->next && \
+			!guide->next->str[0])))
+			return (parser_error_printer(start, guide, 0, 0));
 		if (guide->token != 0 && (guide->token == guide->next->token))
-			return (parser_error_printer(start, guide, 0, 0)); // ERROR
+			return (parser_error_printer(start, guide, 0, 0));
 		guide = guide->next;
 	}
-	return (check_quotes(start, guide, str));
+	return (parser_check_quotes(start, guide, str));
 }
