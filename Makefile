@@ -20,7 +20,7 @@ CMDS_SRC_FILES = 		cmd/cmd.c cmd/ctx.c cmd/fns.c \
 						cmd/overrides/int_expand.c
 RUNNER_SRC_FILES = 		runner/runner.c
 PARSER_SRC_FILES = 		parser/parsing_errors.c parser/parsing_lexer.c \
-						parser/parsing_utils.c parser/parsing.c
+						parser/parsing_utils.c parser/parsing_utils2.c parser/parsing.c
 SIGNAL_SRC_FILES =		signals/signals.c
 DIR_SRC_FILES =			dir/fns.c dir/fns2.c \
 						dir/ctx.c
