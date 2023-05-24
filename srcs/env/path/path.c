@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 12:53:11 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/19 14:26:05 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/24 12:40:12 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,6 @@ char	*env_path_find_path(char *exec)
 	if (found)
 		return (ft_strdup(path));
 	else
-		display_error(exec);
+		display_error(exec, "command not found");
 	return (NULL);
 }
