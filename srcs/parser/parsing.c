@@ -1,45 +1,59 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: diogpere <diogpere@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/24 12:03:40 by diogpere          #+#    #+#             */
+/*   Updated: 2023/05/24 13:01:43 by diogpere         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "parser/parsing.h"
 
-t_lexer *handle_redirections(t_lexer *saver, t_simple_cmds *node, t_simple_cmds *start)
+t_parser_lexer	*parser_handle_redirections(t_parser_lexer *saver, \
+	t_parser_simple_cmds *node, t_parser_simple_cmds *start)
 {
-    t_redirect_builder b;
+	t_parser_redirect_builder	b;
 
-    b.returner = saver;
-    if (saver->token > 1 && saver->token <= 5)
-    {
-        b.redirec = (t_lexer *)ft_calloc(1, sizeof(t_lexer));
-        b.redirec->str = ft_strdup(saver->next->str);
-        if (!b.redirec->str || !b.redirec)
-            (parser_error_printer(saver, 0, 0, start));
-        b.redirec->token = saver->token;
-        b.redirec->next = NULL;
-        b.redirec->prev = NULL;
-        if (!node->redirections)
-            node->redirections = b.redirec;
-        else
-            ft_lexeradd_back(&node->redirections, b.redirec);
-        b.i1 = saver->i;
-        b.i2 = saver->next->i;
-        b.returner = saver->next->next;
-        ft_lexerdelone(&saver, b.i1);
-        ft_lexerdelone(&saver, b.i2);
-        node->num_redirections++;
-    }
-    return (b.returner);
+	b.returner = saver;
+	if (saver->token > 1 && saver->token <= 5)
+	{
+		b.redirec = (t_parser_lexer *)ft_calloc(1, sizeof(t_parser_lexer));
+		b.redirec->str = ft_strdup(saver->next->str);
+		if (!b.redirec->str || !b.redirec)
+			(parser_error_printer(saver, 0, 0, start));
+		b.redirec->token = saver->token;
+		b.redirec->next = NULL;
+		b.redirec->prev = NULL;
+		if (!node->redirections)
+			node->redirections = b.redirec;
+		else
+			parser_ft_lexeradd_back(&node->redirections, b.redirec);
+		b.i1 = saver->i;
+		b.i2 = saver->next->i;
+		b.returner = saver->next->next;
+		parser_ft_lexerdelone(&saver, b.i1);
+		parser_ft_lexerdelone(&saver, b.i2);
+		node->num_redirections++;
+	}
+	return (b.returner);
 }
 
-int	allocate_and_fill(t_cmds_builder *b, t_lexer **guide, t_lexer *saver)
+int	parser_allocate_and_fill(t_parser_cmds_builder *b, t_parser_lexer **guide, \
+	t_parser_lexer *saver)
 {
 	b->node->str = (char **)ft_calloc(b->amount + 1, sizeof(char *));
 	if (!b->node->str)
-		return (parser_error_printer(saver, 0, 0, b->start)); // HERE
+		return (parser_error_printer(saver, 0, 0, b->start));
 	b->amount = 0;
 	b->node->redirections = NULL;
 	while (b->saver && b->saver->token != PIPE)
 	{
-		b->saver = handle_redirections(b->saver, b->node, b->start);
+		b->saver = parser_handle_redirections(b->saver, b->node, b->start);
 		if (!b->saver)
-			break;
+			break ;
 		if (b->saver->token == 0)
 		{
 			b->node->str[b->amount++] = ft_strdup(b->saver->str);
@@ -51,86 +65,88 @@ int	allocate_and_fill(t_cmds_builder *b, t_lexer **guide, t_lexer *saver)
 	if (!b->start)
 		b->start = b->node;
 	else
-		cmds_lstlast(b->start)->next = b->node;
+		parser_cmds_lstlast(b->start)->next = b->node;
 	if (*guide && (*guide)->token == PIPE)
 		*guide = (*guide)->next;
-    return (0);
+	return (0);
 }
 
-t_simple_cmds *build_commands(t_lexer *guide)
+t_parser_simple_cmds	*parser_build_commands(t_parser_lexer *guide)
 {
-    t_lexer *saver;
-    t_cmds_builder b;
+	t_parser_lexer			*saver;
+	t_parser_cmds_builder	b;
 
-    saver = guide;
-    b.start = NULL;
-    b.amount = 0;
-    while (guide)
-    {
-        b.saver = guide;
-        b.node = ft_calloc(1, sizeof(t_simple_cmds));
-        if (!b.node)
-            (parser_error_printer(saver, 0, 0, b.start)); // ERROR
-        while (guide && guide->token != PIPE)
-        {
-            guide = guide->next;
-            b.amount++;
-        }
-        if (allocate_and_fill(&b, &guide, saver))
-            return (NULL); // ERROR
+	saver = guide;
+	b.start = NULL;
+	b.amount = 0;
+	while (guide)
+	{
+		b.saver = guide;
+		b.node = ft_calloc(1, sizeof(t_parser_simple_cmds));
+		if (!b.node)
+			(parser_error_printer(saver, 0, 0, b.start));
+		while (guide && guide->token != PIPE)
+		{
+			guide = guide->next;
+			b.amount++;
+		}
+		if (parser_allocate_and_fill(&b, &guide, saver))
+			return (NULL);
 	}
 	return (b.start);
 }
 
-t_simple_cmds	*parser(char *str)
+t_parser_simple_cmds	*parser(char *str)
 {
-	t_lexer			*start;
-	t_simple_cmds	*cmds;
+	t_parser_lexer			*start;
+	t_parser_simple_cmds	*cmds;
 
-	start = parse_build_lexer(str);
+	start = parser_build_lexer(str);
 	if (!start)
-		return (NULL); // ERROR
-	if (check_errors(start, start, str))
-		return (NULL); // ERROR
-	cmds = build_commands(start);
-	return cmds;
+		return (NULL);
+	if (parser_check_errors(start, start, str))
+		return (NULL);
+	cmds = parser_build_commands(start);
+	parser_clear_lexer(start);
+	return (cmds);
 }
 
 #ifdef PARSER_TEST
+
 int	main(int argc, char **argv)
 {
-	char	        *str;
-    t_simple_cmds	*cmds;
+	char					*str;
+	t_parser_simple_cmds	*cmds;
 
-	str = ft_strdup("echo \"Hello World\" | wc -l");
+	str = ft_strdup("cat -e file1 2> file2");
 	cmds = parser(str);
-    if (!cmds)
-        return(0);
-    while (cmds)
+	if (!cmds)
+		return (0);
+	while (cmds)
 	{
 		printf("argument: %s\n", cmds->str[0]);
 		printf("option: %s\n", cmds->str[1]);
-        // if (ft_strncmp(cmds->str[0], "echo", 4) == 0)
-        //     printf("option2: %s\n", cmds->str[2]);
+		// if (ft_strncmp(cmds->str[0], "echo", 4) == 0)
+		//		printf("option2: %s\n", cmds->str[2]);
 		if (cmds->redirections)
 		{
-            printf("redirections: %s\n", cmds->redirections->str);
-            printf("token: %u\n", cmds->redirections->token);
-            // printf("redirections2: %s\n", cmds->redirections->next->str);
-            // printf("token2: %u\n", cmds->redirections->next->token);
+			printf("redirections: %s\n", cmds->redirections->str);
+			printf("token: %u\n", cmds->redirections->token);
+			// printf("redirections2: %s\n", cmds->redirections->next->str);
+			// printf("token2: %u\n", cmds->redirections->next->token);
 		}
 		printf("\n");
 		cmds = cmds->next;
 	}
-	printf("%s, len: %d\n", str, ft_strlen(str));
-    // str = ft_strdup("ls -l | \"junk here and all AHCS\" | wc -l | cat >> \" \"");
-    // while (node)
-    // {
-    //     printf("str: %s\n", node->str);
-    //     printf("token: %d\n", node->token);
-    //     printf("\n");
-    //     node = node->next;
-    // }
+	printf("%s, len: %zu\n", str, ft_strlen(str));
+	//	str = ft_strdup("ls -l | \"junk here and all AHCS\" | wc -l | cat >> \" \"");
+	//	while (node)
+	//	{
+	//		printf("str: %s\n", node->str);
+	//		printf("token: %d\n", node->token);
+	//		printf("\n");
+	//		node = node->next;
+	//	}
 	return (0);
 }
 #endif

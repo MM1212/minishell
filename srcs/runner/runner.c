@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 13:07:32 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/24 12:40:35 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/24 12:46:36 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static void runner_cleanup(void)
 	runner->running = false;
 }
 
-static size_t	runner_count_cmds(t_simple_cmds *cmds)
+static size_t	runner_count_cmds(t_parser_simple_cmds *cmds)
 {
 	size_t	count;
 
@@ -95,8 +95,8 @@ static size_t runner_sanitize_args(char **args)
 }
 
 static void	runner_init_cmds(\
-	t_simple_cmds	*init_cmds, \
-	t_runner_cmd	**cmds, \
+	t_parser_simple_cmds	*init_cmds, \
+	t_runner_cmd			**cmds, \
 	size_t size \
 )
 {
@@ -129,8 +129,8 @@ static bool dup2_safe(int fd1, int fd2)
 
 static void runner_run(const char *str)
 {
-	t_runner		*runner;
-	t_simple_cmds	*init_cmds;
+	t_runner				*runner;
+	t_parser_simple_cmds	*init_cmds;
 	size_t			count;
 	char			**envp;
 	char			*status_code;
@@ -211,7 +211,7 @@ static void runner_run(const char *str)
 		idx++;
 	}
 	runner_cleanup();
-	ft_simple_cmds_clear_one(&init_cmds);
+	parser_clear_cmds(init_cmds);
 	ft_split_free(envp);
 }
 

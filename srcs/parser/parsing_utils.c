@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing_utils.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: diogpere <diogpere@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/24 12:03:26 by diogpere          #+#    #+#             */
+/*   Updated: 2023/05/24 12:42:47 by diogpere         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "parser/parsing.h"
 
-t_lexer	*lexer_lstlast(t_lexer *lst)
+t_parser_lexer	*parser_lexer_lstlast(t_parser_lexer *lst)
 {
 	if (lst == NULL)
 		return (NULL);
@@ -9,7 +21,7 @@ t_lexer	*lexer_lstlast(t_lexer *lst)
 	return (lst);
 }
 
-t_simple_cmds	*cmds_lstlast(t_simple_cmds *lst)
+t_parser_simple_cmds	*parser_cmds_lstlast(t_parser_simple_cmds *lst)
 {
 	if (lst == NULL)
 		return (NULL);
@@ -18,20 +30,20 @@ t_simple_cmds	*cmds_lstlast(t_simple_cmds *lst)
 	return (lst);
 }
 
-void	ft_lexerdel_first(t_lexer **lst)
+void	parser_ft_lexerdel_first(t_parser_lexer **lst)
 {
-	t_lexer	*node;
+	t_parser_lexer	*node;
 
 	node = *lst;
 	*lst = node->next;
-	ft_lexerclear_one(&node);
+	parser_ft_lexerclear_one(&node);
 	if (*lst)
 		(*lst)->prev = NULL;
 }
 
-void	ft_lexeradd_back(t_lexer **lst, t_lexer *new)
+void	parser_ft_lexeradd_back(t_parser_lexer **lst, t_parser_lexer *new)
 {
-	t_lexer	*tmp;
+	t_parser_lexer	*tmp;
 
 	tmp = *lst;
 	if (*lst == NULL)
@@ -45,30 +57,30 @@ void	ft_lexeradd_back(t_lexer **lst, t_lexer *new)
 	new->prev = tmp;
 }
 
-void    ft_lexerdelone(t_lexer **lst, int key)
+void	parser_ft_lexerdelone(t_parser_lexer **lst, int key)
 {
-    t_lexer *node;
-    t_lexer *prev;
-     t_lexer *start;
+	t_parser_lexer	*node;
+	t_parser_lexer	*prev;
+	t_parser_lexer	*start;
 
-    start = *lst;
-    node = start;
-    if ((*lst)->i == key)
-    {
-        ft_lexerdel_first(lst);
-        return;
-    }
-    while (node && node->i != key)
-    {
-        prev = node;
-        node = node->next;
-    }
-    if (node)
-        prev->next = node->next;
-    else
-        prev->next = NULL;
-    if (prev->next)
-        prev->next->prev = prev;
-    ft_lexerclear_one(&node);
-    *lst = start;
+	start = *lst;
+	node = start;
+	if ((*lst)->i == key)
+	{
+		parser_ft_lexerdel_first(lst);
+		return ;
+	}
+	while (node && node->i != key)
+	{
+		prev = node;
+		node = node->next;
+	}
+	if (node)
+		prev->next = node->next;
+	else
+		prev->next = NULL;
+	if (prev->next)
+		prev->next->prev = prev;
+	parser_ft_lexerclear_one(&node);
+	*lst = start;
 }
