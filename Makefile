@@ -25,7 +25,8 @@ RUNNER_SRC_FILES = 		runner/sanitizer.c runner/utils.c \
 						runner/unix.c runner/runner.c \
 						runner/runtime.c runner/runtime2.c
 PARSER_SRC_FILES = 		parser/parsing_errors.c parser/parsing_lexer.c \
-						parser/parsing_utils.c parser/parsing_utils2.c parser/parsing.c
+						parser/parsing_utils.c parser/parsing_utils2.c parser/parsing.c \
+						parser/parsing_lexer2.c
 SIGNAL_SRC_FILES =		signals/signals.c
 DIR_SRC_FILES =			dir/fns.c dir/fns2.c \
 						dir/ctx.c
