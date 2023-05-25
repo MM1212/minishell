@@ -47,7 +47,8 @@ void	parser_create_lexer_node(t_parser_lexer_builder *b, \
 	if (token == 0)
 	{
 		b->j = b->i;
-		while (b->str[b->j] && b->str[b->j] != ' ')
+		while (b->str[b->j] && b->str[b->j] != ' ' && \
+			b->str[b->j] != '\'' && b->str[b->j] != '\"')
 			b->j++;
 		b->node->str = ft_substr(b->str, b->i, b->j - b->i);
 	}
@@ -68,6 +69,8 @@ void	parser_create_lexer_node(t_parser_lexer_builder *b, \
 		b->i++;
 	else if (token == 0)
 		b->i += b->j - b->i - 1;
+	if (b->str[b->j] && b->str[b->j] != ' ')
+		parser_create_lexer_node(b, str, token);
 }
 
 void	parser_handle_double_quotes(t_parser_lexer_builder *b)
