@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 13:40:47 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/25 20:39:20 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/25 23:10:03 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,10 @@ static void	select_state(\
 {
 	if (c == '\'')
 		*state = ENV_VAR_EXPANSION_STATE_SINGLE_QUOTE;
-	if (c == '\"')
+	else if (c == '\"')
 		*state = ENV_VAR_EXPANSION_STATE_DOUBLE_QUOTE;
+	else if (c == 4)
+		*state = ENV_VAR_EXPANSION_STATE_NONE;
 }
 
 static void	remove_quotes(char **str)
@@ -51,7 +53,7 @@ static void	remove_quotes(char **str)
 	idx = 0;
 	while ((*str)[idx])
 	{
-		if ((*str)[idx] == '\'' || (*str)[idx] == '\"')
+		if ((*str)[idx] == '\'' || (*str)[idx] == '\"' || (*str)[idx] == 4)
 			ft_strrep(str, idx, 1, "");
 		idx++;
 	}
@@ -93,6 +95,6 @@ bool	env_registry_is_var_char_valid(char c)
 			|| c == ':' || c == '/' || c == '{' || c == '}' || c == '+'
 			|| c == '^' || c == '%' || c == '#' || c == '@' || c == '!'
 			|| c == '~' || c == '"' || c == '`' || c == '(' || c == ')'
-			|| c == '$'
+			|| c == '$' || c == 4
 			|| c == '=' || c == '-' || c == '&' || c == '*'));
 }

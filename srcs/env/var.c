@@ -6,12 +6,13 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 12:26:22 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/25 15:08:50 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/25 22:52:49 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <shared.h>
 #include "env/var.h"
+#include "env/registry_fns.h"
 
 t_env_var	*env_build_var(char *name, char *value)
 {
@@ -31,11 +32,28 @@ static void	adjust_for_quotes(\
 )
 {
 	*start = equals_sign - entry + 1;
-	if (entry[*start] == '"' || entry[*start] == '\'')
+	if (entry[*start] == '"' || entry[*start] == '\'' || entry[*start] == 4)
 		(*start)++;
 	*len = ft_strlen(entry) - *start;
-	if (entry[*start + (*len) - 1] == '"' || entry[*start + (*len) - 1] == '\'')
+	if (entry[*start + (*len) - 1] == '"' || entry[*start + (*len) - 1] == '\'' \
+		|| entry[*start + (*len) - 1] == 4)
 		(*len)--;
+}
+
+static bool	check_for_valid_name(char *name)
+{
+	size_t	idx;
+
+	idx = 0;
+	while (name[idx])
+	{
+		if (!env_registry_is_var_char_valid(name[idx]))
+		{
+			return (false);
+		}
+		idx++;
+	}
+	return (true);
 }
 
 t_env_var	env_build_var_from_str(char *entry)
@@ -50,6 +68,8 @@ t_env_var	env_build_var_from_str(char *entry)
 	if (!equals_sign)
 		return (var);
 	var.name = ft_substr(entry, 0, equals_sign - entry);
+	if (!check_for_valid_name(var.name))
+		return (free(var.name), (t_env_var){NULL, NULL});
 	adjust_for_quotes(equals_sign, entry, &start, &len);
 	var.value = ft_substr(entry, start, len);
 	if (!var.name || !var.value)
@@ -72,24 +92,4 @@ void	env_delete_var(t_env_var *var)
 	if (var->value)
 		free(var->value);
 	free(var);
-}
-
-char	*env_var_to_string(t_env_var *var)
-{
-	char	*str;
-	size_t	len;
-
-	if (!var)
-		return (NULL);
-	len = ft_strlen(var->name) + ft_strlen(var->value) + 1;
-	str = ft_calloc(len + 1, sizeof(char));
-	if (!str)
-		return (NULL);
-	ft_sprintf(\
-		str, len + 1, \
-		"%s=%s", \
-		var->name, \
-		var->value \
-	);
-	return (str);
 }

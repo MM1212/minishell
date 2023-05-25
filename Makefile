@@ -9,7 +9,7 @@ EVENTS_SRC_FILES =		events/events.c
 LOGGER_SRC_FILES =		logger/functions.c logger/logger.c logger/ctx.c
 PROMPTER_SRC_FILES =	prompter/prompter.c prompter/utils.c
 ENVP_SRC_FILES =		env/fns.c env/fns2.c env/fns3.c \
-						env/var.c env/registry.c \
+						env/var.c env/var2.c env/registry.c \
 						env/path/ctx.c env/path/path.c
 CMDS_SRC_FILES = 		cmd/cmd.c cmd/ctx.c cmd/fns.c \
 						cmd/overrides.c \

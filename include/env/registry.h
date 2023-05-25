@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 12:11:19 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/25 20:38:37 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/25 22:45:56 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ typedef struct s_env_registry
 	void						(*print)(void);
 	bool						(*init)(char **envp);
 	void						(*expand_arg)(char **arg);
+	t_env_var					(*build_from_str)(char *str);
 	t_env_path					*path;
 }						t_env_registry;
 

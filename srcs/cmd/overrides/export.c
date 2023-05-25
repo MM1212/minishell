@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 17:42:34 by diogpere          #+#    #+#             */
-/*   Updated: 2023/05/25 16:57:23 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/25 22:57:18 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,41 +28,11 @@ static void	show_available_vars(void)
 	ft_split_free(vars);
 }
 
-static bool	on_arg(
-	char **av, \
-	size_t idx, \
-	char **key, \
-	t_envp *envp
-)
-{
-	char	*str;
-	size_t	str_len;
-
-	str = av[idx];
-	str_len = ft_strlen(str);
-	if (!*key)
-	{
-		if (str_len == 0 || !ft_strchr(str, '='))
-		{
-			*key = NULL;
-			return (false);
-		}
-		*key = ft_substr(str, 0, ft_strchr(str, '=') - str);
-		if (str[str_len - 1] == '=')
-			return (false);
-		str += ft_strlen(*key) + 1;
-	}
-	envp->set(*key, str);
-	free(*key);
-	*key = NULL;
-	return (true);
-}
-
 void	cmds_overrides_export_cmd(int ac, char **av, int *exit_code)
 {
 	size_t		idx;
-	char		*key;
 	t_envp		*envp;
+	t_env_var	var;
 
 	ac--;
 	av++;
@@ -71,13 +41,15 @@ void	cmds_overrides_export_cmd(int ac, char **av, int *exit_code)
 	if (ac == 0)
 		return (show_available_vars());
 	idx = 0;
-	key = NULL;
 	while (av[idx])
 	{
-		if (!on_arg(av, idx, &key, envp))
+		ft_printf("building from str: %s\n", av[idx]);
+		var = envp->build_from_str(av[idx]);
+		if (var.name != NULL)
 		{
-			idx++;
-			continue ;
+			envp->set(var.name, var.value);
+			free(var.name);
+			free(var.value);
 		}
 		idx++;
 	}

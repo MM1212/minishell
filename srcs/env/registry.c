@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 12:32:55 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/21 04:31:30 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/25 22:46:14 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ static t_env_registry	*env_registry_create(void)
 	envp->print = env_registry_print;
 	envp->init = env_registry_init;
 	envp->expand_arg = env_registry_expand_arg;
+	envp->build_from_str = env_build_var_from_str;
 	envp->path = env_path_create();
 	if (!envp->path)
 	{
