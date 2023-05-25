@@ -6,13 +6,12 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 13:15:54 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/21 04:40:06 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/25 13:44:36 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env/registry.h"
 #include "env/registry_fns.h"
-#include <log/log.h>
 
 bool	env_registry_init(char **envp)
 {
@@ -28,10 +27,7 @@ bool	env_registry_init(char **envp)
 	{
 		var = env_build_var_from_str(envp[idx]);
 		if (!var.name)
-		{
-			logger()->error("Failed to build env var %s!\n", envp[idx]);
 			return (false);
-		}
 		registry->add(var.name, var.value);
 		idx++;
 	}
@@ -96,36 +92,4 @@ char	*env_registry_get_var_value(char *name)
 	if (var)
 		return (var->value);
 	return (NULL);
-}
-
-char	*env_registry_expand_arg(char *arg)
-{
-	char		*str;
-	char		*var_name;
-	size_t		idx;
-	size_t		start;
-	char		*var;
-
-	str = ft_strdup(arg);
-	idx = 0;
-	while (str[idx])
-	{
-		if (str[idx] != '$')
-		{
-			idx++;
-			continue;
-		}
-		start = ++idx;
-		while (str[idx] && str[idx] != ' ' && str[idx] != '$')
-			idx++;
-		var_name = ft_substr(str, start, idx - start);
-		var = get_envp()->get_value(var_name);
-		free(var_name);
-		if (!var)
-			ft_strrep(&str, start - 1, idx - start + 1, "");
-		else
-			ft_strrep(&str, start - 1, idx - start + 1, var);
-		idx = 0;
-	}
-	return (str);
 }

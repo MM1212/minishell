@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 12:26:22 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/19 11:29:15 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/25 15:08:50 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,33 @@ t_env_var	*env_build_var(char *name, char *value)
 	return (var);
 }
 
+static void	adjust_for_quotes(\
+	char *equals_sign, char *entry, \
+	size_t *start, size_t *len \
+)
+{
+	*start = equals_sign - entry + 1;
+	if (entry[*start] == '"' || entry[*start] == '\'')
+		(*start)++;
+	*len = ft_strlen(entry) - *start;
+	if (entry[*start + (*len) - 1] == '"' || entry[*start + (*len) - 1] == '\'')
+		(*len)--;
+}
+
 t_env_var	env_build_var_from_str(char *entry)
 {
 	t_env_var	var;
 	char		*equals_sign;
+	size_t		start;
+	size_t		len;
 
 	var = (t_env_var){NULL, NULL};
 	equals_sign = ft_strchr(entry, '=');
 	if (!equals_sign)
 		return (var);
 	var.name = ft_substr(entry, 0, equals_sign - entry);
-	var.value = ft_substr(entry, equals_sign - entry + 1, ft_strlen(entry));
+	adjust_for_quotes(equals_sign, entry, &start, &len);
+	var.value = ft_substr(entry, start, len);
 	if (!var.name || !var.value)
 	{
 		if (var.name)

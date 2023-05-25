@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 14:22:23 by diogpere          #+#    #+#             */
-/*   Updated: 2023/05/24 15:48:14 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/25 15:17:30 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,26 +16,19 @@
 int	cmds_overrides_echo_cmd(int ac, char **args)
 {
 	int		i;
-	bool	suppressNewline;
+	bool	suppress_newline;
 
 	(void)ac;
 	i = 1;
-	suppressNewline = false;
+	suppress_newline = false;
 	if (args[i] != NULL && ft_strcmp(args[i], "-n") == 0)
 	{
-		suppressNewline = true;
+		suppress_newline = true;
 		i++;
 	}
 	while (args[i] != NULL)
-	{
-		printf("%s", args[i]);
-		if (args[i + 1] != NULL)
-		{
-			printf(" ");
-		}
-		i++;
-	}
-	if (!suppressNewline)
+		printf("%s", args[i++]);
+	if (!suppress_newline)
 	{
 		printf("\n");
 	}

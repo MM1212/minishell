@@ -7,8 +7,8 @@ SRC_PATH = srcs
 CTX_SRC_FILES =			context/context.c
 EVENTS_SRC_FILES =		events/events.c
 LOGGER_SRC_FILES =		logger/functions.c logger/logger.c logger/ctx.c
-PROMPTER_SRC_FILES =	prompter/prompter.c
-ENVP_SRC_FILES =		env/fns.c env/fns2.c \
+PROMPTER_SRC_FILES =	prompter/prompter.c prompter/utils.c
+ENVP_SRC_FILES =		env/fns.c env/fns2.c env/fns3.c \
 						env/var.c env/registry.c \
 						env/path/ctx.c env/path/path.c
 CMDS_SRC_FILES = 		cmd/cmd.c cmd/ctx.c cmd/fns.c \
@@ -18,8 +18,12 @@ CMDS_SRC_FILES = 		cmd/cmd.c cmd/ctx.c cmd/fns.c \
 						cmd/overrides/exit.c \
 						cmd/overrides/pwd.c \
 						cmd/overrides/int_expand.c \
-						cmd/overrides/echo.c
-RUNNER_SRC_FILES = 		runner/runner.c
+						cmd/overrides/echo.c \
+						cmd/overrides/export.c \
+						cmd/overrides/unset.c
+RUNNER_SRC_FILES = 		runner/sanitizer.c runner/utils.c \
+						runner/unix.c runner/runner.c \
+						runner/runtime.c runner/runtime2.c
 PARSER_SRC_FILES = 		parser/parsing_errors.c parser/parsing_lexer.c \
 						parser/parsing_utils.c parser/parsing_utils2.c parser/parsing.c
 SIGNAL_SRC_FILES =		signals/signals.c
@@ -52,7 +56,7 @@ INCLUDES = -O3 -Iinclude -I$(LIBFT_INCLUDES)
 OBJ_FLAGS = $(INCLUDES)
 PROGRAM_FLAGS = $(OBJ_FLAGS) -L$(LIBFT_BIN) -lft -lreadline
 
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
 
 ### COLORS ###
 
@@ -105,5 +109,8 @@ parser_test: $(LIBFT_ARCH)
 	rm parser_test
 
 re: fclean all
+
+vg: $(NAME)
+	valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./$(NAME)
 
 .PHONY: all clean fclean re watch

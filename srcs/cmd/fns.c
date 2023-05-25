@@ -6,14 +6,18 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 13:57:32 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/24 16:18:19 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/25 13:56:45 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cmd/cmd_fns.h"
 #include "cmd/storage.h"
 
-bool	cmds_add_cmd(char *cmd, t_cmd_handler handler, t_cmd_on_execute on_execute)
+bool	cmds_add_cmd(\
+	char *cmd, \
+	t_cmd_handler handler, \
+	t_cmd_on_execute on_execute \
+)
 {
 	t_cmds	*cmds;
 	t_cmd	*new;

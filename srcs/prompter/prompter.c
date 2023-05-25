@@ -6,49 +6,14 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 10:49:14 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/23 14:34:33 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/25 14:00:40 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "prompter/prompter.h"
 #include <context/context.h>
-#include <utils/colors.h>
-#include <log/log.h>
-#include <env/registry.h>
-#include <dir/dir.h>
-#include <cmd/storage.h>
-#include <utils/error.h>
-#include <utils/quit.h>
 #include <runner/runner.h>
-
-static void prompter_get_prefix(char *prefix)
-{
-	char	*cwd;
-	char	*home;
-	char	*path;
-
-	cwd = get_envp()->get_value("PWD");
-	home = get_envp()->get_value("HOME");
-	path = NULL;
-	if (!cwd || !home)
-	{
-		ft_sprintf(prefix, 1024, "minishell> ");
-		return ;
-	}
-	if (ft_strnstr(cwd, home, ft_strlen(home)) == cwd)
-	{
-		path = ft_strjoin("~", cwd + ft_strlen(home));
-		cwd = path;
-	}
-	ft_sprintf(\
-		prefix, 1024, \
-		COLORS_LIGHT_GREEN"%s"COLORS_RESET":"COLORS_LIGHT_BLUE"%s"COLORS_RESET"$ ", \
-		get_envp()->get_value("USER"), \
-		cwd \
-	);
-	if (path)
-		free(path);
-}
+#include <utils/quit.h>
 
 static void	prompter_prompt(void)
 {
@@ -66,13 +31,11 @@ static void	prompter_prompt(void)
 		return ;
 	}
 	add_history(line);
-	{
-		get_runner()->run(line);
-	}
+	get_runner()->run(line);
 	free(line);
 }
 
-static void prompter_skip_current_line(void)
+static void	prompter_skip_current_line(void)
 {
 	size_t	wrote;
 

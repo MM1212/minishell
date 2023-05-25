@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:03:40 by diogpere          #+#    #+#             */
-/*   Updated: 2023/05/24 13:49:08 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/25 15:17:06 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,14 +116,15 @@ int	main(int argc, char **argv)
 	char					*str;
 	t_parser_simple_cmds	*cmds;
 
-	str = ft_strdup("cat -e file1 2> file2");
+	str = ft_strdup(" echo $HOME\"$HOME\"abc");
 	cmds = parser(str);
 	if (!cmds)
 		return (0);
 	while (cmds)
 	{
-		printf("argument: %s\n", cmds->str[0]);
-		printf("option: %s\n", cmds->str[1]);
+		printf("argument: %s\n", *cmds->str++);
+		while (*cmds->str)
+			printf("option: %s\n", *cmds->str++);
 		// if (ft_strncmp(cmds->str[0], "echo", 4) == 0)
 		//		printf("option2: %s\n", cmds->str[2]);
 		if (cmds->redirections)

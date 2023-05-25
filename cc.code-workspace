@@ -92,7 +92,10 @@
 		"quit.h": "c",
 		"parsing.h": "c",
 		"pipex_bonus.h": "c",
-		"runner.h": "c"
+		"runner.h": "c",
+		"registry_fns.h": "c",
+		"storage.h": "c",
+		"typeinfo": "c"
 	},
 	"files.exclude": {
 		"**/*.o": true,

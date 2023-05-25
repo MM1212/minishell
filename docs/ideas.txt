@@ -29,7 +29,7 @@ TODO: - [x] find more info about $? impl @diogpere
  - [x] env -> cat environment from the registry @martiper
  - [x] exit -> kill the console & cleanup all the contexts @martiper
  - [x] echo with -n (without new line) @diogpere
- - [ ] export -> add to env var registry @diogpere
- - [ ] unset -> remove var from env var registry @diogpere
+ - [x] export -> add to env var registry @diogpere
+ - [x] unset -> remove var from env var registry @diogpere
 
 - [x] inject all the initial env vars into the registry @martiper

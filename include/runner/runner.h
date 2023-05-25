@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 13:00:04 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/24 13:39:16 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/25 16:50:04 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ typedef struct s_runner_cmd_std
 	int	out;
 	int	err;
 }	t_runner_cmd_std;
-
 
 typedef struct s_runner_cmd
 {
@@ -47,5 +46,49 @@ typedef struct s_runner
 }	t_runner;
 
 t_runner	*get_runner(void);
+size_t		runner_sanitize_args(char **args);
+void		runner_cleanup(void);
+size_t		runner_count_cmds(t_parser_simple_cmds *cmds);
+void		runner_init_cmds(\
+	t_parser_simple_cmds *init_cmds, \
+	t_runner_cmd **cmds, \
+	size_t size \
+);
+bool		runner_get_line(char *delimiter, int fd);
+bool		runner_handle_heredoc(t_runner_cmd *cmd, t_parser_lexer *redir);
+bool		runner_handle_redir_out(t_runner_cmd *cmd, t_parser_lexer *redir);
+bool		runner_handle_redir_in(t_runner_cmd *cmd, t_parser_lexer *redir);
+bool		runner_handle_redirections(t_runner_cmd *cmd);
+void		runner_close_redirections(t_runner_cmd *cmd);
+
+bool		dup2_safe(int fd1, int fd2);
+
+// RUNTIME
+void		runner_handle_exit_codes(t_runner_cmd **cmds);
+void		runner_handle_std(\
+	t_runner_cmd *cmd \
+);
+void		runner_child_exit(\
+	t_parser_simple_cmds *init_cmds, \
+	char **envp, \
+	int exit_code \
+);
+void		runner_handle_child(\
+	t_parser_simple_cmds *init_cmds, \
+	char **envp, \
+	t_runner_cmd *cmd \
+);
+void		runner_handle_pre_std(\
+	t_runner_cmd *cmd, \
+	t_runner_cmd *cmds[], \
+	size_t idx, \
+	size_t count \
+);
+void		runner_per_cmd(\
+	t_runner *runner, \
+	size_t	vars[2], \
+	t_parser_simple_cmds *init_cmds, \
+	char **envp \
+);
 
 #endif

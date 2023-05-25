@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 10:48:07 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/20 12:05:00 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/25 13:59:58 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,6 @@ typedef struct s_prompter
 }	t_prompter;
 
 t_prompter	*get_prompter(void);
+void		prompter_get_prefix(char *prefix);
 
 #endif

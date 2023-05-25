@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 12:53:11 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/24 16:48:39 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/25 13:44:21 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,23 +46,12 @@ static char	*env_path_parse_exec_at_path(char *path)
 	return (NULL);
 }
 
-char	*env_path_find_path(char *exec)
+static char	*env_path_search_path(char *exec, char **paths)
 {
-	char	**paths;
 	char	path[1024];
 	size_t	idx;
-	bool	found;
 
-	if (ft_strchr(exec, '/') != NULL)
-		return (env_path_parse_exec_at_path(exec));
-	paths = get_envp()->path->get_paths();
-	if (!paths)
-	{
-		display_error(exec, "command not found");
-		return (NULL);
-	}
 	idx = 0;
-	found = false;
 	while (paths[idx])
 	{
 		if (ft_str_endswith(paths[idx], "/"))
@@ -74,14 +63,30 @@ char	*env_path_find_path(char *exec)
 			get_dir()->is_executable(path)
 		)
 		{
-			found = true;
-			break ;
+			return (ft_strdup(path));
 		}
 		idx++;
 	}
+	return (NULL);
+}
+
+char	*env_path_find_path(char *exec)
+{
+	char	**paths;
+	char	*path;
+
+	if (ft_strchr(exec, '/') != NULL)
+		return (env_path_parse_exec_at_path(exec));
+	paths = get_envp()->path->get_paths();
+	if (!paths)
+	{
+		display_error(exec, "command not found");
+		return (NULL);
+	}
+	path = env_path_search_path(exec, paths);
 	ft_split_free(paths);
-	if (found)
-		return (ft_strdup(path));
+	if (path)
+		return (path);
 	else
 		display_error(exec, "command not found");
 	return (NULL);
