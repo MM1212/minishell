@@ -6,7 +6,7 @@
 /*   By: diogpere <diogpere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 14:23:16 by diogpere          #+#    #+#             */
-/*   Updated: 2023/05/25 14:32:15 by diogpere         ###   ########.fr       */
+/*   Updated: 2023/05/25 22:13:27 by diogpere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,5 +100,7 @@ int						parser_error_printer(t_parser_lexer *start, \
 t_parser_simple_cmds	*parser_ft_simple_cmds_clear_one(t_parser_simple_cmds \
 						**lst);
 t_parser_simple_cmds	*parser(char *str);
+void					parser_handle_quotes(t_parser_lexer_builder *b);
+void					parser_handle_double_quotes(t_parser_lexer_builder *b);
 
 #endif
