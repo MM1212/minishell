@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 13:40:47 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/25 23:10:03 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/25 23:32:31 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ static void	remove_quotes(char **str)
 	{
 		if ((*str)[idx] == '\'' || (*str)[idx] == '\"' || (*str)[idx] == 4)
 			ft_strrep(str, idx, 1, "");
-		idx++;
+		else
+			idx++;
 	}
 }
 
@@ -82,8 +83,8 @@ void	env_registry_expand_arg(char **arg)
 		var_name = ft_substr((*arg), start, idx - start);
 		setup_replace(arg, start - 1, \
 			idx - start + 1, get_envp()->get_value(var_name));
+		idx = start + ft_strlen(get_envp()->get_value(var_name)) - 1;
 		free(var_name);
-		idx = 0;
 	}
 	remove_quotes(arg);
 }
