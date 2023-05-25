@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 14:22:23 by diogpere          #+#    #+#             */
-/*   Updated: 2023/05/25 17:22:37 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/25 20:21:50 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	cmds_overrides_echo_cmd(int ac, char **args)
 	while (args[i] != NULL)
 	{
 		ft_printf("%s", args[i++]);
-		if (i > 2)
+		if (i < ac)
 			ft_printf(" ");
 	}
 	if (!suppress_newline)

@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 13:15:54 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/25 13:44:36 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/25 17:22:28 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ bool	env_registry_init(char **envp)
 		registry->add(var.name, var.value);
 		idx++;
 	}
+	registry->set("?", "0");
 	return (true);
 }
 

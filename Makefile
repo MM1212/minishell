@@ -17,7 +17,6 @@ CMDS_SRC_FILES = 		cmd/cmd.c cmd/ctx.c cmd/fns.c \
 						cmd/overrides/env.c \
 						cmd/overrides/exit.c \
 						cmd/overrides/pwd.c \
-						cmd/overrides/int_expand.c \
 						cmd/overrides/echo.c \
 						cmd/overrides/export.c \
 						cmd/overrides/unset.c
