@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
+/*   By: diogpere <diogpere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:03:40 by diogpere          #+#    #+#             */
-/*   Updated: 2023/05/25 15:17:06 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/25 18:02:40 by diogpere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ int	main(int argc, char **argv)
 	char					*str;
 	t_parser_simple_cmds	*cmds;
 
-	str = ft_strdup(" echo $HOME\"$HOME\"abc");
+	str = ft_strdup("echo \"Makefile\"\"Makefile\"");
 	cmds = parser(str);
 	if (!cmds)
 		return (0);
@@ -137,7 +137,9 @@ int	main(int argc, char **argv)
 		printf("\n");
 		cmds = cmds->next;
 	}
+	
 	printf("%s, len: %zu\n", str, ft_strlen(str));
+	free(str);
 	//	str = ft_strdup("ls -l | \"junk here and all AHCS\" | wc -l | cat >> \" \"");
 	//	while (node)
 	//	{

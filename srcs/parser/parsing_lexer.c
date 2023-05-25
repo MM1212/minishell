@@ -6,7 +6,7 @@
 /*   By: diogpere <diogpere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:03:09 by diogpere          #+#    #+#             */
-/*   Updated: 2023/05/25 14:27:00 by diogpere         ###   ########.fr       */
+/*   Updated: 2023/05/25 18:03:29 by diogpere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,28 +16,32 @@ t_parser_lexer	*parser_build_lexer(char *str)
 {
 	t_parser_lexer_builder	b;
 
+	str = ft_strdup(str);
 	parser_lexer_constructor(&b, str);
-	while (str[++b.i])
+	while (b.str[++b.i])
 	{
-		while (str[b.i] == ' ')
-			str[b.i++] = 3;
-		if (!str[b.i])
+		while (b.str[b.i] == ' ')
+			b.str[b.i++] = 3;
+		if (!b.str[b.i])
 			break ;
 		b.node = (t_parser_lexer *)ft_calloc(1, sizeof(t_parser_lexer));
 		if (!b.node)
 		{
 			(parser_error_printer(b.start, 0, 0, 0));
+			free(b.str);
 			return (NULL);
 		}
-		parser_handle_tokens(&b, str);
+		parser_handle_tokens(&b, b.str);
 		if (!b.start->next && b.start->token == 1)
 		{
 			(parser_error_printer(b.start, b.start, "|", 0));
+			free(b.str);
 			return (NULL);
 		}
-		if (!str[b.i])
+		if (!b.str[b.i])
 			break ;
 	}
+	free(b.str);
 	return (b.start);
 }
 
@@ -78,6 +82,13 @@ void	parser_handle_double_quotes(t_parser_lexer_builder *b)
 	b->j = b->i + 1;
 	while (b->str[b->j] && b->str[b->j] != '\"')
 		b->j++;
+	if (b->str[b->j] && b->str[b->j + 1] == '\"')
+	{
+		ft_strrep(&b->str, b->j, 1, "");
+		b->j += 2;
+		while (b->str[b->j] && b->str[b->j] != '\"')
+			b->j++;
+	}
 	if (b->j - b->i > 1 && b->str[b->j] == '\"')
 	{
 		b->node->str = ft_substr(b->str, b->i + 1, b->j - b->i - 1);
@@ -103,6 +114,13 @@ void	parser_handle_quotes(t_parser_lexer_builder *b)
 	b->j = b->i + 1;
 	while (b->str[b->j] && b->str[b->j] != '\'')
 		b->j++;
+	if (b->str[b->j] && b->str[b->j + 1] == '\'')
+	{
+		ft_strrep(&b->str, b->j, 1, "");
+		b->j += 2;
+		while (b->str[b->j] && b->str[b->j] != '\'')
+			b->j++;
+	}
 	if (b->j - b->i > 1 && b->str[b->j] == '\'')
 	{
 		b->node->str = ft_substr(b->str, b->i + 1, b->j - b->i - 1);
