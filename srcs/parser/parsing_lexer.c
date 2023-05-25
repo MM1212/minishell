@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_lexer.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
+/*   By: diogpere <diogpere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:03:09 by diogpere          #+#    #+#             */
-/*   Updated: 2023/05/24 13:51:01 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/25 14:27:00 by diogpere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,13 +89,7 @@ void	parser_handle_double_quotes(t_parser_lexer_builder *b)
 		b->node->token = 0;
 		b->node->next = NULL;
 		b->i += b->j - b->i;
-		if (!b->start)
-			b->start = b->node;
-		else
-		{
-			parser_lexer_lstlast(b->start)->next = b->node;
-			b->node->prev = parser_lexer_lstlast(b->start);
-		}
+		parser_ft_lexeradd_back(&b->start, b->node);
 		b->node->i = b->index;
 		b->index++;
 	}
