@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: diogpere <diogpere@student.42.fr>          +#+  +:+       +#+        */
+/*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:03:40 by diogpere          #+#    #+#             */
-/*   Updated: 2023/05/26 12:06:00 by diogpere         ###   ########.fr       */
+/*   Updated: 2023/05/25 23:49:53 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ int	main(int argc, char **argv)
 	char					*str;
 	t_parser_simple_cmds	*cmds;
 
-	str = ft_strdup("echo Makefile\'Hello\'");
+	str = ft_strdup(" echo $HOME'HOME'\"$HOME\"'$HOME'$HOME");
 	cmds = parser(str);
 	if (!cmds)
 		return (0);
@@ -125,29 +125,16 @@ int	main(int argc, char **argv)
 		printf("argument: %s\n", *cmds->str++);
 		while (*cmds->str)
 			printf("option: %s\n", *cmds->str++);
-		// if (ft_strncmp(cmds->str[0], "echo", 4) == 0)
-		//		printf("option2: %s\n", cmds->str[2]);
 		if (cmds->redirections)
 		{
 			printf("redirections: %s\n", cmds->redirections->str);
 			printf("token: %u\n", cmds->redirections->token);
-			// printf("redirections2: %s\n", cmds->redirections->next->str);
-			// printf("token2: %u\n", cmds->redirections->next->token);
 		}
 		printf("\n");
 		cmds = cmds->next;
 	}
-	
 	printf("%s, len: %zu\n", str, ft_strlen(str));
 	free(str);
-	//	str = ft_strdup("ls -l | \"junk here and all AHCS\" | wc -l | cat >> \" \"");
-	//	while (node)
-	//	{
-	//		printf("str: %s\n", node->str);
-	//		printf("token: %d\n", node->token);
-	//		printf("\n");
-	//		node = node->next;
-	//	}
 	return (0);
 }
 #endif
