@@ -13,7 +13,7 @@
 #ifndef PARSING_H
 # define PARSING_H
 
-# include "../shared.h"
+# include <shared.h>
 
 struct	s_parser_simple_cmds;
 
