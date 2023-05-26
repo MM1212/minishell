@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 10:49:14 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/25 14:00:40 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/25 17:18:58 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,21 @@
 #include <context/context.h>
 #include <runner/runner.h>
 #include <utils/quit.h>
+
+static bool	check_if_empty(char *line)
+{
+	char	*trimmed;
+
+	trimmed = ft_strtrim(line, " ");
+	if (ft_strlen(trimmed) == 0)
+	{
+		free(line);
+		free(trimmed);
+		return (false);
+	}
+	free(trimmed);
+	return (true);
+}
 
 static void	prompter_prompt(void)
 {
@@ -28,8 +43,11 @@ static void	prompter_prompt(void)
 	{
 		if (!line)
 			quit(0);
+		free(line);
 		return ;
 	}
+	if (!check_if_empty(line))
+		return ;
 	add_history(line);
 	get_runner()->run(line);
 	free(line);
