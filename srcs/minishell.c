@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 02:27:03 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/20 12:25:55 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/26 01:06:34 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	main(int ac, char **av, char **env)
 
 	(void)ac;
 	(void)av;
-	(void)env;
+	exit_code = 0;
 	logger()->info("Minishell starting..\n");
 	envp = get_envp();
 	prompter = get_prompter();
@@ -35,11 +35,13 @@ int	main(int ac, char **av, char **env)
 	if (!prompter || !envp || !cmds)
 		return (EXIT_FAILURE);
 	if (!envp->init(env) || !cmds->store())
+	{
 		prompter->keep_prompting = false;
+		exit_code = EXIT_FAILURE;
+	}
 	signals_hook();
 	while (prompter->keep_prompting)
 		prompter->prompt();
-	exit_code = ft_atoi(envp->get_value("?"));
 	destroy_all_contexts();
 	return (exit_code);
 }
