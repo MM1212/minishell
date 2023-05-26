@@ -6,7 +6,7 @@
 /*   By: diogpere <diogpere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:03:09 by diogpere          #+#    #+#             */
-/*   Updated: 2023/05/26 12:05:34 by diogpere         ###   ########.fr       */
+/*   Updated: 2023/05/26 14:23:58 by diogpere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,23 +52,36 @@ t_parser_lexer	*parser_build_lexer(char *str)
 	return (b.start);
 }
 
+void	parser_create_for_string(t_parser_lexer_builder *b)
+{
+	int	quote_counter;
+
+	b->j = b->i;
+	quote_counter = 0;
+	while (b->str[b->j] && b->str[b->j] != ' ')
+	{
+		if (b->str[b->j] == '\'' || b->str[b->j] == '\"')
+		{
+			quote_counter++;
+			if (quote_counter % 2 == 0)
+				b->str[b->j] = '\x04';
+		}
+		b->j++;
+	}
+	if (b->str[b->j - 1] == '\'' || b->str[b->j - 1] == '\"')
+	{
+		b->j--;
+		b->node->str = ft_substr(b->str, b->i, b->j++ - b->i);
+	}
+	else
+		b->node->str = ft_substr(b->str, b->i, b->j - b->i);
+}
+
 void	parser_create_lexer_node(t_parser_lexer_builder *b, \
 	char *str, int token)
 {
 	if (token == 0)
-	{
-		b->j = b->i;
-		while (b->str[b->j] && b->str[b->j] != ' ')
-			b->j++;
-		if (b->str[b->j - 1] == '\'' || b->str[b->j - 1] == '\"')
-		{
-			b->j--;
-			b->node->str = ft_substr(b->str, b->i, b->j - b->i);
-			b->j++;
-		}
-		else
-			b->node->str = ft_substr(b->str, b->i, b->j - b->i);
-	}
+		parser_create_for_string(b);
 	else
 		b->node->str = ft_strdup(str);
 	b->node->token = token;
