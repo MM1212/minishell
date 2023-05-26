@@ -6,7 +6,7 @@
 /*   By: diogpere <diogpere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 22:11:59 by diogpere          #+#    #+#             */
-/*   Updated: 2023/05/26 12:06:19 by diogpere         ###   ########.fr       */
+/*   Updated: 2023/05/26 12:16:35 by diogpere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@ void	parser_handle_side_quotes(t_parser_lexer_builder *b, char c)
 	{
 		if (b->str[b->j + 1] == other_set)
 			c = other_set;
-		if (b->str[b->j + 1] != c && b->str[b->j + 1] != other_set)
-			ft_strjoin("c", b->str);
 		ft_strrep(&b->str, b->j, 1, "");
 		b->j += 1;
 		while (b->str[b->j] && b->str[b->j] != c && b->str[b->j] != 32)
