@@ -6,7 +6,7 @@
 /*   By: diogpere <diogpere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:03:09 by diogpere          #+#    #+#             */
-/*   Updated: 2023/05/25 22:17:25 by diogpere         ###   ########.fr       */
+/*   Updated: 2023/05/26 12:05:34 by diogpere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,22 +58,22 @@ void	parser_create_lexer_node(t_parser_lexer_builder *b, \
 	if (token == 0)
 	{
 		b->j = b->i;
-		while (b->str[b->j] && b->str[b->j] != ' ' && \
-			b->str[b->j] != '\'' && b->str[b->j] != '\"')
+		while (b->str[b->j] && b->str[b->j] != ' ')
 			b->j++;
-		b->node->str = ft_substr(b->str, b->i, b->j - b->i);
+		if (b->str[b->j - 1] == '\'' || b->str[b->j - 1] == '\"')
+		{
+			b->j--;
+			b->node->str = ft_substr(b->str, b->i, b->j - b->i);
+			b->j++;
+		}
+		else
+			b->node->str = ft_substr(b->str, b->i, b->j - b->i);
 	}
 	else
 		b->node->str = ft_strdup(str);
 	b->node->token = token;
 	b->node->next = NULL;
-	if (!b->start)
-		b->start = b->node;
-	else
-	{
-		parser_lexer_lstlast(b->start)->next = b->node;
-		b->node->prev = parser_lexer_lstlast(b->start);
-	}
+	parser_ft_lexeradd_back(&b->start, b->node);
 	if (token == PIPE)
 		b->str[b->i] = 2;
 	else if (token == LESS_LESS || token == GREAT_GREAT)
