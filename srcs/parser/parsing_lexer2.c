@@ -6,7 +6,7 @@
 /*   By: diogpere <diogpere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 22:11:59 by diogpere          #+#    #+#             */
-/*   Updated: 2023/05/26 12:18:58 by diogpere         ###   ########.fr       */
+/*   Updated: 2023/05/26 12:35:12 by diogpere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,11 @@ void	parser_handle_side_quotes(t_parser_lexer_builder *b, char c)
 	{
 		if (b->str[b->j + 1] == other_set)
 			c = other_set;
-		ft_strrep(&b->str, b->j, 1, "");
+		if (b->str[b->j + 1] != c && b->str[b->j + 1] != other_set \
+			&& b->str[b->j])
+			ft_strrep(&b->str, b->j, 1, "\x04");
+		else
+			ft_strrep(&b->str, b->j, 1, "");
 		b->j += 1;
 		while (b->str[b->j] && b->str[b->j] != c && b->str[b->j] != 32)
 			b->j++;
