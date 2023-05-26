@@ -6,7 +6,7 @@
 /*   By: diogpere <diogpere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 22:11:59 by diogpere          #+#    #+#             */
-/*   Updated: 2023/05/26 12:16:35 by diogpere         ###   ########.fr       */
+/*   Updated: 2023/05/26 12:18:58 by diogpere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	parser_handle_side_quotes(t_parser_lexer_builder *b, char c)
 {
 	char	other_set;
 
+	other_set = c;
 	if (c == '\'')
 		other_set = '\"';
 	else if (c == '\"')
