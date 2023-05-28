@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 15:01:47 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/25 20:40:09 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/28 21:16:03 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ size_t	runner_sanitize_args(char **args)
 	t_envp	*envp;
 
 	envp = get_envp();
-	idx = 1;
+	idx = 0;
 	while (args[idx])
 		envp->expand_arg(args + idx++);
 	return (idx);
