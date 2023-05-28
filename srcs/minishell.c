@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 02:27:03 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/26 01:06:34 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/28 12:11:54 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ int	main(int ac, char **av, char **env)
 	(void)ac;
 	(void)av;
 	exit_code = 0;
-	logger()->info("Minishell starting..\n");
 	envp = get_envp();
 	prompter = get_prompter();
 	cmds = get_cmds();
