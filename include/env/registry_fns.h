@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 12:27:06 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/28 15:20:28 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/29 00:08:46 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,14 @@
 # define REGISTRY_FNS_H
 
 # include "var.h"
+
+typedef enum e_env_var_expansion_state
+{
+	ENV_VAR_EXPANSION_STATE_NULL,
+	ENV_VAR_EXPANSION_STATE_NONE,
+	ENV_VAR_EXPANSION_STATE_SINGLE_QUOTE,
+	ENV_VAR_EXPANSION_STATE_DOUBLE_QUOTE,
+}	t_env_var_expansion_state;
 
 t_env_var	*env_registry_get_var(char *name);
 char		*env_registry_get_var_value(char *name);

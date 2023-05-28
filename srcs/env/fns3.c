@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 13:40:47 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/28 22:43:07 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/29 00:11:50 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,6 @@ static void	setup_replace(\
 	else
 		ft_strrep(str, start, len, replace);
 }
-
-typedef enum e_env_var_expansion_state
-{
-	ENV_VAR_EXPANSION_STATE_NULL,
-	ENV_VAR_EXPANSION_STATE_NONE,
-	ENV_VAR_EXPANSION_STATE_SINGLE_QUOTE,
-	ENV_VAR_EXPANSION_STATE_DOUBLE_QUOTE,
-}	t_env_var_expansion_state;
 
 static void	select_state(\
 	char c, \
@@ -85,6 +77,26 @@ void	env_registry_remove_quotes(char **str)
 	}
 }
 
+static void	expand_arg( \
+	char **arg, \
+	size_t	*idx \
+)
+{
+	size_t		start;
+	char		*var_name;
+	t_env_var	*var;
+
+	start = idx;
+	while ((*arg)[(*idx)] && env_registry_is_var_char_valid((*arg)[(*idx)]))
+		(*idx)++;
+	var_name = ft_substr((*arg), start, (*idx) - start);
+	var = (get_envp())->get(var_name);
+	setup_replace(arg, start - 1, \
+		(*idx) - start + 1, var->value);
+	(*idx) = start + ft_strlen(var->value) - 1;
+	free(var_name);
+}
+
 void	env_registry_expand_arg(char **arg)
 {
 	char						*var_name;
@@ -104,25 +116,7 @@ void	env_registry_expand_arg(char **arg)
 		}
 		if (!env_registry_is_var_char_valid((*arg)[idx]))
 			continue ;
-		start = idx;
-		while ((*arg)[idx] && env_registry_is_var_char_valid((*arg)[idx]))
-			idx++;
-		var_name = ft_substr((*arg), start, idx - start);
-		setup_replace(arg, start - 1, \
-			idx - start + 1, get_envp()->get_value(var_name));
-		idx = start + ft_strlen(get_envp()->get_value(var_name)) - 1;
-		free(var_name);
+		expand_arg(arg, &idx);
 	}
 	env_registry_remove_quotes(arg);
-}
-
-bool	env_registry_is_var_char_valid(char c)
-{
-	return (!(c == '|' || c == '<' || c == '>' || c == '[' || c == ']'
-			|| c == '\'' || c == '\"' || c == ' ' || c == ',' || c == '.'
-			|| c == ':' || c == '/' || c == '{' || c == '}' || c == '+'
-			|| c == '^' || c == '%' || c == '#' || c == '@' || c == '!'
-			|| c == '~' || c == '"' || c == '`' || c == '(' || c == ')'
-			|| c == '$' || c == 4
-			|| c == '=' || c == '-' || c == '&' || c == '*'));
 }

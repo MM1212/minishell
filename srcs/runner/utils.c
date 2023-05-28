@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 15:05:18 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/29 15:50:44 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/28 23:51:00 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,19 +72,17 @@ void	runner_init_cmds(\
 		cmds[idx] = ft_calloc(1, sizeof(t_runner_cmd));
 		if (!cmds[idx])
 			return ;
-		cmds[idx]->cmd = init_cmds->str[0];
-		cmds[idx]->args = init_cmds->str;
 		cmds[idx]->std = (t_runner_cmd_std){\
 			STDIN_FILENO, STDOUT_FILENO, STDERR_FILENO \
 		};
-		cmds[idx]->f_std = (t_runner_cmd_std){\
-			STDIN_FILENO, STDOUT_FILENO, STDERR_FILENO \
-		};
+		cmds[idx]->f_std = cmds[idx]->std;
 		cmds[idx]->status = -1;
 		cmds[idx]->redirections = init_cmds->redirections;
-		cmds[idx]->args_count = runner_sanitize_args(cmds[idx]->args);
-		if (!get_cmds()->exists(init_cmds->str[0]))
-			cmds[idx]->path = get_envp()->path->find_path(init_cmds->str[0]);
+		cmds[idx]->args_count = runner_sanitize_args(init_cmds->str);
+		cmds[idx]->cmd = init_cmds->str[0];
+		cmds[idx]->args = init_cmds->str;
+		if (!get_cmds()->exists(cmds[idx]->cmd))
+			cmds[idx]->path = get_envp()->path->find_path(cmds[idx]->cmd);
 		cmds[idx]->deps.init_cmds = tmp;
 		init_cmds = init_cmds->next;
 		idx++;
@@ -123,6 +121,7 @@ bool	runner_get_line(char *delimiter, int *fd, int count, bool *error)
 bool	dup2_safe(int fd1, int fd2, int *store)
 {
 	int	tmp;
+
 	if (fd1 == fd2)
 		return (false);
 	tmp = dup2(fd1, fd2);

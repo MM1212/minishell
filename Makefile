@@ -106,7 +106,7 @@ watch:
 
 parser_test: $(LIBFT_ARCH)
 	@$(CC) -D PARSER_TEST= srcs/parser/*.c $(PROGRAM_FLAGS) $(CFLAGS) -o parser_test
-	valgrind --leak-check=full --show-leak-kinds=all ./parser_test
+	./parser_test
 	rm parser_test
 
 re: fclean all

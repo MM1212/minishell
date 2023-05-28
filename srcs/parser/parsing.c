@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: diogpere <diogpere@student.42.fr>          +#+  +:+       +#+        */
+/*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:03:40 by diogpere          #+#    #+#             */
-/*   Updated: 2023/05/29 16:08:32 by diogpere         ###   ########.fr       */
+/*   Updated: 2023/05/29 00:12:38 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,12 +111,13 @@ t_parser_simple_cmds	*parser(char *str)
 
 #ifdef PARSER_TEST
 
-int	main(int argc, char **argv)
+int	main(void)
 {
 	char					*str;
 	t_parser_simple_cmds	*cmds;
 
-	str = ft_strdup("echo \"$HOME\"");
+	str = ft_strdup(\
+		"<< EOF > file");
 	cmds = parser(str);
 	if (!cmds)
 		return (0);
