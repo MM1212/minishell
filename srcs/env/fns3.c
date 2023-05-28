@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 13:40:47 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/28 18:29:28 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/28 18:47:59 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,6 @@ void	env_registry_expand_arg(char **arg)
 	while ((*arg)[idx])
 	{
 		select_state((*arg)[idx], &state);
-		ft_printf("state: %d at %c[%d] | str at : %s\n", state, (*arg)[idx], idx, *arg);
 		if ((*arg)[idx++] != '$' || \
 			state == ENV_VAR_EXPANSION_STATE_SINGLE_QUOTE)
 		{

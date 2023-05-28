@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/28 15:05:03 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/28 18:16:21 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/28 18:48:31 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,8 @@ bool	runner_handle_heredoc(t_runner_cmd *cmd, t_parser_lexer *redir)
 	line_count = 1;
 	while (fd[1] != -1)
 	{
-		if (runner_get_line(redir->str, fd[1], line_count, &error_found))
+		if (runner_get_line(redir->str, fd[1], line_count++, &error_found))
 			break ;
-		line_count++;
 	}
 	close(fd[1]);
 	dup2(fd[0], STDIN_FILENO);
