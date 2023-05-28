@@ -1,0 +1,23 @@
+echo flags
+
+[x] exit: supports up to long, throws error otherwise
+
+[x] expand on cmd arg
+[x] export ascii order
+[x] export support for only a char
+
+[x] var: expander: ignore dollar
+
+[x] export wrong quote order
+[x] var: throw on bad-formed keys
+[x] var: refactor values
+
+[x] cd: wrong nbr of args
+[x] cd: not working (relatively) 
+[x] cd: dont set PWD var when it doesnt exist
+
+[x] pwd: dir manager -> full path -> always use getcwd
+
+
+redirections: can work aswell only with files
+heredoc: expand (everything) except when delimiter has ANY quotes

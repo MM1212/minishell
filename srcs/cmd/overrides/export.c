@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 17:42:34 by diogpere          #+#    #+#             */
-/*   Updated: 2023/05/28 22:37:01 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/28 22:58:39 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,18 @@ static int	sort_vars(t_env_var *a, t_env_var *b)
 	return (ft_strcmp(a->name, b->name));
 }
 
-static void	show_available_vars(void)
+int	cmds_overrides_export_show_available_vars(int ac, char **av)
 {
 	t_list		*vars;
 	t_env_var	*var;
 
+	ac--;
+	av++;
+	if (ac > 0)
+		return (0);
 	vars = ft_lstmap(get_envp()->vars, map, (void (*)(void *))env_delete_var);
 	if (!vars)
-		return ;
+		return (1);
 	ft_lstsort(vars, (int (*)(void *, void *))sort_vars);
 	while (vars)
 	{
@@ -44,6 +48,7 @@ static void	show_available_vars(void)
 		vars = vars->next;
 	}
 	ft_lstclear(&vars, NULL);
+	return (0);
 }
 
 static void	show_error(char *param)
@@ -65,7 +70,7 @@ void	cmds_overrides_export_cmd(int ac, char **av, int *exit_code)
 	envp = get_envp();
 	(void)exit_code;
 	if (ac == 0)
-		return (show_available_vars());
+		return ;
 	idx = 0;
 	while (av[idx])
 	{

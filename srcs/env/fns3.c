@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 13:40:47 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/28 18:47:59 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/28 22:43:07 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,8 @@ void	env_registry_expand_arg(char **arg)
 		{
 			continue ;
 		}
+		if (!env_registry_is_var_char_valid((*arg)[idx]))
+			continue ;
 		start = idx;
 		while ((*arg)[idx] && env_registry_is_var_char_valid((*arg)[idx]))
 			idx++;

@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 14:10:15 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/25 20:40:33 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/28 23:18:20 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,14 @@ bool	cmds_register_cmds(void)
 	if (!cmds->add("env", cmds_overrides_env_cmd, NULL))
 		return (false);
 	if (!cmds->add("exit", \
-		cmds_overrides_exit_cmd, cmds_overrides_exit_cmd_on_execute))
+		no_op, cmds_overrides_exit_cmd))
 		return (false);
 	if (!cmds->add("pwd", cmds_overrides_pwd_cmd, NULL))
 		return (false);
 	if (!cmds->add("echo", cmds_overrides_echo_cmd, NULL))
 		return (false);
-	if (!cmds->add("export", no_op, cmds_overrides_export_cmd))
+	if (!cmds->add("export", cmds_overrides_export_show_available_vars, \
+		cmds_overrides_export_cmd))
 		return (false);
 	if (!cmds->add("unset", no_op, cmds_overrides_unset_cmd))
 		return (false);

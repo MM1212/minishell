@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 10:46:37 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/19 11:12:37 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/28 22:51:00 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 static t_dir	*dir_create(void)
 {
 	t_dir	*dir;
+	char	*cwd;
 
 	dir = ft_calloc(1, sizeof(t_dir));
 	if (!dir)
@@ -28,6 +29,10 @@ static t_dir	*dir_create(void)
 	dir->is_file = dir_is_path_a_file;
 	dir->is_executable = dir_is_path_an_executable;
 	dir->go_to = dir_go_to_path;
+	cwd = dir->get_full();
+	get_envp()->set("PWD", cwd);
+	get_envp()->set("OLDPWD", NULL);
+	free(cwd);
 	return (dir);
 }
 
