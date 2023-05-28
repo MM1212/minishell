@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 17:42:34 by diogpere          #+#    #+#             */
-/*   Updated: 2023/05/29 11:31:51 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/28 22:37:01 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,35 @@
 #include <env/registry.h>
 #include <utils/error.h>
 
+static void	*map(void *content)
+{
+	return (content);
+}
+
+static int	sort_vars(t_env_var *a, t_env_var *b)
+{
+	return (ft_strcmp(a->name, b->name));
+}
+
 static void	show_available_vars(void)
 {
-	char	**vars;
-	size_t	idx;
+	t_list		*vars;
+	t_env_var	*var;
 
-	idx = 0;
-	vars = get_envp()->get_env();
+	vars = ft_lstmap(get_envp()->vars, map, (void (*)(void *))env_delete_var);
 	if (!vars)
 		return ;
-	while (vars[idx])
-		ft_printf("declare -x \"%s\"\n", vars[idx++]);
-	ft_split_free(vars);
+	ft_lstsort(vars, (int (*)(void *, void *))sort_vars);
+	while (vars)
+	{
+		var = vars->content;
+		if (!var->value)
+			ft_printf("declare -x %s\n", var->name);
+		else
+			ft_printf("declare -x %s=\"%s\"\n", var->name, var->value);
+		vars = vars->next;
+	}
+	ft_lstclear(&vars, NULL);
 }
 
 static void	show_error(char *param)
