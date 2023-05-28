@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 13:15:54 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/25 17:22:28 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/28 22:22:33 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,10 @@ bool	env_registry_init(char **envp)
 	{
 		var = env_build_var_from_str(envp[idx]);
 		if (!var.name)
-			return (false);
+		{
+			idx++;
+			continue ;
+		}
 		registry->add(var.name, var.value);
 		idx++;
 	}
@@ -52,11 +55,11 @@ char	**env_registry_get_env(void)
 	idx = 0;
 	while (iter)
 	{
-		arr[idx++] = env_var_to_string(iter->content);
-		if (!arr[idx - 1])
+		if (((t_env_var *)iter->content)->value != NULL)
 		{
-			ft_split_free(arr);
-			return (NULL);
+			arr[idx++] = env_var_to_string(iter->content);
+			if (!arr[idx - 1])
+				return (ft_split_free(arr), NULL);
 		}
 		iter = iter->next;
 	}
@@ -77,7 +80,9 @@ void	env_registry_print(void)
 	if (!env)
 		return ;
 	while (env[idx])
+	{
 		ft_printf("%s\n", env[idx++]);
+	}
 	ft_split_free(env);
 }
 

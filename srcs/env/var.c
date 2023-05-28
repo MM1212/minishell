@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 12:26:22 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/25 22:52:49 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/28 22:28:25 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ static bool	check_for_valid_name(char *name)
 	size_t	idx;
 
 	idx = 0;
+	if (ft_atoi(name) != 0)
+		return (false);
 	while (name[idx])
 	{
 		if (!env_registry_is_var_char_valid(name[idx]))
@@ -66,20 +68,17 @@ t_env_var	env_build_var_from_str(char *entry)
 	var = (t_env_var){NULL, NULL};
 	equals_sign = ft_strchr(entry, '=');
 	if (!equals_sign)
-		return (var);
-	var.name = ft_substr(entry, 0, equals_sign - entry);
+		var.name = ft_strdup(entry);
+	else
+		var.name = ft_substr(entry, 0, equals_sign - entry);
 	if (!check_for_valid_name(var.name))
 		return (free(var.name), (t_env_var){NULL, NULL});
+	if (!equals_sign)
+		return (var);
 	adjust_for_quotes(equals_sign, entry, &start, &len);
 	var.value = ft_substr(entry, start, len);
 	if (!var.name || !var.value)
-	{
-		if (var.name)
-			free(var.name);
-		if (var.value)
-			free(var.value);
-		return ((t_env_var){NULL, NULL});
-	}
+		return (free(var.name), free(var.value), (t_env_var){NULL, NULL});
 	return (var);
 }
 
