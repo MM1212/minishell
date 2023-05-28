@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 13:07:32 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/25 16:56:37 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/28 16:49:36 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ static void	runner_run(const char *str)
 	while (runner->cmds[idx])
 	{
 		runner->c_cmd = runner->cmds[idx];
+		runner->c_cmd->deps.envp = envp;
 		runner_per_cmd(runner, (size_t[2]){idx, count}, init_cmds, envp);
 		idx++;
 	}

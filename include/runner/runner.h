@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 13:00:04 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/28 15:28:14 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/28 16:59:41 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,12 @@ typedef struct s_runner_cmd_std
 	int	err;
 }	t_runner_cmd_std;
 
+typedef struct s_runner_cmd_deps
+{
+	t_parser_simple_cmds	*init_cmds;
+	char					**envp;
+}	t_runner_cmd_deps;
+
 typedef struct s_runner_cmd
 {
 	pid_t				pid;
@@ -35,6 +41,7 @@ typedef struct s_runner_cmd
 	t_parser_lexer		*redirections;
 	int					stream[2];
 	int					*heredoc;
+	t_runner_cmd_deps	deps;
 }	t_runner_cmd;
 
 typedef struct s_runner
@@ -55,7 +62,8 @@ void		runner_init_cmds(\
 	t_runner_cmd **cmds, \
 	size_t size \
 );
-bool		runner_get_line(char *delimiter, int fd);
+bool		runner_get_line(\
+	char *delimiter, int fd, int line_count, bool *error);
 bool		runner_handle_heredoc(t_runner_cmd *cmd, t_parser_lexer *redir);
 bool		runner_handle_redir_out(t_runner_cmd *cmd, t_parser_lexer *redir);
 bool		runner_handle_redir_in(t_runner_cmd *cmd, t_parser_lexer *redir);
