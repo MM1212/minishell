@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 13:40:47 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/28 15:25:46 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/28 18:29:28 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ static void	setup_replace(\
 
 typedef enum e_env_var_expansion_state
 {
+	ENV_VAR_EXPANSION_STATE_NULL,
 	ENV_VAR_EXPANSION_STATE_NONE,
 	ENV_VAR_EXPANSION_STATE_SINGLE_QUOTE,
 	ENV_VAR_EXPANSION_STATE_DOUBLE_QUOTE,
@@ -38,25 +39,49 @@ static void	select_state(\
 	t_env_var_expansion_state *state \
 )
 {
+	t_env_var_expansion_state	next;
+
+	next = ENV_VAR_EXPANSION_STATE_NULL;
 	if (c == '\'')
-		*state = ENV_VAR_EXPANSION_STATE_SINGLE_QUOTE;
+		next = ENV_VAR_EXPANSION_STATE_SINGLE_QUOTE;
 	else if (c == '\"')
-		*state = ENV_VAR_EXPANSION_STATE_DOUBLE_QUOTE;
+		next = ENV_VAR_EXPANSION_STATE_DOUBLE_QUOTE;
 	else if (c == 4)
-		*state = ENV_VAR_EXPANSION_STATE_NONE;
+		next = ENV_VAR_EXPANSION_STATE_NONE;
+	if (next == ENV_VAR_EXPANSION_STATE_NULL)
+		return ;
+	if (next == *state)
+		next = ENV_VAR_EXPANSION_STATE_NONE;
+	if (next != ENV_VAR_EXPANSION_STATE_NONE && \
+		*state != ENV_VAR_EXPANSION_STATE_NONE && \
+		next != *state \
+	)
+		return ;
+	*state = next;
 }
 
 void	env_registry_remove_quotes(char **str)
 {
-	size_t	idx;
+	size_t						idx;
+	t_env_var_expansion_state	state;
+	t_env_var_expansion_state	last_state;
 
 	idx = 0;
+	state = ENV_VAR_EXPANSION_STATE_NONE;
+	last_state = ENV_VAR_EXPANSION_STATE_NONE;
 	while ((*str)[idx])
 	{
+		last_state = state;
+		select_state((*str)[idx], &state);
+		if (last_state == state)
+		{
+			if ((*str)[idx] == 4)
+				ft_strrep(str, idx, 1, "");
+			idx++;
+			continue ;
+		}
 		if ((*str)[idx] == '\'' || (*str)[idx] == '\"' || (*str)[idx] == 4)
 			ft_strrep(str, idx, 1, "");
-		else
-			idx++;
 	}
 }
 
@@ -72,6 +97,7 @@ void	env_registry_expand_arg(char **arg)
 	while ((*arg)[idx])
 	{
 		select_state((*arg)[idx], &state);
+		ft_printf("state: %d at %c[%d] | str at : %s\n", state, (*arg)[idx], idx, *arg);
 		if ((*arg)[idx++] != '$' || \
 			state == ENV_VAR_EXPANSION_STATE_SINGLE_QUOTE)
 		{
