@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:03:40 by diogpere          #+#    #+#             */
-/*   Updated: 2023/05/25 23:49:53 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/28 18:30:54 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ int	main(int argc, char **argv)
 	char					*str;
 	t_parser_simple_cmds	*cmds;
 
-	str = ft_strdup(" echo $HOME'HOME'\"$HOME\"'$HOME'$HOME");
+	str = ft_strdup(" echo \"$HOME\"$HOME'$HOME'$HOME\"$HOME\"");
 	cmds = parser(str);
 	if (!cmds)
 		return (0);
