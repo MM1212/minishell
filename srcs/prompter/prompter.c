@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 10:49:14 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/25 20:34:16 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/28 15:31:47 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,11 @@ static void	prompter_skip_current_line(void)
 	size_t	wrote;
 
 	(void)wrote;
+	if (!get_prompter()->prompting)
+		return ;
 	wrote = write(1, "^C", 2);
 	rl_replace_line("", 1);
-	wrote = write(0, "\r\n", 2);
+	wrote = write(1, "\r\n", 2);
 	rl_on_new_line();
 	rl_redisplay();
 }

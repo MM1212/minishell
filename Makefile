@@ -22,7 +22,8 @@ CMDS_SRC_FILES = 		cmd/cmd.c cmd/ctx.c cmd/fns.c \
 						cmd/overrides/unset.c
 RUNNER_SRC_FILES = 		runner/sanitizer.c runner/utils.c \
 						runner/unix.c runner/runner.c \
-						runner/runtime.c runner/runtime2.c
+						runner/runtime.c runner/runtime2.c \
+						runner/heredoc.c
 PARSER_SRC_FILES = 		parser/parsing_errors.c parser/parsing_lexer.c \
 						parser/parsing_utils.c parser/parsing_utils2.c parser/parsing.c \
 						parser/parsing_lexer2.c

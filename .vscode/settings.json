@@ -1,0 +1,6 @@
+{
+	"files.associations": {
+		"runner.h": "c",
+		"registry.h": "c"
+	}
+}

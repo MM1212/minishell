@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 13:40:47 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/25 23:32:31 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/28 15:25:46 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static void	select_state(\
 		*state = ENV_VAR_EXPANSION_STATE_NONE;
 }
 
-static void	remove_quotes(char **str)
+void	env_registry_remove_quotes(char **str)
 {
 	size_t	idx;
 
@@ -86,7 +86,7 @@ void	env_registry_expand_arg(char **arg)
 		idx = start + ft_strlen(get_envp()->get_value(var_name)) - 1;
 		free(var_name);
 	}
-	remove_quotes(arg);
+	env_registry_remove_quotes(arg);
 }
 
 bool	env_registry_is_var_char_valid(char c)

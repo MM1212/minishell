@@ -6,35 +6,11 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 15:11:06 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/25 15:14:38 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/28 15:16:18 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "runner/runner.h"
-
-bool	runner_handle_heredoc(t_runner_cmd *cmd, t_parser_lexer *redir)
-{
-	char	*delimiter;
-	int		fd[2];
-
-	delimiter = redir->str;
-	if (pipe(fd) == -1)
-		return (false);
-	if (cmd->std.in != STDIN_FILENO)
-		close(cmd->std.in);
-	dup2(STDIN_FILENO, STDIN_FILENO);
-	if (*redir->str == '"' || *redir->str == '\'')
-		delimiter++;
-	while (1)
-	{
-		if (runner_get_line(delimiter, fd[1]))
-			break ;
-	}
-	close(fd[1]);
-	dup2(fd[0], STDIN_FILENO);
-	close(fd[0]);
-	return (true);
-}
 
 bool	runner_handle_redir_out(t_runner_cmd *cmd, t_parser_lexer *redir)
 {

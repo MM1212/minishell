@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 13:00:04 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/25 16:50:04 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/28 15:28:14 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ typedef struct s_runner_cmd
 	t_runner_cmd_std	std;
 	t_parser_lexer		*redirections;
 	int					stream[2];
+	int					*heredoc;
 }	t_runner_cmd;
 
 typedef struct s_runner
