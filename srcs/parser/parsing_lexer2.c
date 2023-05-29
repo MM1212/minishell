@@ -6,7 +6,7 @@
 /*   By: diogpere <diogpere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 22:11:59 by diogpere          #+#    #+#             */
-/*   Updated: 2023/05/29 13:16:03 by diogpere         ###   ########.fr       */
+/*   Updated: 2023/05/29 13:17:47 by diogpere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	parser_handle_double_quotes(t_parser_lexer_builder *b)
 	char	*tmp;
 
 	b->j = b->i + 1;
-	while ((b->str[b->j] && b->str[b->j] != '\'' && b->str[b->j] == '\"' \
+	while ((b->str[b->j] && b->str[b->j] != '\'' && b->str[b->j] != '\"' \
 		&& b->str[b->j] != 32) || (b->str[b->j] && b->str[b->j] != 32))
 		b->j++;
 	if (b->j - b->i > 1 && (b->str[b->j] == '\"' || b->str[b->j] == '\'' \
@@ -44,7 +44,7 @@ void	parser_handle_quotes(t_parser_lexer_builder *b)
 	char	*tmp;
 
 	b->j = b->i + 1;
-	while ((b->str[b->j] && b->str[b->j] != '\'' && b->str[b->j] == '\"' \
+	while ((b->str[b->j] && b->str[b->j] != '\'' && b->str[b->j] != '\"' \
 		&& b->str[b->j] != 32) || (b->str[b->j] && b->str[b->j] != 32))
 		b->j++;
 	if (b->j - b->i > 1 && (b->str[b->j] == '\'' || b->str[b->j] == '\"' \
