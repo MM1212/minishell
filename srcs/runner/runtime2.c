@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 16:49:19 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/25 16:50:08 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/29 15:57:12 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ void	runner_handle_child(\
 		status = get_cmds()->exec(\
 		cmd->cmd, \
 		(int)cmd->args_count, cmd->args);
+		close(cmd->f_std.in);
+		close(cmd->f_std.out);
 		runner_child_exit(init_cmds, envp, status);
 	}
 	else

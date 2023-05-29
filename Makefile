@@ -93,7 +93,7 @@ $(OBJ_DIR)/%.o: %.c
 	@$(CC) $(CFLAGS) $(OBJ_FLAGS) -c $< -o $@
 
 clean:
-	@rm -rf $(OBJS) $(OBJ_DIR)
+	@rm -rf $(OBJS) $(OBJ_DIR) *.o
 	@make -C $(LIBFT_PATH) clean --no-print-directory
 	@echo "$(TAG) cleaned $(YELLOW)objects!$(RESET)"
 fclean: clean
@@ -105,8 +105,8 @@ watch:
 	@while true; do ($(MAKE) -q --no-print-directory || $(MAKE) --no-print-directory); sleep 1; done;
 
 parser_test: $(LIBFT_ARCH)
-	@$(CC) -D PARSER_TEST= srcs/parser/*.c $(PROGRAM_FLAGS) -o parser_test
-	./parser_test
+	@$(CC) -D PARSER_TEST= srcs/parser/*.c $(PROGRAM_FLAGS) $(CFLAGS) -o parser_test
+	valgrind --leak-check=full --show-leak-kinds=all ./parser_test
 	rm parser_test
 
 re: fclean all

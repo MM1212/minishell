@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 16:47:49 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/29 11:53:38 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/29 15:51:13 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,11 @@ void	runner_handle_std(\
 		close(cmd->stream[1]);
 		runner_child_exit(cmd->deps.init_cmds, cmd->deps.envp, errno);
 	}
-	if (dup2_safe(cmd->std.in, STDIN_FILENO))
+	if (dup2_safe(cmd->std.in, STDIN_FILENO, &cmd->f_std.in))
 		close(cmd->std.in);
-	if (dup2_safe(cmd->std.out, STDOUT_FILENO))
+	if (dup2_safe(cmd->std.out, STDOUT_FILENO, &cmd->f_std.out))
 		close(cmd->std.out);
-	if (dup2_safe(cmd->std.err, STDERR_FILENO))
+	if (dup2_safe(cmd->std.err, STDERR_FILENO, &cmd->f_std.err))
 		close(cmd->std.err);
 	close(cmd->stream[0]);
 	close(cmd->stream[1]);

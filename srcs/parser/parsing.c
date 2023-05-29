@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:03:40 by diogpere          #+#    #+#             */
-/*   Updated: 2023/05/29 11:21:54 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/29 14:28:37 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,26 +115,35 @@ int	main(int argc, char **argv)
 {
 	char					*str;
 	t_parser_simple_cmds	*cmds;
+	t_parser_simple_cmds	*tmp;
 
-	str = ft_strdup(" echo \"cat lol.c | cat > lol.c\"");
+	(void)argc;
+	(void)argv;
+	str = ft_strdup("echo \"$HOME\"'$HOME'$HOME\"$HOME\"$HOME\"'$HOME'\"            '     \"$HOME\"' > mini");
 	cmds = parser(str);
 	if (!cmds)
 		return (0);
+	tmp = cmds;
 	while (cmds)
 	{
-		printf("argument: %s\n", *cmds->str++);
-		while (*cmds->str)
-			printf("option: %s\n", *cmds->str++);
-		if (cmds->redirections)
+		char **arg = cmds->str;
+		printf("argument: %s\n", *arg++);
+		while (*arg)
+			printf("	option: %s\n", *arg++);
+		t_parser_lexer *redir = cmds->redirections;
+		printf("redirections: \n");
+		while (redir)
 		{
-			printf("redirections: %s\n", cmds->redirections->str);
-			printf("token: %u\n", cmds->redirections->token);
+			printf("	token: %u\n", redir->token);
+			printf("	to: %s\n\n", redir->str);
+			redir = redir->next;
 		}
 		printf("\n");
 		cmds = cmds->next;
 	}
 	printf("%s, len: %zu\n", str, ft_strlen(str));
 	free(str);
+	parser_clear_cmds(tmp);
 	return (0);
 }
 #endif

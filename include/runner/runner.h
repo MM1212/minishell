@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 13:00:04 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/29 12:25:29 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/29 15:50:41 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef struct s_runner_cmd
 	size_t				args_count;
 	int					status;
 	t_runner_cmd_std	std;
+	t_runner_cmd_std	f_std;
 	t_parser_lexer		*redirections;
 	int					stream[2];
 	int					*heredoc;
@@ -73,7 +74,7 @@ bool		runner_handle_redir_in(t_runner_cmd *cmd, t_parser_lexer *redir);
 bool		runner_handle_redirections(t_runner_cmd *cmd);
 void		runner_close_redirections(t_runner_cmd *cmd);
 
-bool		dup2_safe(int fd1, int fd2);
+bool		dup2_safe(int fd1, int fd2, int *store);
 
 // RUNTIME
 void		runner_handle_exit_codes(t_runner_cmd **cmds);

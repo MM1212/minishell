@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: diogpere <diogpere@student.42.fr>          +#+  +:+       +#+        */
+/*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 14:23:16 by diogpere          #+#    #+#             */
-/*   Updated: 2023/05/25 22:13:27 by diogpere         ###   ########.fr       */
+/*   Updated: 2023/05/29 14:21:04 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ t_parser_lexer			*parser_ft_lexerclear_one(t_parser_lexer **lst);
 t_parser_lexer			*parser_ft_lexerclear_one(t_parser_lexer **lst);
 t_parser_simple_cmds	*parser_cmds_lstlast(t_parser_simple_cmds *lst);
 void					parser_ft_lexerdelone(t_parser_lexer **lst, int key);
-void					parser_handle_double_quotes(t_parser_lexer_builder *b);
+void					parser_handle_quotes(t_parser_lexer_builder *b);
 void					parser_handle_tokens(t_parser_lexer_builder *b, \
 						char *str);
 void					parser_ft_lexeradd_back(t_parser_lexer **lst, \
@@ -101,6 +101,6 @@ t_parser_simple_cmds	*parser_ft_simple_cmds_clear_one(t_parser_simple_cmds \
 						**lst);
 t_parser_simple_cmds	*parser(char *str);
 void					parser_handle_quotes(t_parser_lexer_builder *b);
-void					parser_handle_double_quotes(t_parser_lexer_builder *b);
+void					parser_handle_quotes(t_parser_lexer_builder *b);
 
 #endif

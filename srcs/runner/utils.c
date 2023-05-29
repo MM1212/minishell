@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 15:05:18 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/29 12:25:04 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/29 15:50:44 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,9 @@ void	runner_init_cmds(\
 		cmds[idx]->std = (t_runner_cmd_std){\
 			STDIN_FILENO, STDOUT_FILENO, STDERR_FILENO \
 		};
+		cmds[idx]->f_std = (t_runner_cmd_std){\
+			STDIN_FILENO, STDOUT_FILENO, STDERR_FILENO \
+		};
 		cmds[idx]->status = -1;
 		cmds[idx]->redirections = init_cmds->redirections;
 		cmds[idx]->args_count = runner_sanitize_args(cmds[idx]->args);
@@ -117,9 +120,12 @@ bool	runner_get_line(char *delimiter, int *fd, int count, bool *error)
 	return (false);
 }
 
-bool	dup2_safe(int fd1, int fd2)
+bool	dup2_safe(int fd1, int fd2, int *store)
 {
+	int	tmp;
 	if (fd1 == fd2)
 		return (false);
-	return (dup2(fd1, fd2) != -1);
+	tmp = dup2(fd1, fd2);
+	*store = tmp;
+	return (tmp != -1);
 }
