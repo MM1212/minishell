@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
+/*   By: diogpere <diogpere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:03:40 by diogpere          #+#    #+#             */
-/*   Updated: 2023/05/29 14:28:37 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/29 16:08:32 by diogpere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,35 +115,26 @@ int	main(int argc, char **argv)
 {
 	char					*str;
 	t_parser_simple_cmds	*cmds;
-	t_parser_simple_cmds	*tmp;
 
-	(void)argc;
-	(void)argv;
-	str = ft_strdup("echo \"$HOME\"'$HOME'$HOME\"$HOME\"$HOME\"'$HOME'\"            '     \"$HOME\"' > mini");
+	str = ft_strdup("echo \"$HOME\"");
 	cmds = parser(str);
 	if (!cmds)
 		return (0);
-	tmp = cmds;
 	while (cmds)
 	{
-		char **arg = cmds->str;
-		printf("argument: %s\n", *arg++);
-		while (*arg)
-			printf("	option: %s\n", *arg++);
-		t_parser_lexer *redir = cmds->redirections;
-		printf("redirections: \n");
-		while (redir)
+		printf("argument: %s\n", *cmds->str++);
+		while (*cmds->str)
+			printf("option: %s\n", *cmds->str++);
+		if (cmds->redirections)
 		{
-			printf("	token: %u\n", redir->token);
-			printf("	to: %s\n\n", redir->str);
-			redir = redir->next;
+			printf("redirections: %s\n", cmds->redirections->str);
+			printf("token: %u\n", cmds->redirections->token);
 		}
 		printf("\n");
 		cmds = cmds->next;
 	}
 	printf("%s, len: %zu\n", str, ft_strlen(str));
 	free(str);
-	parser_clear_cmds(tmp);
 	return (0);
 }
 #endif
