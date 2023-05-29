@@ -6,12 +6,20 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/28 15:05:03 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/28 18:48:31 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/29 12:21:47 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "runner/runner.h"
 #include <env/registry.h>
+
+static void	handle_exit(t_runner_cmd *cmd)
+{
+	runner_close_redirections(cmd);
+	close(cmd->stream[0]);
+	close(cmd->stream[1]);
+	runner_child_exit(cmd->deps.init_cmds, cmd->deps.envp, 130);
+}
 
 static void	handle_signals(int sig)
 {
@@ -23,7 +31,21 @@ static void	handle_signals(int sig)
 	close(cmd->heredoc[0]);
 	close(cmd->heredoc[1]);
 	close(cmd->heredoc[2]);
-	runner_child_exit(cmd->deps.init_cmds, cmd->deps.envp, 130);
+	cmd->heredoc[1] = -1;
+}
+
+static void	on_heredoc_exit(t_runner_cmd *cmd, bool error_found)
+{
+	close(cmd->heredoc[2]);
+	if (cmd->heredoc[1] != -1)
+		close(cmd->heredoc[1]);
+	if (error_found)
+	{
+		close(cmd->heredoc[0]);
+		handle_exit(cmd);
+	}
+	dup2(cmd->heredoc[0], STDIN_FILENO);
+	close(cmd->heredoc[0]);
 }
 
 bool	runner_handle_heredoc(t_runner_cmd *cmd, t_parser_lexer *redir)
@@ -42,15 +64,11 @@ bool	runner_handle_heredoc(t_runner_cmd *cmd, t_parser_lexer *redir)
 	signal(SIGINT, handle_signals);
 	signal(SIGQUIT, handle_signals);
 	line_count = 1;
-	while (fd[1] != -1)
+	while (1)
 	{
-		if (runner_get_line(redir->str, fd[1], line_count++, &error_found))
+		if (runner_get_line(redir->str, &fd[1], line_count++, &error_found))
 			break ;
 	}
-	close(fd[1]);
-	dup2(fd[0], STDIN_FILENO);
-	close(fd[0]);
-	if (error_found)
-		runner_child_exit(cmd->deps.init_cmds, cmd->deps.envp, 0);
+	on_heredoc_exit(cmd, error_found);
 	return (true);
 }

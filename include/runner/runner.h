@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 13:00:04 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/28 16:59:41 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/29 12:20:39 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void		runner_init_cmds(\
 	size_t size \
 );
 bool		runner_get_line(\
-	char *delimiter, int fd, int line_count, bool *error);
+	char *delimiter, int *fd, int line_count, bool *error);
 bool		runner_handle_heredoc(t_runner_cmd *cmd, t_parser_lexer *redir);
 bool		runner_handle_redir_out(t_runner_cmd *cmd, t_parser_lexer *redir);
 bool		runner_handle_redir_in(t_runner_cmd *cmd, t_parser_lexer *redir);

@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 15:05:18 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/28 17:00:56 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/29 12:22:03 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void	runner_init_cmds(\
 	}
 }
 
-bool	runner_get_line(char *delimiter, int fd, int count, bool *error)
+bool	runner_get_line(char *delimiter, int *fd, int count, bool *error)
 {
 	char	*line;
 	char	error_msg[256];
@@ -98,11 +98,14 @@ bool	runner_get_line(char *delimiter, int fd, int count, bool *error)
 	*error = false;
 	if (!line)
 	{
-		ft_sprintf(error_msg, 256, \
-			" here-document at line %d delimited by end-of-file (wanted '%s')", \
-			count, delimiter);
-		display_error("warning", error_msg);
 		*error = true;
+		if (*fd != -1)
+		{
+			ft_sprintf(error_msg, 256, \
+				" here-document at line %d delimited by end-of-file (wanted '%s')", \
+				count, delimiter);
+			display_error("warning", error_msg);
+		}
 		return (true);
 	}
 	if (ft_strcmp(line, delimiter) == 0)
@@ -110,7 +113,7 @@ bool	runner_get_line(char *delimiter, int fd, int count, bool *error)
 		free(line);
 		return (true);
 	}
-	ft_putendl_fd(line, fd);
+	ft_putendl_fd(line, *fd);
 	free(line);
 	return (false);
 }

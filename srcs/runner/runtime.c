@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 16:47:49 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/25 16:48:47 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/29 11:53:38 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,11 @@ void	runner_handle_std(\
 {
 	if (!runner_handle_redirections(cmd))
 	{
-		runner_close_redirections(cmd);
 		display_error(cmd->cmd, NULL);
-		exit(errno);
+		runner_close_redirections(cmd);
+		close(cmd->stream[0]);
+		close(cmd->stream[1]);
+		runner_child_exit(cmd->deps.init_cmds, cmd->deps.envp, errno);
 	}
 	if (dup2_safe(cmd->std.in, STDIN_FILENO))
 		close(cmd->std.in);

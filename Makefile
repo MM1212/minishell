@@ -112,6 +112,6 @@ parser_test: $(LIBFT_ARCH)
 re: fclean all
 
 vg: $(NAME)
-	valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./$(NAME)
+	valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all --track-fds=yes ./$(NAME)
 
 .PHONY: all clean fclean re watch

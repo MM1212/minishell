@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 14:16:37 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/29 11:11:39 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/29 11:59:57 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	cmds_overrides_exit_cmd_on_execute(int ac, char **av, int *exit_code)
 		return ;
 	}
 	str = ft_itoa(*exit_code);
-	get_envp()->set("?", str);
+	(get_envp())->set("?", str);
 	free(str);
 	get_prompter()->keep_prompting = false;
 }
