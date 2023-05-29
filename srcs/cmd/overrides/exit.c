@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 14:16:37 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/25 13:53:53 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/29 11:11:39 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ int	cmds_overrides_exit_cmd(int ac, char **av)
 
 void	cmds_overrides_exit_cmd_on_execute(int ac, char **av, int *exit_code)
 {
+	char	*str;
+
 	(void)ac;
 	(void)av;
 	if (*exit_code == -1)
@@ -43,5 +45,8 @@ void	cmds_overrides_exit_cmd_on_execute(int ac, char **av, int *exit_code)
 		*exit_code = EINVAL;
 		return ;
 	}
+	str = ft_itoa(*exit_code);
+	get_envp()->set("?", str);
+	free(str);
 	get_prompter()->keep_prompting = false;
 }
