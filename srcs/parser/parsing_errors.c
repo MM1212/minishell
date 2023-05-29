@@ -6,7 +6,7 @@
 /*   By: diogpere <diogpere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:03:16 by diogpere          #+#    #+#             */
-/*   Updated: 2023/05/29 11:43:25 by diogpere         ###   ########.fr       */
+/*   Updated: 2023/05/29 12:31:48 by diogpere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	parser_check_quotes(t_parser_lexer *start, t_parser_lexer *guide, char *str)
 			if (parser_go_forward(str, '\"', &i, &count_double))
 				break ;
 		}
-		else if (str[i] == '\'')
+		if (str[i] == '\'')
 			if (parser_go_forward(str, '\'', &i, &count_single))
 				break ;
 		if (!str[i])
