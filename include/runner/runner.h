@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 13:00:04 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/29 12:20:39 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/29 12:25:29 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 
 # include <shared.h>
 # include <parser/parsing.h>
+
+# define RUNNER_HEREDOC_ERROR_MSG "here-document at \
+line %d delimited by end-of-file (wanted '%s')"
 
 typedef struct s_runner_cmd_std
 {

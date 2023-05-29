@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 15:05:18 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/29 12:22:03 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/29 12:25:04 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,7 @@ bool	runner_get_line(char *delimiter, int *fd, int count, bool *error)
 		*error = true;
 		if (*fd != -1)
 		{
-			ft_sprintf(error_msg, 256, \
-				" here-document at line %d delimited by end-of-file (wanted '%s')", \
+			ft_sprintf(error_msg, 256, RUNNER_HEREDOC_ERROR_MSG, \
 				count, delimiter);
 			display_error("warning", error_msg);
 		}
