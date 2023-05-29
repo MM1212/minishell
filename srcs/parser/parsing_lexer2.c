@@ -6,7 +6,7 @@
 /*   By: diogpere <diogpere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 22:11:59 by diogpere          #+#    #+#             */
-/*   Updated: 2023/05/29 13:03:47 by diogpere         ###   ########.fr       */
+/*   Updated: 2023/05/29 13:06:34 by diogpere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,6 @@ void	parser_handle_double_quotes(t_parser_lexer_builder *b)
 		b->node->i = b->index;
 		b->index++;
 	}
-	while (b->str[b->j] && b->str[b->j] == 32)
-		b->j++;
 }
 
 void	parser_handle_quotes(t_parser_lexer_builder *b)
@@ -66,6 +64,4 @@ void	parser_handle_quotes(t_parser_lexer_builder *b)
 		b->node->i = b->index;
 		b->index++;
 	}
-	while (b->str[b->j] && b->str[b->j] == 32)
-		b->j++;
 }
