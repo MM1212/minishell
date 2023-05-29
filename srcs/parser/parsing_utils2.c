@@ -3,14 +3,39 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
+/*   By: diogpere <diogpere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:03:31 by diogpere          #+#    #+#             */
-/*   Updated: 2023/05/24 16:21:07 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/29 11:40:47 by diogpere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser/parsing.h"
+
+t_parser_simple_cmds	*parser_ft_simple_cmds_clear_one(\
+	t_parser_simple_cmds **lst)
+{
+	int				i;
+	t_parser_lexer	*redirections;
+
+	i = 0;
+	if ((*lst)->str)
+	{
+		while ((*lst)->str[i])
+		{
+			free((*lst)->str[i]);
+			(*lst)->str[i] = NULL;
+			i++;
+		}
+		free((*lst)->str);
+		(*lst)->str = NULL;
+	}
+	redirections = (*lst)->redirections;
+	parser_ft_lexerclear_one(&redirections);
+	free(*lst);
+	*lst = NULL;
+	return (NULL);
+}
 
 void	parser_lexer_constructor(t_parser_lexer_builder *b, char *str)
 {
