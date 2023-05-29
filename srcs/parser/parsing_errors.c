@@ -3,38 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_errors.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
+/*   By: diogpere <diogpere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:03:16 by diogpere          #+#    #+#             */
-/*   Updated: 2023/05/24 16:21:00 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/29 11:40:39 by diogpere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser/parsing.h"
 
-t_parser_simple_cmds	*parser_ft_simple_cmds_clear_one(\
-	t_parser_simple_cmds **lst)
+int	parser_go_forward(char *str, char c, int *i, int *counter)
 {
-	int				i;
-	t_parser_lexer	*redirections;
-
-	i = 0;
-	if ((*lst)->str)
+	if (str[*i] == c)
 	{
-		while ((*lst)->str[i])
-		{
-			free((*lst)->str[i]);
-			(*lst)->str[i] = NULL;
-			i++;
-		}
-		free((*lst)->str);
-		(*lst)->str = NULL;
+		*counter += 1;
+		*i += 1;
+	}	
+	while (str[*i] && str[*i] != c)
+		*i += 1;
+	if (!str[*i])
+		return (1);
+	else if (str[*i] == c)
+	{
+		*counter += 1;
+		*i += 1;
 	}
-	redirections = (*lst)->redirections;
-	parser_ft_lexerclear_one(&redirections);
-	free(*lst);
-	*lst = NULL;
-	return (NULL);
+	return (0);
 }
 
 int	parser_check_quotes(t_parser_lexer *start, t_parser_lexer *guide, char *str)
@@ -49,9 +43,15 @@ int	parser_check_quotes(t_parser_lexer *start, t_parser_lexer *guide, char *str)
 	while (str[++i])
 	{
 		if (str[i] == '\"')
-			count_double++;
+		{
+			if (parser_go_forward(str, '\"', &i, &count_double))
+				break ;
+		}
 		else if (str[i] == '\'')
-			count_single++;
+		{
+			if (parser_go_forward(str, '\'', &i, &count_single))
+				break ;
+		}
 	}
 	if (count_double % 2 != 0)
 		return (parser_error_printer(start, guide, "\"", 0));
