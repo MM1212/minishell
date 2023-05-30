@@ -3,15 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
+/*   By: diogpere <diogpere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 14:22:23 by diogpere          #+#    #+#             */
-/*   Updated: 2023/05/25 20:21:50 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/30 10:25:05 by diogpere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cmd/overrides.h"
 #include <shared.h>
+
+int	cmds_check_for_ns(char **str, int i)
+{
+	int	k;
+
+	k = 0;
+	if (str && str[i][k] == '-' && str[i][k + 1] == 'n')
+	{
+		k += 2;
+		while (str[i][k])
+		{
+			if (str[i][k] != 'n')
+				return (0);
+			k++;
+		}
+		return (1);
+	}
+	return (0);
+}
 
 int	cmds_overrides_echo_cmd(int ac, char **args)
 {
@@ -21,7 +40,7 @@ int	cmds_overrides_echo_cmd(int ac, char **args)
 	(void)ac;
 	i = 1;
 	suppress_newline = false;
-	if (args[i] != NULL && ft_strcmp(args[i], "-n") == 0)
+	if (args[i] != NULL && cmds_check_for_ns(args, i))
 	{
 		suppress_newline = true;
 		i++;
