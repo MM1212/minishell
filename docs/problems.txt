@@ -1,4 +1,4 @@
-echo flags
+[x] echo flags
 
 [x] exit: supports up to long, throws error otherwise
 
@@ -13,11 +13,11 @@ echo flags
 [x] var: refactor values
 
 [x] cd: wrong nbr of args
-[x] cd: not working (relatively) 
+[x] cd: not working (relatively)
 [x] cd: dont set PWD var when it doesnt exist
 
 [x] pwd: dir manager -> full path -> always use getcwd
 
 
-redirections: can work aswell only with files
-heredoc: expand (everything) except when delimiter has ANY quotes
+[x] redirections: can work aswell only with files
+[x] heredoc: expand (everything) except when delimiter has ANY quotes
