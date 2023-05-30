@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 13:40:47 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/29 00:11:50 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/30 11:40:35 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ static void	expand_arg( \
 	char		*var_name;
 	t_env_var	*var;
 
-	start = idx;
+	start = *idx;
 	while ((*arg)[(*idx)] && env_registry_is_var_char_valid((*arg)[(*idx)]))
 		(*idx)++;
 	var_name = ft_substr((*arg), start, (*idx) - start);
@@ -99,9 +99,7 @@ static void	expand_arg( \
 
 void	env_registry_expand_arg(char **arg)
 {
-	char						*var_name;
 	size_t						idx;
-	size_t						start;
 	t_env_var_expansion_state	state;
 
 	idx = 0;
