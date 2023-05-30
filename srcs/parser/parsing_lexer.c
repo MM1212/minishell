@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_lexer.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
+/*   By: diogpere <diogpere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:03:09 by diogpere          #+#    #+#             */
-/*   Updated: 2023/05/29 14:22:08 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/26 14:23:58 by diogpere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,10 @@ void	parser_create_lexer_node(t_parser_lexer_builder *b, \
 
 void	parser_handle_tokens(t_parser_lexer_builder *b, char *str)
 {
-	if (str[b->i] == '\'' || str[b->i] == '"')
+	if (str[b->i] == '\'')
 		parser_handle_quotes(b);
+	else if (str[b->i] == '\"')
+		parser_handle_double_quotes(b);
 	else if (str[b->i] == '|')
 		parser_create_lexer_node(b, "|", PIPE);
 	else if (str[b->i] == '<' && str[b->i + 1] == '<' && str[b->i + 2] == ' ')

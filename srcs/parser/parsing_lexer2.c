@@ -3,40 +3,65 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_lexer2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
+/*   By: diogpere <diogpere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 22:11:59 by diogpere          #+#    #+#             */
-/*   Updated: 2023/05/29 14:22:55 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/29 13:24:46 by diogpere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser/parsing.h"
 
+void	parser_handle_double_quotes(t_parser_lexer_builder *b)
+{
+	char	*tmp;
+
+	b->j = b->i + 1;
+	while ((b->str[b->j] && b->str[b->j] != '\"' \
+		&& b->str[b->j] != 32) || (b->str[b->j] && b->str[b->j] != 32))
+		b->j++;
+	if (b->j - b->i > 1 && (b->str[b->j] == '\"' || b->str[b->j] == '\'' \
+		|| b->str[b->j] == 32 || !b->str[b->j]))
+	{
+		b->node->str = ft_substr(b->str, b->i + 1, b->j - b->i);
+		if (b->node->str[0])
+		{
+			tmp = b->node->str;
+			b->node->str = ft_strjoin("\"", b->node->str);
+			free(tmp);
+		}
+		b->node->token = 0;
+		b->node->next = NULL;
+		b->i += b->j - b->i;
+		parser_ft_lexeradd_back(&b->start, b->node);
+		b->node->i = b->index;
+		b->index++;
+	}
+}
+
 void	parser_handle_quotes(t_parser_lexer_builder *b)
 {
-	char	c;
-	int		pair;
+	char	*tmp;
 
-	pair = 0;
-	b->j = b->i;
-	c = b->str[b->j];
-	while (b->str[b->j])
+	b->j = b->i + 1;
+	while ((b->str[b->j] && b->str[b->j] != '\'' \
+		&& b->str[b->j] != 32) || (b->str[b->j] && b->str[b->j] != 32))
+		b->j++;
+	if (b->j - b->i > 1 && (b->str[b->j] == '\'' || b->str[b->j] == '\"' \
+		|| b->str[b->j] == 32 || !b->str[b->j]))
 	{
-		if (ft_strchr("'\"", b->str[b->j]) != NULL && pair == 2)
+		b->node->str = ft_substr(b->str, b->i + 1, b->j - b->i);
+		if (b->node->str[0])
 		{
-			c = b->str[b->j];
-			pair = 1;
+			tmp = b->node->str;
+			b->node->str = ft_strjoin("'", b->node->str);
+			free(tmp);
 		}
-		else if (b->str[b->j++] == c)
-			pair++;
-		if (pair == 2 && (b->str[b->j] && b->str[b->j] == ' '))
-			break ;
+		b->node->token = 0;
+		b->node->next = NULL;
+		b->i += b->j - b->i;
+		parser_ft_lexeradd_back(&b->start, b->node);
+		b->node->i = b->index;
+		b->index++;
 	}
-	b->node->str = ft_substr(b->str, b->i, b->j - b->i);
-	b->node->token = 0;
-	b->node->next = NULL;
-	b->i += b->j - b->i;
-	parser_ft_lexeradd_back(&b->start, b->node);
-	b->node->i = b->index;
-	b->index++;
 }
