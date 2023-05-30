@@ -6,7 +6,7 @@
 /*   By: diogpere <diogpere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:03:16 by diogpere          #+#    #+#             */
-/*   Updated: 2023/05/29 12:31:48 by diogpere         ###   ########.fr       */
+/*   Updated: 2023/05/29 21:56:25 by diogpere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,8 @@ void	check_tokens(t_parser_lexer *guide, int *innercount, int *count)
 	token = guide->str[0];
 	while (guide->str[++i])
 	{
-		if (guide->str[i] != token)
+		if (guide->str[i] != token || guide->str[i] != '|' || \
+			guide->str[i] != '<' || guide->str[i] != '>')
 		{
 			*innercount = 0;
 			break ;
