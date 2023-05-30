@@ -6,12 +6,13 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 15:05:18 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/28 23:51:00 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/30 12:01:29 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cmd/storage.h>
 #include <env/registry.h>
+#include <env/registry_fns.h>
 #include <utils/error.h>
 #include <utils/quit.h>
 #include "runner/runner.h"
@@ -93,6 +94,7 @@ bool	runner_get_line(char *delimiter, int *fd, int count, bool *error)
 {
 	char	*line;
 	char	error_msg[256];
+	char	*sanitized_delim;
 
 	ft_printf("> ");
 	line = get_next_line(STDIN_FILENO);
@@ -108,14 +110,13 @@ bool	runner_get_line(char *delimiter, int *fd, int count, bool *error)
 		}
 		return (true);
 	}
-	if (ft_strcmp(line, delimiter) == 0)
-	{
-		free(line);
-		return (true);
-	}
-	ft_putendl_fd(line, *fd);
-	free(line);
-	return (false);
+	if (!ft_strchr(delimiter, '"') && !ft_strchr(delimiter, '\''))
+		(get_envp())->raw_expand_arg(&line);
+	sanitized_delim = ft_strdup(delimiter);
+	env_registry_remove_quotes(&sanitized_delim);
+	if (ft_strcmp(line, sanitized_delim) == 0)
+		return (free(sanitized_delim), free(line), true);
+	return (free(sanitized_delim), ft_putendl_fd(line, *fd), free(line), false);
 }
 
 bool	dup2_safe(int fd1, int fd2, int *store)

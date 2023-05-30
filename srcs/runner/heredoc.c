@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/28 15:05:03 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/29 12:21:47 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/30 12:16:18 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,14 @@ static void	handle_signals(int sig)
 	close(cmd->heredoc[0]);
 	close(cmd->heredoc[1]);
 	close(cmd->heredoc[2]);
+	ft_printf("\n");
 	cmd->heredoc[1] = -1;
 }
 
 static void	on_heredoc_exit(t_runner_cmd *cmd, bool error_found)
 {
+	char	*line;
+
 	close(cmd->heredoc[2]);
 	if (cmd->heredoc[1] != -1)
 		close(cmd->heredoc[1]);
@@ -43,6 +46,12 @@ static void	on_heredoc_exit(t_runner_cmd *cmd, bool error_found)
 	{
 		close(cmd->heredoc[0]);
 		handle_exit(cmd);
+	}
+	line = get_next_line(STDIN_FILENO);
+	while (line)
+	{
+		free(line);
+		line = get_next_line(STDIN_FILENO);
 	}
 	dup2(cmd->heredoc[0], STDIN_FILENO);
 	close(cmd->heredoc[0]);
@@ -54,7 +63,6 @@ bool	runner_handle_heredoc(t_runner_cmd *cmd, t_parser_lexer *redir)
 	bool	error_found;
 	int		line_count;
 
-	get_envp()->expand_arg(&redir->str);
 	if (pipe(fd) == -1)
 		return (false);
 	cmd->heredoc = fd;
