@@ -95,7 +95,10 @@
 		"runner.h": "c",
 		"registry_fns.h": "c",
 		"storage.h": "c",
-		"typeinfo": "c"
+		"typeinfo": "c",
+		"history.h": "c",
+		"limits.h": "c",
+		"fcntl.h": "c"
 	},
 	"files.exclude": {
 		"**/*.o": true,

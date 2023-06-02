@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 11:08:09 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/28 22:55:42 by martiper         ###   ########.fr       */
+/*   Updated: 2023/06/02 11:04:19 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ static bool	grab_home(char **str, t_env_var *home)
 	size_t	idx;
 
 	idx = 0;
-	if (!str)
-		return (false);
+	if (!str || !*str)
+		return (display_error("cd", "HOME not set"), false);
 	while (str[0][idx])
 	{
 		if (str[0][idx] == '~')
@@ -67,14 +67,16 @@ bool	dir_go_to_path(char *path)
 		return (false);
 	if (!path)
 		path = envp->get_value("HOME");
+	path = ft_strdup(path);
 	if (!grab_home(&path, envp->get("HOME")))
-		return (false);
+		return (free(path), false);
 	if (chdir(path) < 0)
 	{
 		ft_sprintf(error_msg, 256, "cd: %s", path);
 		display_error(error_msg, NULL);
-		return (false);
+		return (free(path), false);
 	}
+	free(path);
 	if (envp->is_set("PWD"))
 		set_path_to_envp(envp);
 	else
