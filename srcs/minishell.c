@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 02:27:03 by martiper          #+#    #+#             */
-/*   Updated: 2023/06/02 13:15:15 by martiper         ###   ########.fr       */
+/*   Updated: 2023/06/02 14:45:35 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,17 @@
 #include <env/registry.h>
 #include <cmd/storage.h>
 #include <signals/signals.h>
+#include <runner/runner.h>
+#include <dir/dir.h>
+
+static void	init_ctxs(void)
+{
+	get_envp();
+	get_runner();
+	get_cmds();
+	get_prompter();
+	get_dir();
+}
 
 int	main(int ac, char **av, char **env)
 {
@@ -28,6 +39,7 @@ int	main(int ac, char **av, char **env)
 	(void)ac;
 	(void)av;
 	exit_code = 0;
+	init_ctxs();
 	envp = get_envp();
 	prompter = get_prompter();
 	cmds = get_cmds();
