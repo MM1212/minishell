@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
+/*   By: diogpere <diogpere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:03:40 by diogpere          #+#    #+#             */
-/*   Updated: 2023/06/02 14:01:15 by martiper         ###   ########.fr       */
+/*   Updated: 2023/05/30 10:14:10 by diogpere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,8 +116,7 @@ int	main(void)
 	char					*str;
 	t_parser_simple_cmds	*cmds;
 
-	str = ft_strdup(\
-		"echo \"  $USE'R'\"'$USER'''");
+	str = ft_strdup("echo > > ls");
 	cmds = parser(str);
 	if (!cmds)
 		return (0);
