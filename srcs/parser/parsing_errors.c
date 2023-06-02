@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:03:16 by diogpere          #+#    #+#             */
-/*   Updated: 2023/06/02 14:05:57 by martiper         ###   ########.fr       */
+/*   Updated: 2023/06/02 14:27:50 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,6 @@ void	check_tokens(t_parser_lexer *guide, int *innercount, int *count)
 			pairs++;
 	}
 	i = 0;
-	printf("pairs: %d\n", pairs);
-	printf("count: %d\n", *count);
 	while (guide->str[++i])
 	{
 		if (guide->str[i] != token || guide->str[i] != '|' || \
