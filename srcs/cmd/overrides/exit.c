@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 14:16:37 by martiper          #+#    #+#             */
-/*   Updated: 2023/06/02 10:49:12 by martiper         ###   ########.fr       */
+/*   Updated: 2023/06/02 12:52:03 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,11 @@ static t_exit_status_types	are_args_ok(int ac, char **av)
 	if (!check_limits(av[0]))
 		return (EXIT_STATUS_WARN);
 	idx = 0;
+	if (av[0][idx] == '-' || av[0][idx] == '+')
+		idx++;
 	while (av[0][idx])
 	{
+
 		if (!ft_isdigit(av[0][idx++]))
 			return (display_error("exit", "numeric argument required"), \
 				EXIT_STATUS_WARN);

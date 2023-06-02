@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 17:42:34 by diogpere          #+#    #+#             */
-/*   Updated: 2023/05/28 22:58:39 by martiper         ###   ########.fr       */
+/*   Updated: 2023/06/02 14:13:40 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int	cmds_overrides_export_show_available_vars(int ac, char **av)
 {
 	t_list		*vars;
 	t_env_var	*var;
+	t_list		*tmp;
 
 	ac--;
 	av++;
@@ -38,6 +39,7 @@ int	cmds_overrides_export_show_available_vars(int ac, char **av)
 	if (!vars)
 		return (1);
 	ft_lstsort(vars, (int (*)(void *, void *))sort_vars);
+	tmp = vars;
 	while (vars)
 	{
 		var = vars->content;
@@ -47,7 +49,7 @@ int	cmds_overrides_export_show_available_vars(int ac, char **av)
 			ft_printf("declare -x %s=\"%s\"\n", var->name, var->value);
 		vars = vars->next;
 	}
-	ft_lstclear(&vars, NULL);
+	ft_lstclear(&tmp, NULL);
 	return (0);
 }
 

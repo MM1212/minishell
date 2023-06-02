@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 14:00:07 by martiper          #+#    #+#             */
-/*   Updated: 2023/05/25 20:33:58 by martiper         ###   ########.fr       */
+/*   Updated: 2023/06/02 13:34:39 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ bool	prompter_check_if_empty(char *line)
 {
 	char	*trimmed;
 
-	trimmed = ft_strtrim(line, " ");
+	trimmed = ft_strtrim(line, " \t");
 	if (ft_strlen(trimmed) == 0)
 	{
 		free(line);

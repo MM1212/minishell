@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:03:40 by diogpere          #+#    #+#             */
-/*   Updated: 2023/05/30 11:56:34 by martiper         ###   ########.fr       */
+/*   Updated: 2023/06/02 14:01:15 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ int	main(void)
 	t_parser_simple_cmds	*cmds;
 
 	str = ft_strdup(\
-		"<< \"EOF\" > file");
+		"echo \"  $USE'R'\"'$USER'''");
 	cmds = parser(str);
 	if (!cmds)
 		return (0);
