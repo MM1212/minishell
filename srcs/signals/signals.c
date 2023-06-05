@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 12:27:00 by martiper          #+#    #+#             */
-/*   Updated: 2023/06/05 10:58:32 by martiper         ###   ########.fr       */
+/*   Updated: 2023/06/05 11:03:27 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void	sigchld_handler(int sig, siginfo_t *info, void *ctx)
 {
 	(void)sig;
 	(void)ctx;
-	ft_printf("child %d got %d\n", info->si_pid, info->si_code);
 	if (!info)
 		return ;
 	if (info->si_code == CLD_DUMPED)
