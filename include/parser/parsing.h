@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
+/*   By: diogpere <diogpere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 14:23:16 by diogpere          #+#    #+#             */
-/*   Updated: 2023/05/29 14:21:04 by martiper         ###   ########.fr       */
+/*   Updated: 2023/06/05 11:54:43 by diogpere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,11 @@ void					parser_clear_lexer(t_parser_lexer *start);
 t_parser_lexer			*parser_lexer_lstlast(t_parser_lexer *lst);
 void					parser_clear_cmds(t_parser_simple_cmds *cmds);
 void					parser_ft_lexerdel_first(t_parser_lexer **lst);
-void					parser_handle_quotes(t_parser_lexer_builder *b);
+void					parser_handle_quotes(t_parser_lexer_builder *b, int j);
 t_parser_lexer			*parser_ft_lexerclear_one(t_parser_lexer **lst);
 t_parser_lexer			*parser_ft_lexerclear_one(t_parser_lexer **lst);
 t_parser_simple_cmds	*parser_cmds_lstlast(t_parser_simple_cmds *lst);
 void					parser_ft_lexerdelone(t_parser_lexer **lst, int key);
-void					parser_handle_quotes(t_parser_lexer_builder *b);
 void					parser_handle_tokens(t_parser_lexer_builder *b, \
 						char *str);
 void					parser_ft_lexeradd_back(t_parser_lexer **lst, \
@@ -100,7 +99,5 @@ int						parser_error_printer(t_parser_lexer *start, \
 t_parser_simple_cmds	*parser_ft_simple_cmds_clear_one(t_parser_simple_cmds \
 						**lst);
 t_parser_simple_cmds	*parser(char *str);
-void					parser_handle_quotes(t_parser_lexer_builder *b);
-void					parser_handle_quotes(t_parser_lexer_builder *b);
 
 #endif
