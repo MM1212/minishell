@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 14:16:37 by martiper          #+#    #+#             */
-/*   Updated: 2023/06/02 12:52:03 by martiper         ###   ########.fr       */
+/*   Updated: 2023/06/05 11:11:18 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ void	cmds_overrides_exit_cmd(int ac, char **av, int *exit_code)
 	ok = are_args_ok(ac, av);
 	if (ok > 0)
 		*exit_code = 2;
+	else if (ac == 0)
+		*exit_code = ft_atoi(get_envp()->get_value("?"));
 	else
 		*exit_code = (unsigned char)ft_atoi(av[0]);
 	if (ok == EXIT_STATUS_ERR)

@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 12:27:00 by martiper          #+#    #+#             */
-/*   Updated: 2023/06/05 11:03:27 by martiper         ###   ########.fr       */
+/*   Updated: 2023/06/05 11:27:18 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ void	sigchld_handler(int sig, siginfo_t *info, void *ctx)
 		return ;
 	if (info->si_code == CLD_DUMPED)
 		ft_printf("Quit (core dumped)\n");
-	else if (info->si_code == CLD_KILLED)
-		ft_printf("\n");
 }
 
 void	signals_hook(void)
