@@ -98,7 +98,8 @@
 		"typeinfo": "c",
 		"history.h": "c",
 		"limits.h": "c",
-		"fcntl.h": "c"
+		"fcntl.h": "c",
+		"signals.h": "c"
 	},
 	"files.exclude": {
 		"**/*.o": true,
