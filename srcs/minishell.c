@@ -6,7 +6,7 @@
 /*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 02:27:03 by martiper          #+#    #+#             */
-/*   Updated: 2023/06/02 14:45:35 by martiper         ###   ########.fr       */
+/*   Updated: 2023/06/05 12:03:42 by martiper         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,5 @@ int	main(int ac, char **av, char **env)
 		prompter->prompt();
 	exit_code = ft_atoi(envp->get_value("?"));
 	destroy_all_contexts();
-	ft_printf("exit\n");
-	return (exit_code);
+	return (ft_printf("exit\n"), exit_code);
 }
