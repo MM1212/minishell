@@ -6,7 +6,7 @@
 /*   By: diogpere <diogpere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:03:16 by diogpere          #+#    #+#             */
-/*   Updated: 2023/05/29 21:56:25 by diogpere         ###   ########.fr       */
+/*   Updated: 2023/06/05 11:38:23 by diogpere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,14 @@
 
 int	parser_go_forward(char *str, char c, int *i, int *counter)
 {
-	if (str[*i] == c)
-	{
-		*counter += 1;
-		*i += 1;
-	}	
+	*i += 1;
+	*counter += 1;
 	while (str[*i] && str[*i] != c)
 		*i += 1;
 	if (!str[*i])
 		return (1);
 	else if (str[*i] == c)
-	{
 		*counter += 1;
-		*i += 1;
-	}
 	return (0);
 }
 
@@ -77,14 +71,21 @@ int	parser_error_printer(t_parser_lexer *start, t_parser_lexer \
 void	check_tokens(t_parser_lexer *guide, int *innercount, int *count)
 {
 	int				i;
-	char			token;
 	t_parser_lexer	*saver;
 
-	i = 0;
-	token = guide->str[0];
+	saver = guide;
+	while (saver && saver->token != 0 && (saver->str[0] == guide->str[0] \
+		|| saver->token == guide->token))
+	{
+		*count += 1;
+		saver = saver->next;
+	}
+	if (saver && saver->token > 0)
+		*count += 1;
+	i = -1;
 	while (guide->str[++i])
 	{
-		if (guide->str[i] != token || guide->str[i] != '|' || \
+		if (guide->str[i] != guide->str[0] || guide->str[i] != '|' || \
 			guide->str[i] != '<' || guide->str[i] != '>')
 		{
 			*innercount = 0;
@@ -92,13 +93,6 @@ void	check_tokens(t_parser_lexer *guide, int *innercount, int *count)
 		}
 		else
 			*innercount += 1;
-	}
-	saver = guide;
-	while (saver && saver->token != 0 && (saver->str[0] == guide->str[0] \
-		|| saver->token == guide->token))
-	{
-		*count += 1;
-		saver = saver->next;
 	}
 }
 
@@ -111,7 +105,10 @@ int	parser_check_errors(t_parser_lexer *start, t_parser_lexer *guide, char *str)
 	{
 		if (guide->token > 0 && (!guide->next || (guide->next && \
 			!guide->next->str[0])))
+		{
+			printf("in here\n");
 			return (parser_error_printer(start, guide, 0, 0));
+		}
 		count = 0;
 		innercount = 0;
 		check_tokens(guide, &innercount, &count);
