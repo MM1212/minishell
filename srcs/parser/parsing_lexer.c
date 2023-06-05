@@ -6,7 +6,7 @@
 /*   By: diogpere <diogpere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:03:09 by diogpere          #+#    #+#             */
-/*   Updated: 2023/05/30 10:11:07 by diogpere         ###   ########.fr       */
+/*   Updated: 2023/06/05 12:01:09 by diogpere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ t_parser_lexer	*parser_build_lexer(char *str)
 	while (b.str[++b.i])
 	{
 		while (b.str[b.i] == ' ')
-			b.str[b.i++] = 3;
+			b.i++;
 		if (!b.str[b.i])
 			break ;
 		if (parser_create_pieces(&b))
@@ -52,13 +52,21 @@ t_parser_lexer	*parser_build_lexer(char *str)
 	return (b.start);
 }
 
-void	parser_create_for_string(t_parser_lexer_builder *b)
+int	parser_create_for_string(t_parser_lexer_builder *b)
 {
 	b->j = b->i;
 	while (b->str[b->j] && b->str[b->j] != ' ' && b->str[b->j] != '|' \
 		&& b->str[b->j] != '<' && b->str[b->j] != '>')
+	{
+		if (b->str[b->j] == '\'' || b->str[b->j] == '\"')
+		{
+			parser_handle_quotes(b, b->j);
+			return (0);
+		}
 		b->j++;
+	}
 	b->node->str = ft_substr(b->str, b->i, b->j - b->i);
+	return (1);
 }
 
 void	parser_create_lexer_node(t_parser_lexer_builder *b, \
@@ -66,8 +74,10 @@ void	parser_create_lexer_node(t_parser_lexer_builder *b, \
 {
 	if (token == 0)
 	{
-		parser_create_for_string(b);
-		b->i += b->j - b->i - 1;
+		if (parser_create_for_string(b))
+			b->i += b->j - b->i - 1;
+		else
+			return ;
 	}
 	else
 	{
@@ -85,7 +95,7 @@ void	parser_create_lexer_node(t_parser_lexer_builder *b, \
 void	parser_handle_tokens(t_parser_lexer_builder *b, char *str)
 {
 	if (str[b->i] == '\'' || str[b->i] == '\"')
-		parser_handle_quotes(b);
+		parser_handle_quotes(b, b->i);
 	else if (str[b->i] == '|')
 		parser_create_lexer_node(b, "|", PIPE);
 	else if (str[b->i] == '<' && str[b->i + 1] == '<')

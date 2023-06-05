@@ -6,7 +6,7 @@
 /*   By: diogpere <diogpere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 12:03:40 by diogpere          #+#    #+#             */
-/*   Updated: 2023/06/05 11:40:32 by diogpere         ###   ########.fr       */
+/*   Updated: 2023/06/05 12:02:00 by diogpere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ int	main(void)
 	t_parser_simple_cmds	*cmds;
 
 	str = ft_strdup(\
-		"export ' asdf hello'");
+		"export > HELLO='123 A-'");
 	cmds = parser(str);
 	if (!cmds)
 		return (0);

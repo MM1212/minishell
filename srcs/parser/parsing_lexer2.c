@@ -3,22 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_lexer2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: martiper <martiper@student.42.fr>          +#+  +:+       +#+        */
+/*   By: diogpere <diogpere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 22:11:59 by diogpere          #+#    #+#             */
-/*   Updated: 2023/05/29 00:06:28 by martiper         ###   ########.fr       */
+/*   Updated: 2023/06/05 11:53:59 by diogpere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser/parsing.h"
 
-void	parser_handle_quotes(t_parser_lexer_builder *b)
+void	parser_handle_quotes(t_parser_lexer_builder *b, int j)
 {
 	char	c;
 	int		pair;
 
 	pair = 0;
-	b->j = b->i;
+	b->j = j;
 	c = b->str[b->j];
 	while (b->str[b->j])
 	{
